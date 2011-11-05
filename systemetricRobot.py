@@ -26,3 +26,6 @@ class SystemetricRobot(Robot):
         self.rightMotor.target = value
         
     right = property(get_right, set_right)
+    
+    def stop(self):
+        self.right = self.left = 0
