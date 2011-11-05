@@ -11,6 +11,24 @@ while True:
     markers = R.see()
     if len(markers) != 0:
         print "Saw the marker"
+        angle = markers[0].centre.polar.rot_y
+        if math.abs(angle) < 5:
+            R.left = R.right = speed
+        else
+            R.left = 5*angle
+            R.right = -5*angle
+        
+        print(steer)
+    '''else:
+        print "No marker"
+        R.right = 0
+        R.left = 0'''
+    
+'''
+while True:
+    markers = R.see()
+    if len(markers) != 0:
+        print "Saw the marker"
         targetPoint = markers[0].centre
         steer = targetPoint.polar.rot_y * 5
         
@@ -23,4 +41,4 @@ while True:
         R.right = 0
         R.left = 0
         
-    time.sleep(0.1)
+    time.sleep(0.1)'''
