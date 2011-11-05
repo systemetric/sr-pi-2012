@@ -14,7 +14,7 @@ while True:
         angle = markers[0].centre.polar.rot_y
         if math.abs(angle) < 5:
             R.left = R.right = speed
-        else
+        else:
             R.left = 5*angle
             R.right = -5*angle
         
