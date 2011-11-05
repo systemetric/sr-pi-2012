@@ -18,7 +18,7 @@ while True:
             R.left = 5*angle
             R.right = -5*angle
         
-        print(steer)
+        print(angle)
     '''else:
         print "No marker"
         R.right = 0
