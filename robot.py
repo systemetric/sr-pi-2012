@@ -12,7 +12,7 @@ while True:
     if len(markers) != 0:
         print "Saw the marker"
         angle = markers[0].centre.polar.rot_y
-        if math.abs(angle) < 5:
+        if math.fabs(angle) < 5:
             R.left = R.right = speed
         else:
             R.left = 5*angle
