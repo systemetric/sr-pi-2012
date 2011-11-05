@@ -12,8 +12,12 @@ while True:
     if len(markers) != 0:
         print "Saw the marker"
         targetPoint = markers[0].centre
-        R.right = speed + targetPoint.polar.rot_y
-        R.left = speed - targetPoint.polar.rot_y
+        steer = targetPoint.polar.rot_y * 5
+        
+        print(steer)
+        
+        R.right = speed - steer 
+        R.left = speed + steer 
     else:
         print "No marker"
         R.right = 0
