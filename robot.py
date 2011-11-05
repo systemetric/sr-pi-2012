@@ -17,7 +17,7 @@ while True:
         else:
             R.left = angle
             R.right = -angle
-            wait(0.25)
+            time.sleep(0.25)
             R.stop()
         
         print(angle)
