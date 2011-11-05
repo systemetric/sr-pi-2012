@@ -17,12 +17,13 @@ while True:
         else:
             R.left = angle
             R.right = -angle
+            wait(0.25)
+            R.stop()
         
         print(angle)
     else:
         print "No marker"
-        R.right = 0
-        R.left = 0
+        R.stop()
     
 '''
 while True:
