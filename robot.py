@@ -19,10 +19,10 @@ while True:
             R.right = -angle
         
         print(angle)
-    '''else:
+    else:
         print "No marker"
         R.right = 0
-        R.left = 0'''
+        R.left = 0
     
 '''
 while True:
