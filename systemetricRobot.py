@@ -31,9 +31,11 @@ class SystemetricRobot(Robot):
         """Stop the robot, by setting the speed of both motors to 0"""
         self.right = self.left = 0
         
-    def drive(self, speed = 50):
-        """Drive the robot forwards or backwards at a certain speed"""
-        self.right = self.left = speed
+    def drive(self, speed=50, steer=0):
+        """Drive the robot forwards or backwards at a certain speed, with an optional steer
+        """
+        self.right = speed - steer
+        self.left = speed + steer
         
     def turn(self, speed):
         """Rotate the robot at a certain speed. Positive is clockwise"""
