@@ -24,7 +24,7 @@ class SystemetricRobot(Robot):
         """Property to control the speed of the right motor, without the hassle of `.target`"""
         return self.rightMotor.target
     @right.setter     
-    def set_right(self, value):
+    def right(self, value):
         self.rightMotor.target = value
     
     def stop(self):
