@@ -18,14 +18,13 @@ def main():
             if math.fabs(angle) < 10:
                 R.drive(speed)
             else:
-                R.left = angle
-                R.right = -angle
+                R.turn(=angle)
                 time.sleep(0.25)
                 R.stop()
             
             print(angle)
         else:
             print "No marker"
-            R.drive(steer=5)
+            R.turn(5)
             time.sleep(0.25)
             R.stop()
