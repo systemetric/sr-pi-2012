@@ -23,9 +23,9 @@ def main():
                 #time.sleep(0.25)
                 R.stop()
             
-            print("seen at: ",angle)
-       ''' else:
+            print "seen at: ",angle
+        else:
             R.turn(20)
-            time.sleep(0.05)
+            #time.sleep(0.05)
             print "No Marker..."
-            R.stop()        '''
+            R.stop()
