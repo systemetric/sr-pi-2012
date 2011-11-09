@@ -10,8 +10,9 @@ def main():
     
     while True:
         #Get only the tokens
-        markers = [marker for marker in R.see() if marker.info.marker_type == MARKER_TOKEN] #getting the valid QR code
-        time.pause(0.05)
+        allMarkers = R.see()
+        markers = [marker for marker in allMarkers if marker.info.marker_type == MARKER_TOKEN] #getting the valid QR code
+        time.sleep(0.05)
         if len(markers) != 0:        #if there is A valid QR there...
             print "Saw the marker"
             angle = markers[0].centre.polar.rot_y    #set the angle of the object (from center)
