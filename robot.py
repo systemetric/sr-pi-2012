@@ -2,4 +2,4 @@
 from tests import drive_to_cube_better
 
 #run the program
-drive_to_cube.main()
+drive_to_cube_better.main()
