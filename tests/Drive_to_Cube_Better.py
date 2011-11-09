@@ -25,9 +25,8 @@ def main():
             print(angle)
             
         else:
-            R.right = 1
-            R.left = -1
-            sleep(0.1)
+            R.turn(20)
+            sleep(0.2)
             r.stop()
             
         #else:
