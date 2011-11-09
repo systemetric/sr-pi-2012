@@ -23,8 +23,16 @@ def main():
                 R.stop()
             
             print(angle)
+            
+        else:
+            R.right = 1
+            R.left = -1
+            sleep(0.1)
+            r.stop()
+            
         #else:
         #    print "No marker"
         #    R.turn(5)
         #    time.sleep(0.25)
         #    R.stop()
+        
