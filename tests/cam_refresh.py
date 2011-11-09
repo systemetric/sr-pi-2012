@@ -12,7 +12,7 @@ def main():
     for i in range(21,0,-1):
         R.turn(i)
         time.sleep(1)
-        markers = R.see()
+        markers = R.see( res=(640, 360) )
         if len(markers) != 0:        #if there is A valid QR there...
             print "Found, speed of ",i
             R.power.beep([(440,1), (220,1)])
