@@ -27,7 +27,7 @@ def main():
         else:
             R.turn(20)
             time.sleep(0.2)
-            r.stop()
+            R.stop()
             
         #else:
         #    print "No marker"
