@@ -16,4 +16,6 @@ def main():
         if len(markers) != 0:        #if there is A valid QR there...
             print "Found, speed of ",i
             R.power.beep([(440,1), (220,1)])
-            R.stop()
+            break
+    R.stop()
+   
