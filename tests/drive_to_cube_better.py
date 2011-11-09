@@ -26,7 +26,7 @@ def main():
             
         else:
             R.turn(20)
-            sleep(0.2)
+            time.sleep(0.2)
             r.stop()
             
         #else:
