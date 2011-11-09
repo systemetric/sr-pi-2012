@@ -18,7 +18,7 @@ def main():
             if math.fabs(angle) < 10:
                 R.drive(speed)
             else:
-                R.turn(=angle)
+                R.turn(angle)
                 time.sleep(0.25)
                 R.stop()
             
