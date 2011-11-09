@@ -14,18 +14,16 @@ def main():
         markers = [marker for marker in allMarkers if marker.info.marker_type == MARKER_TOKEN] #getting the valid QR code
         time.sleep(0.05)
         if len(markers) != 0:        #if there is A valid QR there...
+            R.stop()
             print "Saw the marker"
             angle = markers[0].centre.polar.rot_y    #set the angle of the object (from center)
             if math.fabs(angle) < 10:                #set angle to an absolute value, then drive @ angle
                 R.drive(speed)
             else:                                    #else, stop
-                R.turn(angle)
+                R.turn(-angle)
                 #time.sleep(0.25)
                 R.stop()
             print "seen at: ",angle
-            R.stop();
         else:
             R.turn(20)
-            time.sleep(0.15)
             print "No Marker..."
-            R.stop()
