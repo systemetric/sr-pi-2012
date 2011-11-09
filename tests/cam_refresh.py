@@ -13,7 +13,7 @@ def main():
         R.turn(i)
         time.sleep(1)
         markers = R.see( res=(640, 360) )
-        if len(markers) != 0:        #if there is A valid QR there...
+        if len(markers) != 0:        #if there is A valid liboki there...
             print "Found, speed of ",i
             R.power.beep([(440,1), (220,1)])
             break
