@@ -13,7 +13,7 @@ def main():
         markers = R.see(res=res)
         if len(markers) != 0:
             break
-        R.power.beep([(440,1)])
+        R.power.beep(440,1)
         
     for i in range(21,0,-1):
         R.turn(i)
