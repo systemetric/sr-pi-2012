@@ -18,7 +18,7 @@ def main():
             if math.fabs(angle) < 10:                #set angle to an absolute value, then drive @ angle
                 R.drive(speed)
             else:                                    #else, stop
-                R.turn(=angle)
+                R.turn(angle)
                 #time.sleep(0.25)
                 R.stop()
             
