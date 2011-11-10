@@ -5,6 +5,7 @@ from systemetricRobot import SystemetricRobot
 
 class compassThread(threading.Thread):
     def __init__(self, R):
+        threading.Thread.__init__(self)
         self.R = R
         self.target = 0
         self.speed = 0
@@ -25,7 +26,15 @@ def main():
     R = SystemetricRobot()
     t = compassThread(R)
     t.start()
-    #t.target(0)
-    #time.sleep(5)
-    #t.target(0)
-    #time.sleep(5)
+    
+    t.target = 0
+    
+    time.sleep(5)
+    t.target = 90
+    time.sleep(5)
+    t.target = 180
+    time.sleep(5)
+    t.target = 270
+    time.sleep(5)
+    t.target = 0
+    time.sleep(5)
