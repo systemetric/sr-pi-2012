@@ -19,7 +19,7 @@ class compassThread(threading.Thread):
             while error < -180:
                 error += 360
             
-            R.drive(speed = self.speed, steer = error/2)
+            self.R.drive(speed = self.speed, steer = error/2)
 
 def main():
     R = SystemetricRobot()
