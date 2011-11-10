@@ -12,6 +12,6 @@ def main():
     port.timeout=0.25
     
     while True:
-        angle = int(port.readline()) / 10
+        angle = int(port.readline()) / 10.0
         print angle
         time.sleep(0.2)    
