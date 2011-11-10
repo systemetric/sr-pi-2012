@@ -11,9 +11,9 @@ def main():
     port.timeout=0.25
     angle = 200 #random value
     
-    while angle > 3:
+    while angle > 10:
         angle = float(port.readline())
         print angle
-        R.turn(15)
+        R.turn(10)
         time.sleep(1)
     
