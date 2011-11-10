@@ -3,6 +3,7 @@ from pyeuclid import *
 from collections import namedtuple
 
 Markers = namedtuple("Markers", "tokens robots arena buckets")
+Token = namedtuple("Token", "markers id timestamp location")
 
 class SystemetricRobot(Robot):
     """A class derived from the base 'Robot' class provided by soton"""     
@@ -92,10 +93,7 @@ class SystemetricRobot(Robot):
         tokens = []
         # For each token
         for markerId, markers in markersById.tokens.iteritems():
-            token = {}
-            token.markers = []
-            token.timestamp = marker[0].timestamp
-            
+            newmarkers = []
             # Convert all the markers to a nicer format, using pyeuclid
             for marker in markers:
                 newmarker = {}
@@ -118,10 +116,14 @@ class SystemetricRobot(Robot):
                 location = marker.center.world
                 newmarker.location = Point3(location.x, location.y, location.z)
 
-                token.markers.append(newmarker)
+                newmarkers.append(newmarker)
             
-            #Calculate the 2D position of the token
-            token.location = self.cameraMatrix * token.markers[0].center
+            token = Token(
+                markers=newmarkers,
+                timestamp=marker[0].timestamp,
+                id=markerId
+                location=self.cameraMatrix * token.markers[0].center
+            )
             # Take into account the position of the robot
             # token.location = self.robotMatrix * token.Location
             tokens.append(token)
