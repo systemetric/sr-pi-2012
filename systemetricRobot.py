@@ -2,7 +2,7 @@ import sys, math, serial
 from collections import namedtuple
 
 from sr import *
-from pyeuclid import *
+from lib.pyeuclid import *
 
 Marker = namedtuple("Marker", "vertices normal location")
 Markers = namedtuple("Markers", "tokens robots arena buckets")
