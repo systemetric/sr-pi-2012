@@ -6,6 +6,6 @@ def main():
     target = 0
     
     while True:
-        heading = R.heading
+        heading = R.compassHeading
         print heading
         time.sleep(0.2)
