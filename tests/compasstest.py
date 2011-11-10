@@ -4,9 +4,9 @@ import threading
 from systemetricRobot import SystemetricRobot
 
 class CompassThread(threading.Thread):
-    def __init__(self, R):
+    def __init__(self, robot):
         threading.Thread.__init__(self)
-        self.R = R
+        self.R = robot
         self.target = 0
         self.speed = 0
         self.running = True
