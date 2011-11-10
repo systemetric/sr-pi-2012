@@ -77,6 +77,7 @@ class SystemetricRobot(Robot):
     @property 
     def compassHeading(self):
         '''Get the compass heading from the mbed'''
+        self.port.write('H')
         heading = self.port.readline()
         if heading:
             return int(heading) / 10.0
