@@ -7,4 +7,6 @@ port.open()
 port.timeout=0.25
     
 while True:
-    print port.readline()
+    line = port.readline()
+    print line
+    
