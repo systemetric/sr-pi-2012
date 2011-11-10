@@ -23,9 +23,9 @@ class SystemetricRobot(Robot):
             self.port = serial.Serial('/dev/ttyACM0')
             self.port.timeout = 0.25
             self.port.open()
-        except:
-            print 'Fail - mbed not here'
-            sys.exit(1)
+        except Exception, c:
+            #kill the robot on an error
+            self.end(message = str(c) + ' - mbed not connectable')
             
         
         #Camera orientation
@@ -82,7 +82,7 @@ class SystemetricRobot(Robot):
         if heading:
             return int(heading) / 10.0
         else:
-            return float('nan')
+            return float('nan') #return NaN, because we don't know the heading
     
     def getMarkersById(self):
         '''Get all the markers, grouped by id.
@@ -93,7 +93,6 @@ class SystemetricRobot(Robot):
             # Check if token 0 is visible
             if 0 in marker.tokens:
                 markersOnFirstToken = markers.tokens[0]
-        
         '''
         markers = self.see()
         markersById = Markers(tokens={}, arena={}, robots={}, buckets={})
@@ -167,3 +166,12 @@ class SystemetricRobot(Robot):
         #sort by distance, for convenience
         tokens.sort(key=lambda m: m.location.magnitude())
         return tokens
+        
+    def end(self, message = 'robot stopped', error = True):
+        print message
+        
+        #stop the motors
+        self.stop()
+        
+        #end the program with an exit code
+        sys.exit(int(exit))
