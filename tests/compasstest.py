@@ -15,5 +15,5 @@ def main():
             error += 360
             
         print heading
-        R.turn((error/3) + 5)
+        R.turn(error/2)
         time.sleep(0.2)
