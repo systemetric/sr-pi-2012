@@ -25,3 +25,7 @@ def main():
     R = SystemetricRobot()
     t = compassThread(R)
     t.start()
+    #t.target(0)
+    #time.sleep(5)
+    #t.target(0)
+    #time.sleep(5)
