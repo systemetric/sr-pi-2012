@@ -6,7 +6,7 @@ def main():
     target = 0
     
     while True:
-        heading = robot.compassHeading
+        heading = R.compassHeading
         
         error = heading - target
         while error >= 180:
