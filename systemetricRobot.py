@@ -108,8 +108,8 @@ class SystemetricRobot(Robot):
                     ))
                 
                 # Calculate the normal vector of the surface
-                edge1 = newmarker.vertices[0] - newmarker.vertices[1]
-                edge2 = newmarker.vertices[2] - newmarker.vertices[1]
+                edge1 = vertices[0] - vertices[1]
+                edge2 = vertices[2] - vertices[1]
                 normal = edge1.cross(edge2).normalize()
                 
                 # Keep the center position
