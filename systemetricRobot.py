@@ -2,7 +2,7 @@ import sys, math, serial
 from collections import namedtuple
 
 from sr import *
-from pyeuclid import *
+from lib.pyeuclid import *
 
 Marker = namedtuple("Marker", "vertices normal location")
 Markers = namedtuple("Markers", "tokens robots arena buckets")
@@ -18,21 +18,21 @@ class SystemetricRobot(Robot):
         self.leftMotor = self.motors[0]
         self.rightMotor = self.motors[1]
         
-        #set up the serial
+        #set up the serial connection to the mbed
         try:
             self.port = serial.Serial('/dev/ttyACM0')
             self.port.timeout = 0.25
             self.port.open()
-        except:
-            print 'Fail - mbed no here'
-            sys.exit(1)
+        except Exception, c:
+            #kill the robot on an error
+            self.end(message = str(c) + ' - mbed not connectable')
             
         
         #Camera orientation
-        self.cameraMatrix = Matrix4.new_rotate_euler(    #https://github.com/dov/pyeuclid/blob/master/euclid.txt (line 385)
-            heading = 0,                                 #rotation around the y axis 
-            attitude = -10,                              #rotation around the x axis
-            bank = 0                                     #rotation around the z axis
+        self.cameraMatrix = Matrix4.new_rotate_euler(
+            heading = 0,
+            attitude = -10,
+            bank = 0
         )
         
         #Position and orientation of the robot
@@ -80,9 +80,9 @@ class SystemetricRobot(Robot):
         self.port.write('H')
         heading = self.port.readline()
         if heading:
-            return int(heading) / 10.0
+            return int(heading) / 10.0 #convert the int we get from the mbed into a float.
         else:
-            return float('nan')
+            return float('nan') #return NaN, because we don't know the heading
     
     def getMarkersById(self):
         '''Get all the markers, grouped by id.
@@ -93,7 +93,6 @@ class SystemetricRobot(Robot):
             # Check if token 0 is visible
             if 0 in marker.tokens:
                 markersOnFirstToken = markers.tokens[0]
-        
         '''
         markers = self.see()
         markersById = Markers(tokens={}, arena={}, robots={}, buckets={})
@@ -167,3 +166,13 @@ class SystemetricRobot(Robot):
         #sort by distance, for convenience
         tokens.sort(key=lambda m: m.location.magnitude())
         return tokens
+        
+    def end(self, message = 'robot stopped', error = True):
+        '''Kill the robot in the nicest way possible'''
+        print message
+        
+        #stop the motors
+        self.stop()
+        
+        #end the program with an exit code
+        sys.exit(int(exit))
