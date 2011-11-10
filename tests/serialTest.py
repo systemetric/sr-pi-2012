@@ -16,4 +16,5 @@ def main():
         print angle
         R.turn(10)
         time.sleep(1)
+    R.turn(0)
     
