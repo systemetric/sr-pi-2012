@@ -9,7 +9,7 @@ def main():
     port = serial.Serial('/dev/ttyACM0')
     port.open()
     port.timeout=0.25
-    angle = 200 #random value
+    angle = 90000 #random value
     
     while angle > 10:
         angle = float(port.readline())
