@@ -18,7 +18,7 @@ class SystemetricRobot(Robot):
         self.leftMotor = self.motors[0]
         self.rightMotor = self.motors[1]
         
-        #set up the serial
+        #set up the serial connection to the mbed
         try:
             self.port = serial.Serial('/dev/ttyACM0')
             self.port.timeout = 0.25
@@ -80,7 +80,7 @@ class SystemetricRobot(Robot):
         self.port.write('H')
         heading = self.port.readline()
         if heading:
-            return int(heading) / 10.0
+            return int(heading) / 10.0 #convert the int we get from the mbed into a float.
         else:
             return float('nan') #return NaN, because we don't know the heading
     
@@ -168,6 +168,7 @@ class SystemetricRobot(Robot):
         return tokens
         
     def end(self, message = 'robot stopped', error = True):
+        '''Kill the robot in the nicest way possible'''
         print message
         
         #stop the motors
