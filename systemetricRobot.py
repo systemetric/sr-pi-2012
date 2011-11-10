@@ -75,7 +75,11 @@ class SystemetricRobot(Robot):
     @property 
     def compassHeading(self):
         """Get the compass heading from the mbed"""
-        return int(self.port.readline()) / 10.0
+        heading = self.port.readline()
+        if heading:
+            return int(heading) / 10.0
+        else:
+            return float('nan')
     
     def getMarkersById(self):
         """Get all the markers, grouped by id.
