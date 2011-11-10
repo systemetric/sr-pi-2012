@@ -2,11 +2,12 @@ import serial
 import glob
 import time
 
-port = serial.Serial('/dev/ttyACM0')
-port.open()
-port.timeout=0.25
+def main():
+    port = serial.Serial('/dev/ttyACM0')
+    port.open()
+    port.timeout=0.25
     
-while True:
-    line = port.readline()
-    print line
+    while True:
+        line = port.readline()
+        print line
     
