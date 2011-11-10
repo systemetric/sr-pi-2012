@@ -16,6 +16,10 @@ class SystemetricRobot(Robot):
         self.leftMotor = self.motors[0]
         self.rightMotor = self.motors[1]
         
+        self.port = serial.Serial('/dev/ttyACM0')
+        port.open()
+        port.timeout=0.25
+        
         #Camera orientation
         self.cameraMatrix = Matrix4.new_rotate_euler(
             heading = 0,
@@ -63,7 +67,7 @@ class SystemetricRobot(Robot):
     @property 
     def compassHeading(self):
         """Get the compass heading from the mbed"""
-        pass
+        return int(self.port.readline()) / 10.0
     
     def getMarkersById(self):
         """Get all the markers, grouped by id.
