@@ -103,7 +103,7 @@ class SystemetricRobot(Robot):
         return markers
     
     def visibleCubes(self):
-        markersById = getMarkersById()
+        markersById = self.getMarkersById()
         
         tokens = []
         # For each token
