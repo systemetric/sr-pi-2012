@@ -1,8 +1,8 @@
-from sr import *
-import sys
-import serial
-from pyeuclid import *
+import sys, math, serial
 from collections import namedtuple
+
+from sr import *
+from pyeuclid import *
 
 Marker = namedtuple("Marker", "vertices normal location")
 Markers = namedtuple("Markers", "tokens robots arena buckets")
@@ -46,7 +46,8 @@ class SystemetricRobot(Robot):
         
     @left.setter
     def left(self, value):
-        self.leftMotor.target = value
+        if not math.isnan(value):
+            self.leftMotor.target = value
         
     @property  
     def right(self):
@@ -55,7 +56,8 @@ class SystemetricRobot(Robot):
         
     @right.setter    
     def right(self, value):
-        self.rightMotor.target = value
+        if not math.isnan(value):
+            self.rightMotor.target = value
     
     def stop(self):
         """Stop the robot, by setting the speed of both motors to 0"""
