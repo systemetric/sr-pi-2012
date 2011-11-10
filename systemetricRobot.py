@@ -21,8 +21,8 @@ class SystemetricRobot(Robot):
         #set up the serial
         try:
             self.port = serial.Serial('/dev/ttyACM0')
-            port.timeout = 0.25
-            port.open()
+            self.port.timeout = 0.25
+            self.port.open()
         except:
             print 'Fail - mbed not here'
             sys.exit(1)
