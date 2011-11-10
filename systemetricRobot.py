@@ -1,4 +1,6 @@
 from sr import *
+import sys
+import serial
 from pyeuclid import *
 from collections import namedtuple
 
@@ -16,9 +18,15 @@ class SystemetricRobot(Robot):
         self.leftMotor = self.motors[0]
         self.rightMotor = self.motors[1]
         
-        self.port = serial.Serial('/dev/ttyACM0')
-        port.open()
-        port.timeout=0.25
+        #set up the serial
+        try:
+            self.port = serial.Serial('/dev/ttyACM0')
+            port.timeout = 0.25
+            port.open()
+        except:
+            print 'Fail - mbed not here'
+            sys.exit(1)
+            
         
         #Camera orientation
         self.cameraMatrix = Matrix4.new_rotate_euler(
