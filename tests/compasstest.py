@@ -8,12 +8,12 @@ def main():
     while True:
         heading = R.compassHeading
         
-        error = heading - target
+        error = target - heading 
         while error >= 180:
             error -= 360
         while error < -180:
             error += 360
             
         print heading
-        R.turn(error/3)
+        R.turn((error/3) + 5)
         time.sleep(0.2)
