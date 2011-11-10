@@ -65,7 +65,17 @@ class SystemetricRobot(Robot):
         """Get the compass heading from the mbed"""
         pass
     
-    def visibleCubes(self):
+    def getMarkersById(self):
+        """Get all the markers, grouped by id.
+        For example, to get the token with id 1, use:
+        
+            markers = R.getMarkersById()
+            
+            # Check if token 0 is visible
+            if 0 in marker.tokens:
+                markersOnFirstToken = markers.tokens[0]
+        
+        """
         markers = self.see()
         markersById = Markers(tokens={}, arena={}, robots={}, buckets={})
         
@@ -90,6 +100,10 @@ class SystemetricRobot(Robot):
             #Add this marker to the list of markers for this object
             list[id].append(marker)
         
+        return markers
+    
+    def visibleCubes(self):
+        markersById = getMarkersById()
         
         tokens = []
         # For each token
