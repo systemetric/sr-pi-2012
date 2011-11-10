@@ -29,8 +29,8 @@ class SystemetricRobot(Robot):
             
         
         #Camera orientation
-        self.cameraMatrix = Matrix4.new_rotate_euler(
-            heading = 0,                                 #rotation around the y axis
+        self.cameraMatrix = Matrix4.new_rotate_euler(    #https://github.com/dov/pyeuclid/blob/master/euclid.txt (line 385)
+            heading = 0,                                 #rotation around the y axis 
             attitude = -10,                              #rotation around the x axis
             bank = 0                                     #rotation around the z axis
         )
