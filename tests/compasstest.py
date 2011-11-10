@@ -29,12 +29,27 @@ def main():
     
     t.target = 0
     
-    time.sleep(5)
+    time.sleep(2.5)
+    
+    t.speed = 25
+    time.sleep(1)
+    
     t.target = 90
-    time.sleep(5)
+    time.sleep(2.5)
+    
+    t.speed = 25
+    time.sleep(1)
+    
     t.target = 180
-    time.sleep(5)
+    time.sleep(2.5)
+    
+    t.speed = 25
+    time.sleep(1)
+    
     t.target = 270
-    time.sleep(5)
+    time.sleep(2.5)
+    
+    t.speed = 25
+    time.sleep(1)
+    
     t.target = 0
-    time.sleep(5)
