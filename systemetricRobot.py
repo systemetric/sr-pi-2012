@@ -17,6 +17,9 @@ class SystemetricRobot(Robot):
             attitude = -10,
             bank = 0
         )
+        
+        #Position and orientation of the robot
+        self.robotMatrix = Matrix3()
     
     #Getters and setters for left motor. Allows you to write R.left = 100 for full speed forward
     @property
@@ -59,15 +62,48 @@ class SystemetricRobot(Robot):
     
     def visibleCubes(self):
         markers = self.see()
-        cubes = []
+        markersById = {
+            "tokens": {},
+            "arena": {},
+            "robots": {},
+            "buckets" : {}
+        }
         
         for marker in markers:
-            if marker.info.marker_type == MARKER_TOKEN:
+            id = marker.info.offset
+            type = marker.info.markerType
+            
+            # What type of marker is it?
+            if type == MARKER_TOKEN:
+                list = markersById.tokens
+            elif type == MARKER_ARENA:
+                list = markersById.arena
+            elif type == MARKER_ROBOT
+                list = markersById.robots
+            else
+                list = markersById.buckets
+            
+            #Is this the first marker we've seen for this object?
+            if not id in list:
+                list[id] = []
+                
+            #Add this marker to the list of markers for this object
+            list[id].append(marker)
+        
+        
+        tokens = []
+        # For each token
+        for markerId, markers in markersById.tokens.iteritems():
+            token = {}
+            token.markers = []
+            token.timestamp = marker[0].timestamp
+            
+            # Convert all the markers to a nicer format, using pyeuclid
+            for marker in markers:
                 newmarker = {}
-                newmarker.seenAt = marker.timestamp
-                newmarker.id = marker.info.offset
                 newmarker.vertices = []
                 
+                # We only care about 3D coordinates - keep those
                 for v in marker.vertices:
                     newmarker.vertices.append(Point3(
                         v.world.x,
@@ -75,13 +111,23 @@ class SystemetricRobot(Robot):
                         v.world.z
                     ))
                 
+                # Calculate the normal vector of the surface
                 edge1 = newmarker.vertices[0] - newmarker.vertices[1]
                 edge2 = newmarker.vertices[2] - newmarker.vertices[1]
                 newmarker.normal = edge1.cross(edge2).normalize()
                 
+                # Keep the center position
                 location = marker.center.world
                 newmarker.location = Point3(location.x, location.y, location.z)
-                
-                cubes.append(newmarker)
+
+                token.markers.append(newmarker)
+            
+            #Calculate the 2D position of the token
+            token.location = self.cameraMatrix * token.markers[0].center
+            # Take into account the position of the robot
+            # token.location = self.robotMatrix * token.Location
+            tokens.append(token)
         
-        return cubes
+        #sort by distance, for convenience
+        tokens.sort(key=lambda m: m.location.magnitude())
+        return tokens
