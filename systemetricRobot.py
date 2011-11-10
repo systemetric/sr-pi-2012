@@ -121,7 +121,7 @@ class SystemetricRobot(Robot):
             token = Token(
                 markers=newmarkers,
                 timestamp=marker[0].timestamp,
-                id=markerId
+                id=markerId,
                 location=self.cameraMatrix * token.markers[0].center
             )
             # Take into account the position of the robot
