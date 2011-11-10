@@ -1,7 +1,7 @@
 import time
 from systemetricRobot import SystemetricRobot
 
-def main:
+def main():
     R = SystemetricRobot()
     target = 0
     
