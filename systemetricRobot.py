@@ -1,5 +1,8 @@
 from sr import *
 from pyeuclid import *
+from collections import namedtuple
+
+Markers = namedtuple("Markers", "tokens robots arena buckets")
 
 class SystemetricRobot(Robot):
     """A class derived from the base 'Robot' class provided by soton"""     
@@ -62,12 +65,7 @@ class SystemetricRobot(Robot):
     
     def visibleCubes(self):
         markers = self.see()
-        markersById = {
-            "tokens": {},
-            "arena": {},
-            "robots": {},
-            "buckets" : {}
-        }
+        markersById = Markers(tokens={}, arena={}, robots={}, buckets={})
         
         for marker in markers:
             id = marker.info.offset
@@ -78,9 +76,9 @@ class SystemetricRobot(Robot):
                 list = markersById.tokens
             elif type == MARKER_ARENA:
                 list = markersById.arena
-            elif type == MARKER_ROBOT
+            elif type == MARKER_ROBOT:
                 list = markersById.robots
-            else
+            else:
                 list = markersById.buckets
             
             #Is this the first marker we've seen for this object?
