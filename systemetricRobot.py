@@ -1,4 +1,6 @@
-import sys, math, serial
+import sys
+import math
+import serial
 from collections import namedtuple
 
 from sr import *
