@@ -2,6 +2,7 @@ from sr import *
 from pyeuclid import *
 from collections import namedtuple
 
+Marker = namedtuple("Marker", "vertices normal location")
 Markers = namedtuple("Markers", "tokens robots arena buckets")
 Token = namedtuple("Token", "markers id timestamp location")
 
@@ -96,12 +97,11 @@ class SystemetricRobot(Robot):
             newmarkers = []
             # Convert all the markers to a nicer format, using pyeuclid
             for marker in markers:
-                newmarker = {}
-                newmarker.vertices = []
-                
+            
+                vertices = []
                 # We only care about 3D coordinates - keep those
                 for v in marker.vertices:
-                    newmarker.vertices.append(Point3(
+                    vertices.append(Point3(
                         v.world.x,
                         v.world.y,
                         v.world.z
@@ -110,19 +110,22 @@ class SystemetricRobot(Robot):
                 # Calculate the normal vector of the surface
                 edge1 = newmarker.vertices[0] - newmarker.vertices[1]
                 edge2 = newmarker.vertices[2] - newmarker.vertices[1]
-                newmarker.normal = edge1.cross(edge2).normalize()
+                normal = edge1.cross(edge2).normalize()
                 
                 # Keep the center position
                 location = marker.center.world
-                newmarker.location = Point3(location.x, location.y, location.z)
 
-                newmarkers.append(newmarker)
+                newmarkers.append(Marker(
+                    location = Point3(location.x, location.y, location.z),
+                    normal = normal,
+                    vertices = vertices
+                ))
             
             token = Token(
-                markers=newmarkers,
-                timestamp=marker[0].timestamp,
-                id=markerId,
-                location=self.cameraMatrix * token.markers[0].center
+                markers = newmarkers,
+                timestamp = marker[0].timestamp,
+                id = markerId,
+                location = self.cameraMatrix * newmarkers[0].center
             )
             # Take into account the position of the robot
             # token.location = self.robotMatrix * token.Location
