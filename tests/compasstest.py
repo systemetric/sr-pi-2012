@@ -6,6 +6,6 @@ def main():
     target = 0
     
     while True:
-        heading = robot.heading
+        heading = R.heading
         print heading
         time.sleep(0.2)
