@@ -1,4 +1,5 @@
 import time
+import threading
 from lib.twowheeledrobot import TwoWheeledRobot
 
 class CompassRobot(TwoWheeledRobot):
