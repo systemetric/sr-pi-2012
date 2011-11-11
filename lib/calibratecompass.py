@@ -13,5 +13,5 @@ def main():
     R.compass.stopCalibration()
     R.stop()
     while True:
-        print "bearing "+R.compass.heading
+        print "bearing " + str(R.compass.heading)
         time.sleep(1)
