@@ -20,9 +20,15 @@ class Bearing(object):
         
     def __add__(self, other):
         return Bearing(float(self) + float(other))
-        
+   __radd__ = __add__
+    
     def __sub__(self, other):
-        return Bearing(float(self) - float(other))
+        return Bearing(float(self) - float(other))  
+    def __rsub__(self, other):
+        return Bearing(float(other) - float(self))
+        
+    def __invert__(self):
+        return Bearing(-self.degrees)
         
     def __repr__(self):
         return u"%.1f\u00B0".encode('utf-8')%(self.degrees)
