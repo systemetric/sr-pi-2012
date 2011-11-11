@@ -14,4 +14,4 @@ def main():
     R.stop()
     while True:
         print "bearing "+R.compass.heading
-        wait(1)
+        time.sleep(1)
