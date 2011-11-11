@@ -1,3 +1,5 @@
+from sr import *
+
 class TwoWheeledRobot(Robot):
     def __init__(self):
         #Make sure the soton class is initiated, so we can connect to motors
