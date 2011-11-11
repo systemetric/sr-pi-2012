@@ -13,12 +13,8 @@ class CompassThread(threading.Thread):
         
     def run(self):
         while self.running:
-            heading = self.R.compassHeading
-            error = self.target - heading 
-            while error >= 180:
-                error -= 360
-            while error < -180:
-                error += 360
+            heading = self.R.compass.heading
+            error = float(self.target - heading)
             
             self.R.drive(speed = self.speed, steer = error/2)
 
