@@ -23,5 +23,5 @@ class Compass(object):
     def startCalibration(self):
         self.port.write('C')
         
-    def endCalibration(self):
+    def stopCalibration(self):
         self.port.write('C')
