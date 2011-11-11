@@ -177,4 +177,4 @@ class SystemetricRobot(Robot):
         self.stop()
         
         #end the program with an exit code
-        sys.exit(int(exit))
+        sys.exit(int(error))
