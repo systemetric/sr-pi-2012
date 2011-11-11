@@ -6,6 +6,7 @@ from collections import namedtuple
 from sr import *
 from lib.pyeuclid import *
 from lib.twowheeledrobot import TwoWheeledRobot
+from lib.compass import Compass
 
 Marker = namedtuple("Marker", "vertices normal location")
 Markers = namedtuple("Markers", "tokens robots arena buckets")
@@ -19,13 +20,9 @@ class SystemetricRobot(TwoWheeledRobot):
         
         #set up the serial connection to the mbed
         try:
-            self.port = serial.Serial('/dev/ttyACM0')
-            self.port.timeout = 0.25
-            self.port.open()
+            self.compass = Compass()
         except Exception, c:
-            #kill the robot on an error
-            self.end(message = str(c) + ' - mbed not connectable')
-            
+            self.end(message = str(c))
         
         #Camera orientation                            
         self.cameraMatrix = Matrix4.new_rotate_euler(    # https://github.com/dov/pyeuclid/blob/master/euclid.txt (line 385)
@@ -38,15 +35,10 @@ class SystemetricRobot(TwoWheeledRobot):
         self.robotMatrix = Matrix3()
     
    
+    #deprecated
     @property 
     def compassHeading(self):
-        '''Get the compass heading from the mbed'''
-        self.port.write('H')
-        heading = self.port.readline()
-        if heading:
-            return int(heading) / 10.0 #convert the int we get from the mbed into a float.
-        else:
-            return float('nan') #return NaN, because we don't know the heading
+        return self.compass.heading
     
     def getMarkersById(self):
         '''Get all the markers, grouped by id.
