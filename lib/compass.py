@@ -2,7 +2,7 @@ import serial
 from lib.bearing import Bearing
 
 class Compass(object):
-    def __init__(port = '/dev/ttyACM0'):
+    def __init__(self, port = '/dev/ttyACM0'):
         try:
             self.port = serial.Serial(port)
             self.port.timeout = 0.25
