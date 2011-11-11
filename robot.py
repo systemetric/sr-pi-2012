@@ -1,3 +1,3 @@
-import lib.new
-#run some tests
-#tests.main()
+from lib import calibratecompass
+
+calibratecompass.main()
