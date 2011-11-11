@@ -30,10 +30,7 @@ class CompassRobot(TwoWheeledRobot):
 
     def __init__(self):
         TwoWheeledRobot.__init__(self)
-        try:
-            self.compass = Compass()
-        except Exception, c:
-            self.end(message = str(c))
+        self.compass = Compass()
         self.regulator = CompassRobot.CompassThread(self)
         
     @property
