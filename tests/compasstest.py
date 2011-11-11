@@ -57,3 +57,4 @@ def main():
     t.speed = 0
     
     t.target = 0
+    t.stop()
