@@ -57,6 +57,6 @@ def main():
     t.speed = 0
     
     t.target = 0
-    t.running = false
+    t.running = False
     t.join()
     R.stop()
