@@ -1,3 +1,1 @@
-from lib import calibratecompass
-
-calibratecompass.main()
+import tests
