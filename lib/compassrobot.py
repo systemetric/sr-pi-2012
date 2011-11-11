@@ -26,7 +26,7 @@ class CompassRobot(TwoWheeledRobot):
                 
             
         def onTarget(self, tolerance = 5):
-            return math.fabs(float(self.targetHeading - robot.compass.heading)) < tolerance
+            return math.fabs(float(self.targetHeading - self.robot.compass.heading)) < tolerance
 
     def __init__(self):
         TwoWheeledRobot.__init__(self)
