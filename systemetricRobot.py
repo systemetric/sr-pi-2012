@@ -1,5 +1,6 @@
 import sys
 import math
+import os
 import serial
 from collections import namedtuple
 
@@ -123,7 +124,7 @@ class SystemetricRobot(TwoWheeledRobot):
         tokens.sort(key=lambda m: m.location.magnitude())
         return tokens
         
-    def end(self, message = 'robot stopped', error = True):
+    def end(self, message = 'robot stopped', error = True, shutdown = False):
         '''Kill the robot in the nicest way possible'''
         print message
         
@@ -131,4 +132,7 @@ class SystemetricRobot(TwoWheeledRobot):
         self.stop()
         
         #end the program with an exit code
-        sys.exit(int(error))
+        if shutdown:
+            os.system('shutdown -P now')
+        else:
+            sys.exit(int(error))
