@@ -2,6 +2,7 @@ import time
 import threading
 import math
 from lib.twowheeledrobot import TwoWheeledRobot
+from lib.compass import Compass
 
 class CompassRobot(TwoWheeledRobot):
     class CompassThread(threading.Thread):
