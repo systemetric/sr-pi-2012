@@ -20,7 +20,8 @@ class Bearing(object):
         
     def __add__(self, other):
         return Bearing(float(self) + float(other))
-   __radd__ = __add__
+    def __radd__(self, other):
+        return Bearing(float(self) + float(other))
     
     def __sub__(self, other):
         return Bearing(float(self) - float(other))  
