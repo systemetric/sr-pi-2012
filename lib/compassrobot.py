@@ -37,11 +37,11 @@ class CompassRobot(TwoWheeledRobot):
         
     @property
     def regulate(self):
-        return self.regulatorThread.enabled
+        return self.regulator.enabled
         
     @regulate.setter
     def regulate(self, value):
-        self.regulatorThread.enabled = value
+        self.regulator.enabled = value
          
     def rotateTo(self, heading):
         self.regulate = True;
