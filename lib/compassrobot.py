@@ -34,7 +34,7 @@ class CompassRobot(TwoWheeledRobot):
             self.compass = Compass()
         except Exception, c:
             self.end(message = str(c))
-        self.regulator = CompassThread(self)
+        self.regulator = CompassRobot.CompassThread(self)
         
     @property
     def regulate(self):
