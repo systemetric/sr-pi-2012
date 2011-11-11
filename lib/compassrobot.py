@@ -1,5 +1,6 @@
 import time
 import threading
+import math
 from lib.twowheeledrobot import TwoWheeledRobot
 
 class CompassRobot(TwoWheeledRobot):
@@ -43,18 +44,18 @@ class CompassRobot(TwoWheeledRobot):
         self.regulatorThread.enabled = value
          
     def rotateTo(self, heading):
-        regulate = True;
-        regulator.speed = 0
-        regulator.targetHeading = heading
+        self.regulate = True;
+        self.regulator.speed = 0
+        self.regulator.targetHeading = heading
         
-        while not regulator.onTarget():
+        while not self.regulator.onTarget():
             time.sleep(0.05)
         
     def rotateBy(self, angle):
-        regulate = True
-        regulator.speed = 0
+        self.regulate = True
+        self.regulator.speed = 0
         self.rotateTo(self.compass.heading + angle)
         
     def setSpeed(self, speed):
-        regulate = True
-        regulator.speed = speed
+        self.regulate = True
+        self.regulator.speed = speed
