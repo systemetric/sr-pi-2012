@@ -60,3 +60,8 @@ class CompassRobot(TwoWheeledRobot):
     def setSpeed(self, speed):
         self.regulate = True
         self.regulator.speed = speed
+        
+    def stop(self):
+        self.regulator.speed = 0
+        self.regulate = False
+        TwoWheeledrobot.stop(self)
