@@ -10,6 +10,7 @@ class RobotCube(object):
             return 1
         else:
             return 0
+            
     def shortestDistance(self)
         self.cubes = self.R.getMarkersById().tokens
         self.lengths = {}
@@ -21,9 +22,18 @@ class RobotCube(object):
                 distance = self.lengths[key]
                 value = key
         return value
-     def driveToCube(self, cube):
-         angle = cubes[cube].rot_x
-         R.rotateBy(angle)
+        
+     def driveToCube(self, cube, iterate=10):
+         for i in range(iterate):
+             R.setSpeed(cubes[cube].dist/2)
+             wait(0.1)
+             R.setSpeed(0)
+             wait(0.1)
+             cube = self.shortestDistance()
+             angle = cubes[cube].rot_x
+             R.rotateBy(angle)
+         
+         
          
          
         
