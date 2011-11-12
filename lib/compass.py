@@ -13,9 +13,9 @@ class Compass(object):
     @property
     def heading(self):
         '''Get the compass heading from the mbed'''
-        self.port.write('H')
-        heading = self.port.readline()
         try:
+            self.port.write('H')
+            heading = self.port.readline()
             return Bearing(int(heading) / 10.0) #convert the int we get from the mbed into a float.
         except:
             print 'got [' + heading + '] from the compass. Not correct!'
