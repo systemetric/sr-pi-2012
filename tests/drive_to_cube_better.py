@@ -21,6 +21,7 @@ def main():
                 R.setSpeed(speed)
             else:                                    #else, stop
                 R.rotateBy(angle)
+                R.setSpeed(speed)
                 time.sleep(0.25)
                 R.stop()
             print "seen at: ",angle
