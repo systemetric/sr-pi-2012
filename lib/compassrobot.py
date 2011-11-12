@@ -32,6 +32,7 @@ class CompassRobot(TwoWheeledRobot):
         TwoWheeledRobot.__init__(self)
         self.compass = Compass()
         self.regulator = CompassRobot.CompassThread(self)
+        self.regulator.start()
         
     @property
     def regulate(self):
