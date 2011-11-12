@@ -18,12 +18,12 @@ def main():
             print "Saw the marker"
             angle = markers[0].centre.polar.rot_y    #set the angle of the object (from center)
             if math.fabs(angle) < 10:                #set angle to an absolute value, then drive @ angle
-                R.drive(speed)
+                R.setSpeed(speed)
             else:                                    #else, stop
-                R.turn(-angle)
+                R.rotateBy(-angle)
                 time.sleep(0.25)
                 R.stop()
             print "seen at: ",angle
         else:
-            R.turn(10)
+            R.rotateBy(10)
             print "No Marker..."
