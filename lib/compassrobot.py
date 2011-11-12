@@ -13,13 +13,15 @@ class CompassRobot(TwoWheeledRobot):
             self.speed = 0
             self.enabled = True
             
+            self.p = 0.75
+            
         def run(self):
             while True:
                 if self.enabled:
                     heading = self.robot.compass.heading
                     error = float(self.targetHeading - heading)
 
-                    correctBy = error / 2
+                    correctBy = self.p * error
                     
                     self.robot.drive(speed = self.speed, steer = correctBy)
                 time.sleep(0.05)
