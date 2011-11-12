@@ -20,7 +20,7 @@ def main():
             if math.fabs(angle) < 10:                #set angle to an absolute value, then drive @ angle
                 R.setSpeed(speed)
             else:                                    #else, stop
-                R.rotateBy(-angle)
+                R.rotateBy(angle)
                 time.sleep(0.25)
                 R.stop()
             print "seen at: ",angle
