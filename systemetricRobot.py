@@ -6,12 +6,14 @@ from collections import namedtuple
 
 from sr import *
 from lib.pyeuclid import *
-from lib.compassRobot import CompassRobot
+from lib.compassrobot import CompassRobot
 from lib.compass import Compass
 
 Marker = namedtuple("Marker", "vertices normal location")
 Markers = namedtuple("Markers", "tokens robots arena buckets")
 Token = namedtuple("Token", "markers id timestamp location")
+
+DIE_HORRIBLY = 0 #marker number
 
 class SystemetricRobot(CompassRobot):
     '''A class derived from the base 'Robot' class provided by soton'''     
@@ -77,7 +79,7 @@ class SystemetricRobot(CompassRobot):
         
         return markersById
     
-    def visibleCubes(self): #untested
+    def visibleCubes(self):
         markersById = self.getMarkersById()
         
         tokens = []
@@ -123,6 +125,14 @@ class SystemetricRobot(CompassRobot):
         #sort by distance, for convenience
         tokens.sort(key=lambda m: m.location.magnitude())
         return tokens
+        
+    def see(self, *args, **kw):
+        markers = Robot.see(self, *args, **kw)
+        for marker in markers:
+            if marker.info.code == DIE_HORRIBLY:
+                self.end("Terminated by marker %d" % DIE_HORRIBLY)
+               
+        return markers
         
     def end(self, message = 'robot stopped', error = True, shutdown = False):
         '''Kill the robot in the nicest way possible'''
