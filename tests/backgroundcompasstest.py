@@ -15,4 +15,5 @@ def main():
     time.sleep(1)
     print "rotated by -180:", R.compass.heading
     R.regulate = False
+    R.stop()
     print "stopped:", R.compass.heading
