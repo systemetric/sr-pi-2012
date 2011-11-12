@@ -14,7 +14,10 @@ Marker = namedtuple("Marker", "vertices normal location")
 Markers = namedtuple("Markers", "tokens robots arena buckets")
 Token = namedtuple("Token", "markers id timestamp location")
 
-DIE_HORRIBLY = 0 #marker number
+#info about the markers. Used in sr.vision
+MarkerInfo = namedtuple( "MarkerInfo", "code marker_type offset size" )
+
+DIE_HORRIBLY = 0 #TODO replace with 228 #marker number
 
 class SystemetricRobot(CompassRobot):
     '''A class derived from the base 'Robot' class provided by soton'''     
@@ -35,6 +38,7 @@ class SystemetricRobot(CompassRobot):
             bank = 0                                     # rotation around the z axis
         ) 
         
+        vision.marker_luts['dev']
         #Position and orientation of the robot
         self.robotMatrix = Matrix3()
     
