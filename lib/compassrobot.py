@@ -11,7 +11,7 @@ class CompassRobot(TwoWheeledRobot):
             self.robot = robot
             self.targetHeading = 0
             self.speed = 0
-            self.enabled = True
+            self.enabled = False
             
             self.p = 0.75
             
