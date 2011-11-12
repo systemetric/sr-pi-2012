@@ -15,9 +15,10 @@ class Compass(object):
         '''Get the compass heading from the mbed'''
         self.port.write('H')
         heading = self.port.readline()
-        if heading:
+        try:
             return Bearing(int(heading) / 10.0) #convert the int we get from the mbed into a float.
-        else:
+        except:
+            print 'got [' + heading + '] from the compass. Not correct!'
             return Bearing(float('nan')) #return NaN, because we don't know the heading
     
     def startCalibration(self):
