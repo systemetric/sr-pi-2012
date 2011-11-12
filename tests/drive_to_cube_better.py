@@ -25,5 +25,5 @@ def main():
                 R.stop()
             print "seen at: ",angle
         else:
-            R.rotateBy(10)
+            R.rotateBy(20)
             print "No Marker..."
