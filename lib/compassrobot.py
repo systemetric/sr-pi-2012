@@ -12,20 +12,25 @@ class CompassRobot(TwoWheeledRobot):
             self.targetHeading = 0
             self.speed = 0
             
-            self.enabled = False
+            self._enabled = False
             
             self.lock = threading.Lock()
             
             self.p = 0.75
         
-        #@property
-        #def enabled(self):
-        #    return self.enabled
+        @property
+        def enabled(self):
+            return self._enabled
+            
+        @enabled.setter
+        def enabled(self, value):
+            with self.lock:
+                self._enabled = value
             
         def run(self):
             while True:
-                if self.enabled:
-                    with self.lock:
+                with self.lock:
+                    if self.enabled:
                         heading = self.robot.compass.heading
                         error = float(self.targetHeading - heading)
 
