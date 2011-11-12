@@ -6,18 +6,18 @@ from collections import namedtuple
 
 from sr import *
 from lib.pyeuclid import *
-from lib.twowheeledrobot import TwoWheeledRobot
+from lib.compassRobot import CompassRobot
 from lib.compass import Compass
 
 Marker = namedtuple("Marker", "vertices normal location")
 Markers = namedtuple("Markers", "tokens robots arena buckets")
 Token = namedtuple("Token", "markers id timestamp location")
 
-class SystemetricRobot(TwoWheeledRobot):
+class SystemetricRobot(CompassRobot):
     '''A class derived from the base 'Robot' class provided by soton'''     
     def __init__(self):
         #Get the motors set up
-        TwoWheeledRobot.__init__(self)
+        CompassRobot.__init__(self)
         
         #set up the serial connection to the mbed
         try:
@@ -48,7 +48,7 @@ class SystemetricRobot(TwoWheeledRobot):
             markers = R.getMarkersById()
             
             # Check if token 0 is visible
-            if 0 in marker.tokens:
+            if 0 in markers.tokens:
                 markersOnFirstToken = markers.tokens[0]
         '''
         markers = self.see()
@@ -75,7 +75,7 @@ class SystemetricRobot(TwoWheeledRobot):
             #Add this marker to the list of markers for this object
             list[id].append(marker)
         
-        return markers
+        return markersById
     
     def visibleCubes(self):
         markersById = self.getMarkersById()
