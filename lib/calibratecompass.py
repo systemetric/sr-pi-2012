@@ -8,7 +8,7 @@ def main():
     R = SystemetricRobot()
     
     R.compass.startCalibration()
-    R.turn(10)
+    R.turn(5)
     time.sleep(20)
     R.compass.stopCalibration()
     R.stop()
