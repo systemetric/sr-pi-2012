@@ -13,6 +13,7 @@ class Compass(object):
     @property
     def heading(self):
         '''Get the compass heading from the mbed'''
+        heading = 'n/a'
         try:
             self.port.write('H')
             heading = self.port.readline()
