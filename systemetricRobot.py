@@ -134,6 +134,12 @@ class SystemetricRobot(CompassRobot):
                
         return markers
         
+    def driveDistance(self, distInMetres):
+        SPEED = .575
+        self.setSpeed(100)
+        time.sleep(distInMetres / SPEED)
+        self.stop()
+        
     def end(self, message = 'robot stopped', error = True, shutdown = False):
         '''Kill the robot in the nicest way possible'''
         print message
