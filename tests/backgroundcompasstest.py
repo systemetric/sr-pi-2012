@@ -1,9 +1,18 @@
 from lib.compassrobot import *
+import time
 
 def main():
     R = CompassRobot()
-    print R.compass.heading
-    R.rotateBy(30)
-    print R.compass.heading
-    R.rotateBy(-30)
+    R.rotateTo(0)
+    time.sleep(1)
+    print "rotated to 0:", R.compass.heading
+    time.sleep(1)
+    R.rotateBy(90)
+    time.sleep(1)
+    print "rotated by 90:", R.compass.heading
+    time.sleep(1)
+    R.rotateBy(-180)
+    time.sleep(1)
+    print "rotated by -180:", R.compass.heading
     R.regulate = False
+    print "stopped:", R.compass.heading
