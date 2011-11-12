@@ -6,26 +6,29 @@ from systemetricRobot import SystemetricRobot
 def main():
     R = SystemetricRobot()
     
-    speed = 50
-    
     while True:
         #Get only the tokens
         allMarkers = R.see()
-        markers = [marker for marker in allMarkers if marker.info.marker_type == MARKER_TOKEN] #filtering the valid QR codes
-        time.sleep(0.05)
-        if len(markers) != 0:        #if there is A valid QR there...
-            R.stop()
-            print "Saw the marker"
-            angle = markers[0].centre.polar.rot_y    #set the angle of the object (from center)
-            if math.fabs(angle) < 10:                #set angle to an absolute value, then drive @ angle
-                R.driveDistance(markers[0].dist * 0.9)
-            else:                                    #else, stop
+        markers = [marker for marker in allMarkers if marker.info.marker_type == MARKER_TOKEN]
+        
+        # Are there any tokens?
+        if markers:
+            #Get the angle of the token
+            angle = markers[0].centre.polar.rot_y
+            
+            print "Marker seen at: ", angle
+            
+            # Turn if we're more than 5 degrees off
+            if math.fabs(angle) > 5:
                 R.rotateBy(angle)
-                R.driveDistance(markers[0].dist * 0.9)
-                time.sleep(0.25)
-                R.stop()
-            print "seen at: ",angle
+            
+            # Drive forward almost the distance to the marker
+            R.driveDistance(markers[0].dist * 0.9)
         else:
-            R.rotateBy(20)
-            R.stop()
             print "No Marker..."
+            
+            # Spin 20 degrees clockwise
+            R.rotateBy(20)
+            
+            # Disable heading correction
+            R.stop()
