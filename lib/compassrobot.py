@@ -64,4 +64,4 @@ class CompassRobot(TwoWheeledRobot):
     def stop(self):
         self.regulator.speed = 0
         self.regulate = False
-        TwoWheeledrobot.stop(self)
+        TwoWheeledRobot.stop(self)
