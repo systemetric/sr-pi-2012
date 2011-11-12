@@ -8,10 +8,10 @@ def main():
     R = SystemetricRobot()
     
     R.compass.startCalibration()
-    R.turn(5)
+    R.turn(8)
     time.sleep(20)
     R.compass.stopCalibration()
     R.stop()
     while True:
         print "bearing " + str(R.compass.heading)
-        time.sleep(1)
+        time.sleep(0.1)
