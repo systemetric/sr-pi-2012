@@ -1,3 +1,3 @@
-import lib.calibratecompass
+import lib.calibratecompass as calibrate
 
-calibratecompass.main()
+calibrate.main()
