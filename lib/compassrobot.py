@@ -11,21 +11,28 @@ class CompassRobot(TwoWheeledRobot):
             self.robot = robot
             self.targetHeading = 0
             self.speed = 0
+            
             self.enabled = False
             
+            self.lock = threading.Lock()
+            
             self.p = 0.75
+        
+        #@property
+        #def enabled(self):
+        #    return self.enabled
             
         def run(self):
             while True:
                 if self.enabled:
-                    heading = self.robot.compass.heading
-                    error = float(self.targetHeading - heading)
+                    with self.lock:
+                        heading = self.robot.compass.heading
+                        error = float(self.targetHeading - heading)
 
-                    correctBy = self.p * error
+                        correctBy = self.p * error
                     
-                    self.robot.drive(speed = self.speed, steer = correctBy)
+                        self.robot.drive(speed = self.speed, steer = correctBy)
                 time.sleep(0.05)
-                
             
         def onTarget(self, tolerance = 5):
             return math.fabs(float(self.targetHeading - self.robot.compass.heading)) < tolerance
