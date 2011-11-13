@@ -37,7 +37,7 @@ class Robot(CompassRobot):
             bank = 0                                     # rotation around the z axis
         ) 
         
-        vision.marker_luts['dev']
+        sr.vision.marker_luts['dev']
         #Position and orientation of the robot
         self.robotMatrix = Matrix3()
     
