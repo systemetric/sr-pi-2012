@@ -1,1 +1,1 @@
-import robot
+from robot import *
