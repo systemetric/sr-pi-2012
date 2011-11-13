@@ -1,10 +1,10 @@
 from sr import *
 import time
 import math
-from systemetricRobot import SystemetricRobot
+import systemetric
 
 def main():
-    R = SystemetricRobot()
+    R = systemetric.Robot()
     
     while True:
         #Get only the tokens
