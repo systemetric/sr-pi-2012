@@ -16,7 +16,7 @@ Token = namedtuple("Token", "markers id timestamp location")
 #info about the markers. Used in sr.vision
 MarkerInfo = namedtuple( "MarkerInfo", "code marker_type offset size" )
 
-DIE_HORRIBLY = 0 #TODO replace with 228 #marker number
+DIE_HORRIBLY = 0 #TODO: make special marker
 
 class Robot(CompassRobot):
     '''A class derived from the base 'Robot' class provided by soton'''     
@@ -37,7 +37,7 @@ class Robot(CompassRobot):
             bank = 0                                     # rotation around the z axis
         ) 
         
-        sr.vision.marker_luts['dev']
+        self.vision.marker_luts['dev'][DIE_HORRIBLY] = MarkerInfo(code = DIE_HORRIBLY)
         #Position and orientation of the robot
         self.robotMatrix = Matrix3()
     
