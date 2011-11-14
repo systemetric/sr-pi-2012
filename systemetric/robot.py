@@ -43,7 +43,6 @@ class Robot(CompassRobot):
             offset = None,
             size = 0
         )
-                                       )
         #Position and orientation of the robot
         self.robotMatrix = Matrix3()
     
