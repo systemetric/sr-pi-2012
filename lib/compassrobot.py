@@ -46,7 +46,10 @@ class CompassRobot(TwoWheeledRobot):
     def __init__(self):
         TwoWheeledRobot.__init__(self)
         self.compass = Compass()
-        self.regulator = CompassRobot.CompassThread(self)
+        self.regulator = pid.PID(
+            getInput = lambda: self.compass.heading,
+            setOutput = lambda x: self.drive(speed = self.speed, steer = x)
+        )
         self.regulator.start()
         
     @property
@@ -59,22 +62,22 @@ class CompassRobot(TwoWheeledRobot):
          
     def rotateTo(self, heading):
         self.regulate = True;
-        self.regulator.speed = 0
-        self.regulator.targetHeading = heading
+        self.speed = 0
+        self.regulator.target = heading
         
         while not self.regulator.onTarget():
             time.sleep(0.05)
         
     def rotateBy(self, angle):
         self.regulate = True
-        self.regulator.speed = 0
+        self.speed = 0
         self.rotateTo(self.compass.heading + angle)
         
     def setSpeed(self, speed):
         self.regulate = True
-        self.regulator.speed = speed
+        self.speed = speed
         
     def stop(self):
-        self.regulator.speed = 0
+        self.speed = 0
         self.regulate = False
         TwoWheeledRobot.stop(self)
