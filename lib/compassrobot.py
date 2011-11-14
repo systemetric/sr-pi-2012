@@ -1,7 +1,8 @@
 import time
 import threading
 import math
-from lib.twowheeledrobot import TwoWheeledRobot
+import lib.twowheeledrobot 
+TwoWheeledRobot = lib.twowheeledrobot.TwoWheeledRobot
 from lib.compass import Compass
 
 class CompassRobot(TwoWheeledRobot):
