@@ -136,7 +136,7 @@ class Robot(CompassRobot):
         return tokens
         
     def see(self, *args, **kw):
-        markers = Robot.see(self, *args, **kw)
+        markers = sr.Robot.see(self, *args, **kw)
         for marker in markers:
             if marker.info.code == DIE_HORRIBLY:
                 self.end("Terminated by marker %d" % DIE_HORRIBLY)
