@@ -1,3 +1,5 @@
+import threading
+
 class PID(threading.Thread):
     def __init__(self, getInput, setOutput):
         threading.Thread.__init__(self)
