@@ -37,7 +37,7 @@ class Robot(CompassRobot):
             bank = 0                                     # rotation around the z axis
         ) 
         
-        self.vision.marker_luts['dev'][DIE_HORRIBLY] = MarkerInfo(
+        sr.vision.marker_luts['dev'][DIE_HORRIBLY] = MarkerInfo(
             code = DIE_HORRIBLY,
             marker_type = None,
             offset = None,
