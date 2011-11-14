@@ -4,7 +4,7 @@ import math
 import lib.twowheeledrobot 
 TwoWheeledRobot = lib.twowheeledrobot.TwoWheeledRobot
 from lib.compass import Compass
-import systemetric.pid
+from systemetric.pid import PID
 
 class CompassRobot(TwoWheeledRobot):
     class CompassThread(threading.Thread):
@@ -47,7 +47,7 @@ class CompassRobot(TwoWheeledRobot):
     def __init__(self):
         TwoWheeledRobot.__init__(self)
         self.compass = Compass()
-        self.regulator = pid.PID(
+        self.regulator = PID(
             getInput = lambda: self.compass.heading,
             setOutput = lambda x: self.drive(speed = self.speed, steer = x)
         )
