@@ -37,11 +37,11 @@ class Robot(CompassRobot):
             bank = 0                                     # rotation around the z axis
         ) 
         
-        sr.vision.marker_luts['dev'][DIE_HORRIBLY] = MarkerInfo(
+        self.vision.marker_luts['dev'][DIE_HORRIBLY] = MarkerInfo(
             code = DIE_HORRIBLY,
             marker_type = None,
             offset = None,
-            size = 0
+            size = 0.5
         )
         #Position and orientation of the robot
         self.robotMatrix = Matrix3()
@@ -136,7 +136,7 @@ class Robot(CompassRobot):
         return tokens
         
     def see(self, *args, **kw):
-        markers = sr.Robot.see(self, *args, **kw)
+        markers = Robot.see(self, *args, **kw)
         for marker in markers:
             if marker.info.code == DIE_HORRIBLY:
                 self.end("Terminated by marker %d" % DIE_HORRIBLY)
