@@ -38,7 +38,7 @@ class Robot(CompassRobot):
         ) 
         
         self.vision.marker_luts['dev'][DIE_HORRIBLY] = MarkerInfo(
-            code = DIE_HORRIBLY
+            code = DIE_HORRIBLY,
             marker_type = None,
             offset = None,
             size = 0
