@@ -4,6 +4,7 @@ import math
 import lib.twowheeledrobot 
 TwoWheeledRobot = lib.twowheeledrobot.TwoWheeledRobot
 from lib.compass import Compass
+import systemetric.pid
 
 class CompassRobot(TwoWheeledRobot):
     class CompassThread(threading.Thread):
