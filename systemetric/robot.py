@@ -6,7 +6,7 @@ import sr
 from collections import namedtuple
 
 from lib.pyeuclid import *
-from lib.compassrobot import CompassRobot
+import lib.compassrobot as cr
 from lib.compass import Compass
 
 Marker = namedtuple("Marker", "vertices normal location")
@@ -18,11 +18,11 @@ MarkerInfo = namedtuple( "MarkerInfo", "code marker_type offset size" )
 
 DIE_HORRIBLY = 0 #TODO: make special marker
 
-class Robot(CompassRobot):
+class Robot(cr.CompassRobot):
     '''A class derived from the base 'Robot' class provided by soton'''     
     def __init__(self):
         #Get the motors set up
-        CompassRobot.__init__(self)
+        cr.CompassRobot.__init__(self)
         
         #set up the serial connection to the mbed
         try:
