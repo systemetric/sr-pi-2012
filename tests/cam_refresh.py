@@ -1,11 +1,11 @@
 from sr import *
 import time
 import math
-from systemetricRobot import SystemetricRobot
+import systemetric
 
 def main():
     res = (320, 240)
-    R = SystemetricRobot()
+    R = systemetric.Robot()
     
     
    # markers = [marker for marker in allMarkers if marker.info.marker_type == MARKER_TOKEN] #getting the valid QR code
