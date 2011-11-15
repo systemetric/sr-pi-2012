@@ -1,11 +1,7 @@
 import serial
-import glob
 import time
-from systemetricRobot import SystemetricRobot
 
 def main():
-    R = SystemetricRobot()
-    
     port = serial.Serial('/dev/ttyACM0')
     
     port.open()
