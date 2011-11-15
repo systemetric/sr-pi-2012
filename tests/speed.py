@@ -1,9 +1,9 @@
 from sr import *
 import time
-from systemetricRobot import SystemetricRobot
+import systemetric
 
 def main():
-    R = SystemetricRobot()
+    R = systemetric.Robot()
     R.drive(100)
     time.sleep(10)
     R.stop()
