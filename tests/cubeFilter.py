@@ -1,9 +1,7 @@
-from sr import *
-from lib.compass import Compass
-from lib.systemetricRobot import SystemetricRobot
+import systemetric
 class RobotCube(object):
     def __init__(self):
-        self.R = SystemetricRobot()
+        self.R = systemetric.Robot()
     
     def check(self):
         if self.R.getMarkersById().tokens:
@@ -14,14 +12,20 @@ class RobotCube(object):
     def shortestDistance(self)
         self.cubes = self.R.getMarkersById().tokens
         self.lengths = {}
+        
+        #Are there really going to be markers closer than 0?
         distance = 0
-        value = ''
-        for key, value in cubes:
-            self.lengths[key] = value[0].dist
-            if self.lengths[key] > distance:
-                distance = self.lengths[key]
-                value = key
-        return value
+        nearest = None
+        
+        for tokenId, markers in cubes:
+            self.lengths[tokenId] = markers[0].dist
+            
+            #Won't this find the furthest one?
+            if self.lengths[tokenId] > distance:
+                distance = self.lengths[tokenId]
+                nearest = tokenId
+                
+        return nearest
         
      def driveToCube(self, cube, iterate=10):
          for i in range(iterate):
@@ -32,13 +36,3 @@ class RobotCube(object):
              cube = self.shortestDistance()
              angle = cubes[cube].rot_x
              R.rotateBy(angle)
-         
-         
-         
-         
-        
-        
-        
-        
-        
-        
