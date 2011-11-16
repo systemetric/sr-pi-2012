@@ -159,7 +159,7 @@ class Robot(CompassRobot):
 		if error:
 			self.power.beep([(440, 1), (220, 1), (880, 1)])
 		else:
-			self.power.beep([(261.63,2), (440),(523.25)])	
+			self.power.beep([(262,2), (440),(524)])	
 		#end the program with an exit code
 		if shutdown:
 			os.system('shutdown -P now')
