@@ -64,4 +64,5 @@ class PID(threading.Thread):
             time.sleep(0.05)
         
     def onTarget(self, tolerance = 5):
+        print "error is %d" % self._error
         return not self.enabled or math.fabs(self._error) < tolerance
