@@ -45,6 +45,7 @@ class PID(threading.Thread):
     def _reset(self):
         self._lastError = None
         self._totalError = 0
+        self._error = 0
     
     def run(self):
         while True:
