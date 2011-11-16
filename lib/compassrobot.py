@@ -1,8 +1,7 @@
 import time
 import threading
 import math
-import lib.twowheeledrobot 
-TwoWheeledRobot = lib.twowheeledrobot.TwoWheeledRobot
+from lib.twowheeledrobot import TwoWheeledRobot
 from lib.compass import Compass
 from systemetric.pid import PID
 
