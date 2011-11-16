@@ -6,8 +6,8 @@ import sr
 from collections import namedtuple
 
 from libs.pyeuclid import *
-from libs.compassrobot import CompassRobot
-from libs.compass import Compass
+from compassrobot import CompassRobot
+from compass import Compass
 
 Marker = namedtuple("Marker", "vertices normal location")
 Markers = namedtuple("Markers", "tokens robots arena buckets")

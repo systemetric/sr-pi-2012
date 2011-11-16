@@ -1,5 +1,5 @@
 import serial
-from libs.bearing import Bearing
+from bearing import Bearing
 
 class Compass(object):
     def __init__(self, port = '/dev/ttyACM0'):

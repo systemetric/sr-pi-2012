@@ -1,7 +1,7 @@
 import time
 import threading
 
-from systemetricRobot import SystemetricRobot
+from systemetric import Robot
 
 class CompassThread(threading.Thread):
     def __init__(self, robot):

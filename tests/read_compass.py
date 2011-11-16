@@ -1,9 +1,9 @@
 import systemetric
 import time
-from libs.compass import Compass
+from systemetric.compass import Compass
 
 def main():
-	c = Compass(
+	c = Compass()
 
 	while True:
 		print compass.heading

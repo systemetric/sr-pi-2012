@@ -4,9 +4,9 @@ print 'second line!'
 import time
 import threading
 import math
-from libs.twowheeledrobot import TwoWheeledRobot
-from libs.compass import Compass
-from systemetric.pid import PID
+from twowheeledrobot import TwoWheeledRobot
+from compass import Compass
+from pid import PID
 
 class CompassRobot(TwoWheeledRobot):
     class CompassThread(threading.Thread):

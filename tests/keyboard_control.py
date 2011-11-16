@@ -1,4 +1,4 @@
-from systemetricRobot import SystemetricRobot
+from systemetric import Robot
 import time
 
 def main():
