@@ -50,7 +50,7 @@ class PID(threading.Thread):
         while True:
             with self._lock:
                 if self.enabled:
-                    self._error = float(self.getInput() - self.target)
+                    self._error = float(self.target - self.getInput())
                     
                     p = self.kp * self._error
                     i = self.ki * self._totalError
