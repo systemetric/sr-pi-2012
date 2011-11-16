@@ -2,7 +2,7 @@ from sr import *
 import systemetric
 
 def main():
-	R = systemetric.robot()
+	R = systemetric.Robot()
 
 	R.driveDistance(2)
 	R.stop()
