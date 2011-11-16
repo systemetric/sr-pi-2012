@@ -5,7 +5,7 @@ import systemetric
 
 def main():
     R = systemetric.Robot()
-    f
+
     while True:
         #Get only the tokens
         allMarkers = R.see()
