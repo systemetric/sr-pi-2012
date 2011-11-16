@@ -5,7 +5,7 @@ import systemetric
 
 def main():
     R = systemetric.Robot()
-    
+    f
     while True:
         #Get only the tokens
         allMarkers = R.see()
@@ -18,7 +18,6 @@ def main():
             
             print "Marker seen at: ", angle
             
-            # Turn if we're more than 5 degrees off
             R.rotateBy(angle)
             
             # Drive forward almost the distance to the marker
