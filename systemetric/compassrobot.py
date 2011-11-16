@@ -9,6 +9,8 @@ from compass import Compass
 from pid import PID
 
 class CompassRobot(TwoWheeledRobot):
+
+    """
     class CompassThread(threading.Thread):
         def __init__(self, robot):
             threading.Thread.__init__(self)
@@ -45,19 +47,16 @@ class CompassRobot(TwoWheeledRobot):
             
         def onTarget(self, tolerance = 5):
             return math.fabs(float(self.targetHeading - self.robot.compass.heading)) < tolerance
-
+"""
     def __init__(self):
         TwoWheeledRobot.__init__(self)
         self.compass = Compass()
 
-        def turnToTheRightPlace(x):
-            print 'turned by', x
-            self.drive(speed = self.speed, steer = x)
-
         self.regulator = PID(
             getInput = lambda: self.compass.heading,
-            setOutput = turnToTheRightPlace 
+            setOutput = lambda x:self.drive(speed = self.speed, steer = x)
         )
+        self.regulator.ki = 0.001
         self.regulator.start()
         
     @property
