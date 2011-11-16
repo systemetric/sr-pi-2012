@@ -157,7 +157,7 @@ class Robot(CompassRobot):
 		self.stop()
 		#beep if error
 		if error:
-			self.power.beep([(440, 1). (220, 1), (880, 1)])
+			self.power.beep([(440, 1), (220, 1), (880, 1)])
 		else:
 			self.power.beep([(261.63,2), (440),(523.25)])	
 		#end the program with an exit code
