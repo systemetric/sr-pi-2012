@@ -139,7 +139,7 @@ class Robot(CompassRobot):
 		markers = sr.Robot.see(self, *args, **kw)
 		for marker in markers:
 			if marker.info.code == DIE_HORRIBLY:
-				self.end("Terminated by marker %d" % DIE_HORRIBLY)
+				self.end("Terminated by marker %d" % DIE_HORRIBLY, error=False)
 			   
 		return markers
 		
@@ -155,7 +155,11 @@ class Robot(CompassRobot):
 		
 		#stop the motors
 		self.stop()
-		
+		#beep if error
+		if error:
+			R.power.beep([(440, 1). (220, 1), (880, 1)])
+		else:
+			R.power.beep(660,2)	
 		#end the program with an exit code
 		if shutdown:
 			os.system('shutdown -P now')
