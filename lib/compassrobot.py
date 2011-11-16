@@ -47,9 +47,14 @@ class CompassRobot(TwoWheeledRobot):
     def __init__(self):
         TwoWheeledRobot.__init__(self)
         self.compass = Compass()
+
+        def turnToTheRightPlace(x):
+            print 'turned by', x
+            self.drive(speed = self.speed, steer = x)
+
         self.regulator = PID(
             getInput = lambda: self.compass.heading,
-            setOutput = lambda x: self.drive(speed = self.speed, steer = x)
+            setOutput = turnToTheRightPlace 
         )
         self.regulator.start()
         
