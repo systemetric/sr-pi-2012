@@ -21,7 +21,7 @@ def main():
             R.rotateBy(angle)
             
             # Drive forward almost the distance to the marker
-            R.driveDistance(markers[0].dist * 0.9)
+            R.driveDistance(markers[0].dist-0.3)
         else:
             print "No Marker..."
             
