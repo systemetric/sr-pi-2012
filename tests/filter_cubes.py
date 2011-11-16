@@ -9,7 +9,7 @@ class RobotCube(object):
         else:
             return 0
             
-    def shortestDistance(self)
+    def shortestDistance(self):
         self.cubes = self.R.getMarkersById().tokens
         self.lengths = {}
         

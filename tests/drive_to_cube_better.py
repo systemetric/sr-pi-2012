@@ -19,8 +19,7 @@ def main():
             print "Marker seen at: ", angle
             
             # Turn if we're more than 5 degrees off
-            if math.fabs(angle) > 5:
-                R.rotateBy(angle)
+            R.rotateBy(angle)
             
             # Drive forward almost the distance to the marker
             R.driveDistance(markers[0].dist * 0.9)
