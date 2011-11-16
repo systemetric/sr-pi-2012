@@ -1,3 +1,6 @@
+print 'I\'m on the first line!'
+print 'second line!'
+
 import time
 import threading
 import math
