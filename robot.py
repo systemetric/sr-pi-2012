@@ -1,4 +1,4 @@
-#import lib.calibratecompass as calibrate
+#import libs.calibratecompass as calibrate
 
 #calibrate.main()
 import tests

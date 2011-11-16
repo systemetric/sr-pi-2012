@@ -1,6 +1,6 @@
 import time
 import threading
-from lib import compass
+from libs import compass
 
 from systemetricRobot import SystemetricRobot
 

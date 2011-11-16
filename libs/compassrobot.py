@@ -1,8 +1,8 @@
 import time
 import threading
 import math
-from lib.twowheeledrobot import TwoWheeledRobot
-from lib.compass import Compass
+from libs.twowheeledrobot import TwoWheeledRobot
+from libs.compass import Compass
 from systemetric.pid import PID
 
 class CompassRobot(TwoWheeledRobot):

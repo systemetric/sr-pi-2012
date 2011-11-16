@@ -1,6 +1,6 @@
 import systemetric
 import time
-from lib.compass import Compass
+from libs.compass import Compass
 
 def main():
 	c = Compass(

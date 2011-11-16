@@ -1,4 +1,4 @@
-from lib.compassrobot import *
+from libs.compassrobot import *
 import time
 
 def main():
