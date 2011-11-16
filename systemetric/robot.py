@@ -2,7 +2,7 @@ import sys
 import math
 import os
 import time
-from sr import *
+import sr
 from collections import namedtuple
 
 from lib.pyeuclid import *
