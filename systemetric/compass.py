@@ -5,7 +5,7 @@ class Compass(object):
     def __init__(self, port = '/dev/ttyACM0'):
         try:
             self.port = serial.Serial(port)
-            self.port.timeout = 0.25
+           # self.port.timeout = 0.25
             self.port.open()
         except Exception, c:
             raise Exception('Cannot connect to mbed')
