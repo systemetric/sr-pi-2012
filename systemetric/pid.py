@@ -3,13 +3,13 @@ import time
 import math
 
 class PID(threading.Thread):
-    def __init__(self, getInput, setOutput, outputRange):
+    def __init__(self, getInput, setOutput, outputRange = (float("inf"), float("-inf")):
         threading.Thread.__init__(self)
         
         self.getInput = getInput
         self.setOutput = setOutput
 
-        self.maxOutput, self.minOutput = outputRange or (float("inf"), float("-inf"))
+        self.maxOutput, self.minOutput = outputRange
         
         self._target = 0
         self._enabled = False
