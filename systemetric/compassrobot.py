@@ -54,9 +54,9 @@ class CompassRobot(TwoWheeledRobot):
 
         self.regulator = PID(
             getInput = lambda: self.compass.heading,
-            setOutput = lambda x:self.drive(speed = self.speed, steer = x)
+            setOutput = lambda x: self.drive(speed = self.speed, steer = x)
         )
-        #self.regulator.ki = 0.1
+        self.regulator.ki = 0.01
         self.regulator.start()
         
     @property
