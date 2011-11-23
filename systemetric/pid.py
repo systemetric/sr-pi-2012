@@ -3,7 +3,7 @@ import time
 import math
 
 class PID(threading.Thread):
-    def __init__(self, getInput, setOutput, outputRange = (float("inf"), float("-inf")):
+    def __init__(self, getInput, setOutput, outputRange = (float("inf"), float("-inf"))):
         threading.Thread.__init__(self)
         
         self.getInput = getInput
