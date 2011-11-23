@@ -9,5 +9,6 @@ def main():
     R.stop()
     time.sleep(2)
     R.rotateBy(180)
+    time.sleep(1)
     R.driveDistance(2)
     R.stop()
