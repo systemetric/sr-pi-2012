@@ -10,7 +10,7 @@ def main():
 	regulator.kd = 0
 	regulator.target = 0
 
-	regulator.kp = 2.25
+	regulator.kp = 2.3 #2.25
 	regulator.enabled = True
 	time.sleep(20)
 	regulator.enabled = False
