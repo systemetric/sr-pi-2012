@@ -3,7 +3,7 @@ import time
 from systemetric.compass import Compass
 
 def main():
-	c = Compass()
+	compass = Compass()
 
 	while True:
 		print compass.heading
