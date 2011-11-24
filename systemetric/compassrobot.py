@@ -21,6 +21,8 @@ class CompassRobot(TwoWheeledRobot):
         )
         self.regulator.ki = 0.01
         self.regulator.start()
+
+        self.speed = 0
         
     @property
     def regulate(self):
