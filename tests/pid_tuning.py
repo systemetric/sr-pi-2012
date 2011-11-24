@@ -8,6 +8,7 @@ def main():
     regulator.ki = 0
     regulator.kd = 0
     regulator.target = 0
+    regulator.enabled = true
 
     while True:
         pass
