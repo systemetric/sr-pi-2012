@@ -4,11 +4,14 @@ import time
 def main():
     regulator = CompassRobot().regulator
 
-    regulator.kp = 2.2
     regulator.ki = 0
     regulator.kd = 0
     regulator.target = 0
-    regulator.enabled = True
 
-    while True:
-        pass
+    for p in range(1.8, 2.2, 0.1):
+    	regulator.kp = p
+    	print p
+    	regulator.enabled = True
+    	time.sleep(5)
+    	regulator.enabled = False
+    	time.sleep(1)
