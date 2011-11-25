@@ -4,13 +4,12 @@ import systemetric
 
 def main():
     R = systemetric.Robot()
- 
-    R.rotateTo(0)
+    R.rotateTo(R.compass.heading)
     time.sleep(1)
     R.driveDistance(2)
     R.stop()
     time.sleep(2)
-    R.rotateTo(180)
+    R.rotateBy(180)
     time.sleep(1)
     R.driveDistance(2)
     R.stop()
