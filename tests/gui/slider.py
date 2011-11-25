@@ -20,7 +20,7 @@ class PIDSlider(gtk.HScale):
 	def sliderMoved(self,_, value):
 		self.pidController.kp = value
 
-class PIDWindow(Window):
+class PIDWindow(gtk.Window):
 	def __init__(self, pidController):
 		Window.__init__(self, gtk.WINDOW_TOPLEVEL)
 		self.set_border_width(10)
