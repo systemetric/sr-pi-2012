@@ -7,7 +7,7 @@ import threading
 class PIDSlider(gtk.HScale):
 	def __init__(self, pidController):
 		pidRange = gtk.Adjustment(
-			value = 2.44,
+			value = 2.45,
 			lower = 0,
 			upper = 5,
 			step_incr = 0.025
@@ -16,7 +16,8 @@ class PIDSlider(gtk.HScale):
 		self.pidController = pidController
 		gtk.HScale.__init__(self, pidRange)
 		self.connect("value-changed", self.sliderMoved, pidRange)
-		self.set_digits(2)
+		self.set_digits(3)
+
 	def sliderMoved(self,_, adj):
 		self.pidController.kp = adj.value
 
