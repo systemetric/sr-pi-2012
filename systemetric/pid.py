@@ -16,7 +16,7 @@ class PID(threading.Thread):
         
         self._lock = threading.Lock()
         
-        self.kp = 0.75
+        self.kp = 0.25
         self.ki = 0
         self.kd = 0
         
