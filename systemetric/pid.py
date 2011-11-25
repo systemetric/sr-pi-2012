@@ -75,7 +75,7 @@ class PID(threading.Thread):
         print "error is %.2f" % self._error
         return not self.enabled or math.fabs(self._error) < tolerance
     
-    def tuneFromZieglerNichols(ku, pu):
+    def tuneFromZieglerNichols(self, ku, pu):
         self.kp = 0.6 * ku
         self.ki = 2 * self.kp / pu
         self.kd = self.kp * pu / 8
