@@ -20,7 +20,7 @@ class CompassRobot(TwoWheeledRobot):
             setOutput = lambda x: self.drive(speed = self.speed, steer = x),
             outputRange = (-100, 100)
         )
-        self.regulator.ki = 0.01
+        self.regulator.tuneFromZieglerNichols(2.575, 0.698)
         self.regulator.start()
 
         self.speed = 0
