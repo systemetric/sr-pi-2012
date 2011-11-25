@@ -16,7 +16,7 @@ class PIDSlider(gtk.HScale):
 		self.pidController = pidController
 		gtk.HScale.__init__(self, pidRange)
 		self.connect("value-changed", self.sliderMoved, pidRange)
-
+		self.set_digits(2)
 	def sliderMoved(self,_, adj):
 		self.pidController.kp = adj.value
 
