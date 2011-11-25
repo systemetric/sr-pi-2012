@@ -17,9 +17,9 @@ class PIDSlider(gtk.HScale):
 		gtk.HScale.__init__(self, pidRange)
 		self.connect("value-changed", self.sliderMoved, pidRange)
 
-	def sliderMoved(self,_, value):
-		print "value is %.1f" % value
-		self.pidController.kp = value
+	def sliderMoved(self,_, adj):
+		print "value is %.1f" % adj.value
+		self.pidController.kp = adj.value
 
 class PIDWindow(gtk.Window):
 	def __init__(self, pidController):
