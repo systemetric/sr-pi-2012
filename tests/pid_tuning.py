@@ -1,6 +1,6 @@
 from systemetric.compassrobot import *
 import time
-from gui.slider import * 
+from tests.gui.slider import * 
 
 def main():
 	R = CompassRobot()
