@@ -58,18 +58,18 @@ class PID(threading.Thread):
                     
                     p = self.kp * self._error
                     i = self.ki * self._totalError
-                    d = self.kd * (self._error - self._lastError) / period if self._lastError is not None else 0
+                    d = self.kd * (self._error - self._lastError) / self.period if self._lastError is not None else 0
                     
                     self._lastError = self._error
 
-                    totalError = self._totalError + self._error * period
+                    totalError = self._totalError + self._error * self.period
                         
                     if self.minOutput < totalError * self.ki < self.maxOutput:
                         self._totalError = totalError
                 
                     self.setOutput(p + i + d)
                     
-            time.sleep(period)
+            time.sleep(self.period)
         
     def onTarget(self, tolerance = 5):
         print "error is %.2f" % self._error
