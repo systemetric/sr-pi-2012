@@ -9,6 +9,7 @@ def main():
 
 	window = PIDWindow(regulator)
 	window.runInBackground()
+	print "ahhhhhhhhhhhhh"
 
 	regulator.ki = 0
 	regulator.kd = 0
