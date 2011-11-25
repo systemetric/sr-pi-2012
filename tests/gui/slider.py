@@ -7,7 +7,7 @@ import threading
 class PIDSlider(gtk.HScale):
 	def __init__(self, pidController):
 		pidRange = gtk.Adjustment(
-			value = 1,
+			value = 2.44,
 			lower = 0,
 			upper = 5,
 			step_incr = 0.025
