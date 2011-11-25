@@ -10,7 +10,7 @@ class PIDSlider(gtk.HScale):
 			value = 1,
 			lower = 0,
 			upper = 5,
-			step_incr = 0.1
+			step_incr = 0.025
 		)
 
 		self.pidController = pidController
