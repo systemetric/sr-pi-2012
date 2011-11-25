@@ -44,7 +44,7 @@ class PIDWindow(Window):
 	def main(self):
 		gtk.main()
 	
-	def runInBackground():
+	def runInBackground(self):
 		t = threading.Thread(target=self.main)
 		t.start()
 
