@@ -20,7 +20,7 @@ class PID(threading.Thread):
         self.ki = 0
         self.kd = 0
         
-        self.period = 0.075
+        self.period = 0.025
         self._reset()
 
     @property
