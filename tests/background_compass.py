@@ -3,7 +3,7 @@ import time
 
 def main():
     R = CompassRobot()
-    R.regulator.tuneFromZieglerNichols(ku=2.575, pu =0.698)
+    R.regulator.tuneFromZieglerNichols(2.575, 0.698)
     R.rotateTo(0)
     time.sleep(1)
     '''print "rotated to 0:", R.compass.heading
