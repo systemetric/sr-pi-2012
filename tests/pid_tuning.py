@@ -1,18 +1,22 @@
 from systemetric.compassrobot import *
 import time
+from gui.slider import * 
 
 def main():
 	R = CompassRobot()
 
 	regulator = R.regulator
 
+	window = PIDWindow(regulator)
+	window.runInBackground()
+
 	regulator.ki = 0
 	regulator.kd = 0
 	regulator.target = 0
 
-	regulator.kp = 2.3 #2.25
+	regulator.kp = 1
 	regulator.enabled = True
-	time.sleep(20)
+	time.sleep(60)
 	regulator.enabled = False
 	R.stop()
 

@@ -5,7 +5,7 @@ import threading
 
 
 class PIDSlider(gtk.HScale):
-	def __init__(self):
+	def __init__(self, pidController):
 		pidRange = gtk.Adjustment(
 			value = 1,
 			lower = 0,
@@ -13,41 +13,40 @@ class PIDSlider(gtk.HScale):
 			step_incr = 0.1
 		)
 
+		self.pidController = pidController
 		gtk.HScale.__init__(self, pidRange)
 		self.connect("value-changed", self.sliderMoved, pidRange)
 
-	def sliderMoved(self,_, z):
-		print z.value
+	def sliderMoved(self,_, value):
+		self.pidController.kp = value
 
-class PIDWindow:
-	def __init__(self):
-		
+class PIDWindow(Window):
+	def __init__(self, pidController):
+		Window.__init__(self, gtk.WINDOW_TOPLEVEL)
+		self.set_border_width(10)
+		self.set_title("PID Adjustment")
 
-		wrapper = gtk.HBox()
-
-		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-		self.window.set_border_width(10)
-	
-		scale = PIDSlider()
+		scale = PIDSlider(pidController)
 		scale.set_size_request(320, 50)
 		scale.show()
 
 		label = gtk.Label("kP")
 		label.show()
 
+		wrapper = gtk.HBox()
 		wrapper.pack_start(label, False, False, 0)
 		wrapper.pack_start(scale, True, True, 0)
 		wrapper.show()
 
-		self.window.add(wrapper)
-		self.window.show()
+		self.add(wrapper)
+		self.show()
 
 	def main(self):
 		gtk.main()
 	
-
-t = threading.Thread(target= PIDWindow().main)	
-t.start()
+	def runInBackground():
+		t = threading.Thread(target=self.main)
+		t.start()
 
 
 
