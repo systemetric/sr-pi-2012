@@ -22,7 +22,7 @@ class PIDSlider(gtk.HScale):
 
 class PIDWindow(gtk.Window):
 	def __init__(self, pidController):
-		Window.__init__(self, gtk.WINDOW_TOPLEVEL)
+		gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
 		self.set_border_width(10)
 		self.set_title("PID Adjustment")
 
