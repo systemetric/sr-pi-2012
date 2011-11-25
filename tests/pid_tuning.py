@@ -7,8 +7,8 @@ def main():
 
 	regulator = R.regulator
 
-	#window = PIDWindow(regulator)
-	#window.runInBackground()
+	window = PIDWindow(regulator)
+	window.runInBackground()
 
 	regulator.ki = 0
 	regulator.kd = 0
