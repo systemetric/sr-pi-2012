@@ -18,7 +18,6 @@ class PIDSlider(gtk.HScale):
 		self.connect("value-changed", self.sliderMoved, pidRange)
 
 	def sliderMoved(self,_, adj):
-		print "value is %.1f" % adj.value
 		self.pidController.kp = adj.value
 
 class PIDWindow(gtk.Window):
