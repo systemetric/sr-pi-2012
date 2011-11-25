@@ -52,7 +52,9 @@ class PID(threading.Thread):
     def run(self):
         while True:
             with self._lock:
+                print  "got the lock"
                 if self.enabled:
+                    print  "running"
                     self._error = float(self.target - self.getInput())
                     
                     p = self.kp * self._error
