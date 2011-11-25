@@ -1,5 +1,6 @@
-print 'I\'m on the first line!'
-print 'second line!'
+#Critical p value 2.575
+#Oscilations per minute = 86
+#Oscilation period = 0.698s
 
 import time
 import threading

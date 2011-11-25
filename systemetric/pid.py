@@ -20,6 +20,7 @@ class PID(threading.Thread):
         self.ki = 0
         self.kd = 0
         
+        self.period = 0.075
         self._reset()
 
     @property
@@ -57,20 +58,24 @@ class PID(threading.Thread):
                     
                     p = self.kp * self._error
                     i = self.ki * self._totalError
-                    d = self.kd * (self._error - self._lastError) if self._lastError is not None else 0
+                    d = self.kd * (self._error - self._lastError) / period if self._lastError is not None else 0
                     
                     self._lastError = self._error
 
-                    totalError = self._totalError + self._error
-                    self._totalError += self._error
+                    totalError = self._totalError + self._error * period
                         
                     if self.minOutput < totalError * self.ki < self.maxOutput:
                         self._totalError = totalError
                 
                     self.setOutput(p + i + d)
                     
-            time.sleep(0.05)
+            time.sleep(period)
         
     def onTarget(self, tolerance = 5):
         print "error is %.2f" % self._error
         return not self.enabled or math.fabs(self._error) < tolerance
+    
+    def tuneFromZieglerNichols(ku, pu):
+        self.kp = 0.6 * ku
+        self.ki = 2 * self.kp / pu
+        self.kd = self.kp * pu / 8
