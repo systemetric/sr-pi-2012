@@ -43,6 +43,7 @@ class PIDWindow(gtk.Window):
 		self.show()
 
 	def main(self):
+		gtk.gdk.threads_init()
 		gtk.main()
 	
 	def runInBackground(self):
