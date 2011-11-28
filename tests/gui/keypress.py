@@ -1,21 +1,25 @@
 import gtk 
 import pygtk 
 
-class keypress(): 
-	 
+class KeyGrabbingWindow(Window):
 	def __init__(self): 
-		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL) 
-		self.window.connect("key_press_event", self.key_press_event) 
-		self.window.show() 
+		gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL) 
+		self.connect("key_press_event", self.key_press_event) 
+		self.show() 
 		 
 	def key_press_event(self, widget, event): 
 		if event.keyval == gtk.keysyms.Up: 
 			print 'up' 
-		if event.keyval == gtk.keysyms.Down: 
+		elif event.keyval == gtk.keysyms.Down: 
 			print 'down'
+
+		if event.keyval == gtk.keysyms.Left: 
+			print 'left' 
+		elif event.keyval == gtk.keysyms.Right: 
+			print 'right'
 
 	def main(self): 
 		gtk.main() 
 		
-gui = keypress() 
+gui = KeyGrabbingWindow() 
 gui.main()
