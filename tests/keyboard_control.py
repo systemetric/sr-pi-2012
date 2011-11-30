@@ -18,9 +18,9 @@ def main():
 		if keys[gtk.keysyms.Down]:
 			speed -= 100
 		if keys[gtk.keysyms.Left]:
-			steer -=50
+			steer -=100
 		if keys[gtk.keysyms.Right]:
-			steer += 50
+			steer += 100
 		R.drive(speed, steer)
 
 	def key_press_event(self, event):
