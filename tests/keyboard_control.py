@@ -1,22 +1,39 @@
 import systemetric
 import gtk 
 
+
+keys = {
+	gtk.keysyms.Up: False,
+	gtk.keysyms.Down: False,
+	gtk.keysyms.Left: False,
+	gtk.keysyms.Right: False
+}
 def main():
 	R = systemetric.Robot()
+	def update():
+		speed = 0
+		steer = 0
+		if keys[gtk.keysyms.Up]:
+			speed +=100
+		if keys[gtk.keysyms.Down]:
+			speed -= 100
+		if keys[gtk.keysyms.Left]:
+			steer -=50
+		if keys[gtk.keysyms.Right]:
+			steer += 50
+		R.drive(speed, steer)
+
 	def key_press_event(self, event):
-
-		speed = 100 if event.keyval == gtk.keysyms.Up else \
-		       -100 if event.keyval == gtk.keysyms.Down else \
-		       0
-
-		steer = 50 if event.keyval == gtk.keysyms.Left else \
-				- 50 if event.keyval == gtk.keysyms.Right else \
-				0
-		print speed
-		R.drive(speed = speed, steer = steer)
+		keys[event.keyval] = True
+		update()
+	
+	def key_release_event(self, event):
+		keys[event.keyval] = False
+		update()
 
 	w = gtk.Window(gtk.WINDOW_TOPLEVEL)
 	w.connect("key_press_event", key_press_event)
+	w.connect("key_release_event", key_release_event)
 	w.show()
 
 	gtk.main()
