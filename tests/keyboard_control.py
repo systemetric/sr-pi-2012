@@ -1,16 +1,16 @@
 import systemetric
 import gtk 
-import pygtk 
 
 def main():
 	R = systemetric.Robot()
 	def key_press_event(self, widget, event):
-		speed = event.keyval == gtk.keysyms.Up and 100 or
-				event.keyval == gtk.keysyms.Down and -100 or
-				0
 
-		steer = event.keyval == gtk.keysyms.Left and 50 or
-				event.keyval == gtk.keysyms.Right and -50 or
+		speed = 100 if event.keyval == gtk.keysyms.Up else \
+		       -100 if event.keyval == gtk.keysyms.Down else \
+		       0
+
+		steer = 50 if event.keyval == gtk.keysyms.Left else \
+				- 50 if event.keyval == gtk.keysyms.Right else \
 				0
 
 		R.drive(speed = speed, steer = steer)
