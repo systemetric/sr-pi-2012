@@ -18,10 +18,16 @@ class CompassRobot(TwoWheeledRobot):
         self.regulator = PID(
             getInput = lambda: self.compass.heading,
             setOutput = lambda x: self.drive(speed = self.speed, steer = x),
-            outputRange = (-100, 100)
+            outputRange = (-100, 100),
+            iLimit = 0.5
         )
-        self.regulator.tuneFromZieglerNichols(2.575, 0.698)
-        self.regulator.kp *= 0.75 #bodge to try and make it work
+        #self.regulator.tuneFromZieglerNichols(2.575, 0.698)
+
+        #PID settings
+        self.regulator.kp = 0.725
+        self.regulator.ki = 2 #Needs more testing
+        self.regulator.kd = 0.0325
+
         self.regulator.start()
 
         self.speed = 0
