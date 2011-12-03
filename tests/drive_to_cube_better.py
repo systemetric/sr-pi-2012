@@ -24,12 +24,12 @@ def main():
             R.rotateBy(angle)
             print "Facing marker"
             # Drive forward almost the distance to the marker
-            R.driveDistance(markers[0].dist-0.3)
+            R.driveDistance(markers[0].dist-0.1)
         else:
             print "No Marker..."
             
-            # Spin 20 degrees clockwise
-            R.rotateBy(20)
+            # Spin 30 degrees clockwise
+            R.rotateBy(30, fromTarget=True)
             
             # Disable heading correction
             R.stop()
