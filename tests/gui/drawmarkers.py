@@ -55,29 +55,29 @@ class MyStuff(Screen):
 
         markers = R.see(res = (960, 720))
 
-        matrix = cairo.Matrix(1, 0, 0, 1, width/2, height/2) #translate matrix to centre of screen
-        cr.transform(matrix) # Make it so...
+        matrix = cairo.Matrix(1, 0, 0, 1, width/2, height/2) ## translate matrix to centre of screen
+        cr.transform(matrix) ## Make it so...
+        
         ## Now save that situation so that we can mess with it. This preserves the last context (the one at 0,0) and let's us do new stuff.
         cr.save()
+
+        ## Let's draw a crosshair so we can identify 0,0
+        self.drawcross(cr) 
 
         for m in markers:
 
             ## Now attempt to rotate something around a point. Use a matrix to change the shape's position and rotation.
-
             ThingMatrix = cairo.Matrix(1, 0, 0, 1, 0, 0)
 
             ## Next, move the drawing to it's x,y
-            cairo.Matrix.translate(ThingMatrix, m.centre.world.x * 100, m.centre.world.y * 100)
+            cairo.Matrix.translate(ThingMatrix, m.centre.world.x * 100, -m.centre.world.y * 100)
             cr.transform(ThingMatrix) # Changes the context to reflect that
 
             ## Now, whatever is draw is "under the influence" of the context and all that matrix magix we just did.
             self.drawCairoStuff(cr)
 
             ## We restore to a clean context, to undo all that hocus-pocus
-            cr.restore()
-
-        ## Let's draw a crosshair so we can identify 0,0. Drawn last to be above the red square.
-        self.drawcross(cr)         
+            cr.restore()        
 
     def drawCairoStuff(self, cr):
         ## Thrillingly, we draw a red rectangle such that 0,0 is in it's center.
