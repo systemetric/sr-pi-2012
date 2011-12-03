@@ -42,7 +42,7 @@ class MyStuff(Screen):
 
     def draw(self, width, height):
         cr = self.cr
-        markers = R.see(res = (1280,1024))
+        markers = R.see(res = (960, 720))
         for m in markers:
             ## A shortcut
 
