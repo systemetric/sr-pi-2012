@@ -52,7 +52,7 @@ class Robot(CompassRobot):
 	def compassHeading(self):
 		return self.compass.heading
 	
-	def getMarkersById(self):
+	def getMarkersById(self, *args, **kargs):
 		'''Get all the markers, grouped by id.
 		For example, to get the token with id 1, use:
 		
@@ -62,12 +62,12 @@ class Robot(CompassRobot):
 			if 0 in markers.tokens:
 				markersOnFirstToken = markers.tokens[0]
 		'''
-		markers = self.see()
+		markers = self.see(*args, **kargs)
 		markersById = Markers(tokens={}, arena={}, robots={}, buckets={})
 		
 		for marker in markers:
 			id = marker.info.offset
-			type = marker.info.markerType
+			type = marker.info.marker_type
 			
 			# What type of marker is it?
 			if type == sr.MARKER_TOKEN:
