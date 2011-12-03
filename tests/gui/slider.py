@@ -60,8 +60,12 @@ class PIDWindow(gtk.Window):
 		dWrapper.pack_start(dScale, True, True, 0)
 		dWrapper.show()
 
-		self.add(pWrapper)
-		self.add(dWrapper)
+		mainWrapper = gtk.VBox()
+		mainWrapper.pack_start(pWrapper, False, False, 0)
+		mainWrapper.pack_start(dWrapper, False, False, 0)
+		mainWrapper.show()
+		
+		self.add(mainWrapper)
 
 		self.show()
 
