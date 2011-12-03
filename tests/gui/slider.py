@@ -17,9 +17,18 @@ class PIDSlider(gtk.HScale):
 		gtk.HScale.__init__(self, pidRange)
 		self.connect("value-changed", self.sliderMoved, pidRange)
 		self.set_digits(3)
+	def sliderMoved(self, _, adj):
+		pass
 
-	def sliderMoved(self,_, adj):
-		self.pidController.kp = adj.value
+	class PSlider(PIDSlider):
+		def sliderMoved(self, _, adj):
+			self.pidController.kp = adj.value
+	class ISlider(PIDSlider):
+		def sliderMoved(self, _, adj):
+			self.pidController.ki = adj.value
+	class DSlider(PIDSlider):
+		def sliderMoved(self, _, adj):
+			self.pidController.kd = adj.value
 
 class PIDWindow(gtk.Window):
 	def __init__(self, pidController):
@@ -27,19 +36,33 @@ class PIDWindow(gtk.Window):
 		self.set_border_width(10)
 		self.set_title("PID Adjustment")
 
-		scale = PIDSlider(pidController)
-		scale.set_size_request(320, 50)
-		scale.show()
+		pScale = PIDSlider.PSlider(pidController)
+		pScale.set_size_request(320, 50)
+		pScale.show()
 
-		label = gtk.Label("kP")
-		label.show()
+		pLabel = gtk.Label("kP")
+		pLabel.show()
 
-		wrapper = gtk.HBox()
-		wrapper.pack_start(label, False, False, 0)
-		wrapper.pack_start(scale, True, True, 0)
-		wrapper.show()
+		pWrapper = gtk.HBox()
+		pWrapper.pack_start(pLabel, False, False, 0)
+		pWrapper.pack_start(pScale, True, True, 0)
+		pWrapper.show()
 
-		self.add(wrapper)
+		dScale = PIDSlider.Dslider(pidController)
+		dScale.set_size_request(320, 50)
+		dScale.show()
+		
+		dLabel = gtk.Label("kD")
+		dLabel.show()
+
+		dWrapper = gtk.HBox()
+		dWrapper.pack_start(dLabel, False, False, 0)
+		dWrapper.pack_start(dScale, True, True, 0)
+		dWrapper.show()
+
+		self.add(pWrapper)
+		self.add(dWrapper)
+
 		self.show()
 
 	def main(self):
