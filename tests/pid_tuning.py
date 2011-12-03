@@ -10,17 +10,12 @@ def main():
 	window = PIDWindow(regulator)
 	window.runInBackground()
 
+	regulator.kp = 0
 	regulator.ki = 0
 	regulator.kd = 0
 	regulator.target = 0
 
-	regulator.kp = 1
 	regulator.enabled = True
-	regulator.enabled = False
-	R.power.beep([(440, 0.5)])
-
-	regulator.enabled = True
-	regulator.enabled = False
 
 	#for p in range(18, 25, 1):
 	#	regulator.kp = p / 10.0
