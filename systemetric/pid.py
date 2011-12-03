@@ -3,13 +3,14 @@ import time
 import math
 
 class PID(threading.Thread):
-    def __init__(self, getInput, setOutput, outputRange = (float("-inf"), float("inf"))):
+    def __init__(self, getInput, setOutput, outputRange = (float("-inf"), float("inf")), iLimit = 1):
         threading.Thread.__init__(self)
         
         self.getInput = getInput
         self.setOutput = setOutput
 
         self.minOutput, self.maxOutput = outputRange
+        self.iLimit = iLimit
         
         self._target = 0
         self._enabled = False
@@ -66,7 +67,7 @@ class PID(threading.Thread):
 
                     totalError = self._totalError + self._error * self.period
                         
-                    if self.minOutput < totalError * self.ki < self.maxOutput:
+                    if self.iLimit*self.minOutput < totalError * self.ki < self.iLimit*self.maxOutput:
                         self._totalError = totalError
                 
                     self.setOutput(p + i + d)
