@@ -9,7 +9,7 @@ def main():
     while True:
         print "Reading markers"
         #Get only the tokens
-        allMarkers = R.see()
+        allMarkers = R.see(res=(1280,1024))
         markers = [marker for marker in allMarkers if marker.info.marker_type == MARKER_TOKEN]
         
         # Are there any tokens?
