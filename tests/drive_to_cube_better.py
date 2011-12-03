@@ -7,6 +7,7 @@ def main():
     R = systemetric.Robot()
 
     while True:
+        print "Reading markers"
         #Get only the tokens
         allMarkers = R.see()
         markers = [marker for marker in allMarkers if marker.info.marker_type == MARKER_TOKEN]
@@ -19,7 +20,7 @@ def main():
             print "Marker seen at: ", angle
             
             R.rotateBy(angle)
-            
+            print "Facing marker"
             # Drive forward almost the distance to the marker
             R.driveDistance(markers[0].dist-0.3)
         else:
