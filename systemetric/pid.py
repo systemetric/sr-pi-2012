@@ -78,7 +78,7 @@ class PID(threading.Thread):
             self._lastErrors = self._lastErrors[:-1]
 
         #self._lastErrors = self._lastErrors[:-5] if len(self._lastErrors) > 10 else self._lastErrors
-        if len(self._lastErrors) > 5:
+        if len(self._lastErrors) <= 5:
             sum_i = 0
             sum_error = 0
             sum_i_squared = 0
