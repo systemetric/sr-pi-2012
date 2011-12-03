@@ -70,29 +70,6 @@ class PID(threading.Thread):
                     self.setOutput(p + i + d)
                     
             time.sleep(self.period)
-
-    def __gradient(self):
-        '''calculate the gradient of a bunch of points'''
-        while len(self._lastErrors) > 5:
-            self._lastErrors = self._lastErrors[:-1]
-
-        #self._lastErrors = self._lastErrors[:-5] if len(self._lastErrors) > 10 else self._lastErrors
-        if len(self._lastErrors) <= 5 and len(self._lastErrors) > 1:
-            sum_i = 0
-            sum_error = 0
-            sum_i_squared = 0
-            sum_iError = 0
-
-            for i, error in enumerate(self._lastErrors):
-                sum_i += i
-                sum_error += error
-                sum_i_squared += i*i
-                sum_iError += i*error
-            return (sum_iError - sum_i*sum_error) / (sum_i_squared - sum_i**2)
-
-        else:
-            print 'just returned zero for the gradient'
-            return 0
         
     def onTarget(self, tolerance = 5):
         return not self.enabled or math.fabs(self._error) < tolerance
