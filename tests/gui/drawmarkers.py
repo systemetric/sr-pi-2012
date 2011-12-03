@@ -53,9 +53,10 @@ class MyStuff(Screen):
         ##  -x | +x
         ##  +y | +y
 
-        matrix = cairo.Matrix(1, 0, 0, 1, width/2, height/2)
-        cr.transform(matrix) # Make it so...
+        markers = R.see(res = (960, 720))
 
+        matrix = cairo.Matrix(1, 0, 0, 1, width/2, height/2) #translate matrix to centre of screen
+        cr.transform(matrix) # Make it so...
         ## Now save that situation so that we can mess with it. This preserves the last context (the one at 0,0) and let's us do new stuff.
         cr.save()
 
