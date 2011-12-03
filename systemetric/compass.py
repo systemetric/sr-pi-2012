@@ -7,7 +7,7 @@ class Compass(object):
             self.port = serial.Serial(port)
            # self.port.timeout = 0.25
             self.port.open()
-        except Exception, c:
+        except Exception:
             raise Exception('Cannot connect to mbed')
 
     @property
