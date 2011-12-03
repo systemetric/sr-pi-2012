@@ -3,6 +3,7 @@ import time
 import math
 
 class PID(threading.Thread):
+    D_SAMPLES = 5
     def __init__(self, getInput, setOutput, outputRange = (float("inf"), float("-inf"))):
         threading.Thread.__init__(self)
         
@@ -46,7 +47,7 @@ class PID(threading.Thread):
             self._reset()
         
     def _reset(self):
-        self._lastError = None
+        self._lastErrors = []
         self._totalError = 0
         self._error = float('nan')
     
@@ -58,9 +59,9 @@ class PID(threading.Thread):
                     
                     p = self.kp * self._error
                     i = self.ki * self._totalError
-                    d = self.kd * (self._error - self._lastError) / self.period if self._lastError is not None else 0
+                    d = self.kd * self.__gradient() * self.period
                     
-                    self._lastError = self._error
+                    self._lastErrors += [self._error]
 
                     totalError = self._totalError + self._error * self.period
                         
@@ -70,6 +71,25 @@ class PID(threading.Thread):
                     self.setOutput(p + i + d)
                     
             time.sleep(self.period)
+
+    def __gradient(self):
+        '''calculate the gradient of a bunch of points'''
+        self._lastErrors = self._lastErrors[:-5]
+        sum_i = 0
+        sum_error = 0
+        sum_i_squared = 0
+        sum_iError = 0
+
+        for i, error in enumerate(self._lastErrors):
+            sum_i += i
+            sum_error += error
+            sum_i_squared += i*i
+            sum_iError += i*error
+        
+        if len(self._lastErrors) > 1:
+            return (sum_iError - sum_i*sum_error) / (sum_i_squared - sum_i**2)
+        else:
+            return 0
         
     def onTarget(self, tolerance = 5):
         return not self.enabled or math.fabs(self._error) < tolerance
