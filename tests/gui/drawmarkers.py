@@ -43,22 +43,23 @@ class MyStuff(Screen):
     def draw(self, width, height):
         cr = self.cr
         markers = R.see()
+        ## A shortcut
+
+        ## First, let's shift 0,0 to be in the center of page
+        ## This means:
+        ##  -y | -y
+        ##  -x | +x
+        ## ----0------
+        ##  -x | +x
+        ##  +y | +y
+
+        matrix = cairo.Matrix(1, 0, 0, 1, width/2, height/2)
+        cr.transform(matrix) # Make it so...
+
+        ## Now save that situation so that we can mess with it. This preserves the last context (the one at 0,0) and let's us do new stuff.
+        cr.save()
+
         for m in markers:
-            ## A shortcut
-
-            ## First, let's shift 0,0 to be in the center of page
-            ## This means:
-            ##  -y | -y
-            ##  -x | +x
-            ## ----0------
-            ##  -x | +x
-            ##  +y | +y
-
-            matrix = cairo.Matrix(1, 0, 0, 1, width/2, height/2)
-            cr.transform(matrix) # Make it so...
-
-            ## Now save that situation so that we can mess with it. This preserves the last context (the one at 0,0) and let's us do new stuff.
-            cr.save()
 
             ## Now attempt to rotate something around a point. Use a matrix to change the shape's position and rotation.
 
@@ -72,42 +73,42 @@ class MyStuff(Screen):
             self.drawCairoStuff(cr)
 
             ## We restore to a clean context, to undo all that hocus-pocus
-            cr.restore ( )
+            cr.restore()
 
         ## Let's draw a crosshair so we can identify 0,0. Drawn last to be above the red square.
-        self.drawcross ( cr )         
+        self.drawcross(cr)         
 
     def drawCairoStuff(self, cr):
         ## Thrillingly, we draw a red rectangle such that 0,0 is in it's center.
         cr.rectangle(-5, -5, 10, 10)
-        cr.set_source_rgb( 1, 0, 0) 
-        cr.fill( )
+        cr.set_source_rgb(1, 0, 0) 
+        cr.fill()
         ## Now a visual indicator of the point of rotation
         ## I have no idea (yet) how to keep this as a 
         ## tiny dot when the entire thing scales.
-        cr.set_source_rgb( 1, 1, 1 )
-        cr.move_to( self.rx, self.ry )
-        cr.line_to ( self.rx+1, self.ry+1 )
-        cr.stroke( )
+        cr.set_source_rgb(1, 1, 1)
+        cr.move_to(self.rx, self.ry)
+        cr.line_to(self.rx+1, self.ry+1)
+        cr.stroke()
 
-    def drawcross ( self, ctx ):
+    def drawcross(self, ctx):
         ## Also drawn around 0,0 in the center
-        ctx.set_source_rgb ( 0, 0, 0 )
-        ctx.move_to ( 0,10 )
-        ctx.line_to ( 0, -10 )
-        ctx.move_to ( -10, 0 )
-        ctx.line_to ( 10, 0 )
-        ctx.stroke ( )
+        ctx.set_source_rgb(0, 0, 0)
+        ctx.move_to(0, 10)
+        ctx.line_to(0, -10)
+        ctx.move_to(-10, 0)
+        ctx.line_to(10, 0)
+        ctx.stroke()
 
 
-def run( Widget ):
-    window = gtk.Window( )
-    window.connect( "delete-event", gtk.main_quit )
-    window.set_size_request ( 400, 400 )
-    widget = Widget( )
-    widget.show( )
-    window.add( widget )
-    window.present( )
-    gtk.main( )
+def run(Widget):
+    window = gtk.Window()
+    window.connect("delete-event", gtk.main_quit)
+    window.set_size_request(400, 400)
+    widget = Widget()
+    widget.show()
+    window.add(widget)
+    window.present()
+    gtk.main()
 
-run( MyStuff )
+run(MyStuff)
