@@ -20,15 +20,15 @@ class PIDSlider(gtk.HScale):
 	def sliderMoved(self, _, adj):
 		pass
 
-	class PSlider(PIDSlider):
-		def sliderMoved(self, _, adj):
-			self.pidController.kp = adj.value
-	class ISlider(PIDSlider):
-		def sliderMoved(self, _, adj):
-			self.pidController.ki = adj.value
-	class DSlider(PIDSlider):
-		def sliderMoved(self, _, adj):
-			self.pidController.kd = adj.value
+class PSlider(PIDSlider):
+	def sliderMoved(self, _, adj):
+		self.pidController.kp = adj.value
+class ISlider(PIDSlider):
+	def sliderMoved(self, _, adj):
+		self.pidController.ki = adj.value
+class DSlider(PIDSlider):
+	def sliderMoved(self, _, adj):
+		self.pidController.kd = adj.value
 
 class PIDWindow(gtk.Window):
 	def __init__(self, pidController):
@@ -36,7 +36,7 @@ class PIDWindow(gtk.Window):
 		self.set_border_width(10)
 		self.set_title("PID Adjustment")
 
-		pScale = PIDSlider.PSlider(pidController)
+		pScale = PSlider(pidController)
 		pScale.set_size_request(320, 50)
 		pScale.show()
 
@@ -48,7 +48,7 @@ class PIDWindow(gtk.Window):
 		pWrapper.pack_start(pScale, True, True, 0)
 		pWrapper.show()
 
-		dScale = PIDSlider.Dslider(pidController)
+		dScale = DSlider(pidController)
 		dScale.set_size_request(320, 50)
 		dScale.show()
 		
