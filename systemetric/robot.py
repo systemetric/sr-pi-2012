@@ -145,8 +145,8 @@ class Robot(CompassRobot):
 		
 	def driveDistance(self, distInMetres):
 		SPEED = .575
-		self.setSpeed(100)
-		time.sleep(distInMetres / SPEED)
+		self.setSpeed(math.copysign(100, distInMetres))
+		time.sleep(abs(distInMetres) / SPEED)
 		self.stop()
 		
 	def end(self, message = 'robot stopped', error = True, shutdown = False):
