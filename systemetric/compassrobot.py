@@ -48,10 +48,10 @@ class CompassRobot(TwoWheeledRobot):
         while not self.regulator.onTarget(tolerance = 2.5):
             time.sleep(0.05)
         
-    def rotateBy(self, angle):
+    def rotateBy(self, angle, fromTarget = False):
         self.regulate = True
         self.speed = 0
-        self.rotateTo(self.compass.heading + angle)
+        self.rotateTo((self.regulator.target if fromTarget else self.compass.heading) + angle)
         
     def setSpeed(self, speed):
         self.regulate = True
