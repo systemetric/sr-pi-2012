@@ -8,7 +8,7 @@ class PIDSlider(gtk.HScale):
 	def __init__(self, pidController):
 		pidRange = gtk.Adjustment(
 			value = 0,
-			lower = 0,
+			lower = -5,
 			upper = 5,
 			step_incr = 0.025
 		)
