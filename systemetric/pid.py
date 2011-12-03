@@ -72,7 +72,6 @@ class PID(threading.Thread):
             time.sleep(self.period)
         
     def onTarget(self, tolerance = 5):
-        print "error is %.2f" % self._error
         return not self.enabled or math.fabs(self._error) < tolerance
     
     def tuneFromZieglerNichols(self, ku, pu):
