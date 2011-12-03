@@ -16,9 +16,7 @@ def main():
 
 	regulator.kp = 1
 	regulator.enabled = True
-	time.sleep(30)
 	regulator.enabled = False
-	R.stop()
 	R.power.beep([(440, 0.5)])
 
 	regulator.enabled = True
