@@ -23,7 +23,6 @@ def main():
 
 	regulator.enabled = True
 	regulator.enabled = False
-	R.stop()
 
 	#for p in range(18, 25, 1):
 	#	regulator.kp = p / 10.0
