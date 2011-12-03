@@ -21,6 +21,7 @@ class CompassRobot(TwoWheeledRobot):
             outputRange = (-100, 100)
         )
         self.regulator.tuneFromZieglerNichols(2.575, 0.698)
+        self.regulator.kp *= 0.75 #bodge to try and make it work
         self.regulator.start()
 
         self.speed = 0
