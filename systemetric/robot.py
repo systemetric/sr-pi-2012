@@ -19,7 +19,7 @@ Token = namedtuple("Token", "markers id timestamp location")
 #info about the markers. Used in sr.vision
 MarkerInfo = namedtuple( "MarkerInfo", "code marker_type offset size" )
 
-DIE_HORRIBLY = config['killcode'] #special marker
+DIE_HORRIBLY = config.get('killCode') or 228 #special marker
 
 class Robot(CompassRobot):
 	'''A class derived from the base 'Robot' class provided by soton'''	 
