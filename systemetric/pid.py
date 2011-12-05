@@ -49,23 +49,23 @@ class PID(threading.Thread):
     def _reset(self):
         self._lastError = None
         self._totalError = 0
-        self._error = float('nan')
+        self.error = float('nan')
     
     def run(self):
         while True:
             with self._lock:
                 if self.enabled:
-                    self._error = float(self.target - self.getInput())
+                    self.error = float(self.target - self.getInput())
                     
-                    p = self.kp * self._error
+                    p = self.kp * self.error
                     i = self.ki * self._totalError
-                    d = self.kd * (self._error - self._lastError) / self.period if self._lastError is not None else 0
+                    d = self.kd * (self.error - self._lastError) / self.period if self._lastError is not None else 0
                    
-                   # print time.time(), self._error, p, self.kp, d, self.kd
+                   # print time.time(), self.error, p, self.kp, d, self.kd
 
-                    self._lastError = self._error
+                    self._lastError = self.error
 
-                    totalError = self._totalError + self._error * self.period
+                    totalError = self._totalError + self.error * self.period
                         
                     if self.iLimit*self.minOutput < totalError * self.ki < self.iLimit*self.maxOutput:
                         self._totalError = totalError
@@ -75,7 +75,7 @@ class PID(threading.Thread):
             time.sleep(self.period)
         
     def onTarget(self, tolerance = 5):
-        return not self.enabled or math.fabs(self._error) < tolerance
+        return not self.enabled or math.fabs(self.error) < tolerance
     
     def tuneFromZieglerNichols(self, ku, pu):
         self.kp = 0.6 * ku

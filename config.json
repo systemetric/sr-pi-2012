@@ -1,4 +1,4 @@
 {
-	"execute": "tests.drive_up_and_down",
+	"execute": "tests.pid_tuning",
 	"killCode": 228
 }

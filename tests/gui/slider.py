@@ -1,6 +1,6 @@
 import pygtk
 pygtk.require('2.0')
-import gtk
+import gtk, gobject, pango
 import threading
 
 
@@ -17,7 +17,7 @@ class PIDSlider(gtk.HScale):
 class PSlider(PIDSlider):
 	def __init__(self, pidController):
 		self.pidRange = gtk.Adjustment(
-			value = 0,
+			value = pidController.kp,
 			lower = 0,
 			upper = 5,
 			step_incr = 0.025
@@ -29,7 +29,7 @@ class PSlider(PIDSlider):
 class ISlider(PIDSlider):
 	def __init__(self, pidController):
 		self.pidRange = gtk.Adjustment(
-			value = 0,
+			value = pidController.ki,
 			lower = 0,
 			upper = 5,
 			step_incr = 0.025
@@ -41,7 +41,7 @@ class ISlider(PIDSlider):
 class DSlider(PIDSlider):
 	def __init__(self, pidController):
 		self.pidRange = gtk.Adjustment(
-			value = 0,
+			value = pidController.kd,
 			lower = 0,
 			upper = 0.5,
 			step_incr = 0.0025
@@ -52,7 +52,9 @@ class DSlider(PIDSlider):
 
 class SliderWrapper(gtk.HBox):
 	def __init__(self, name, slider):
-		label = gtk.Label(name)
+		label = gtk.Label()
+		label.set_text_with_mnemonic(name)
+		label.set_mnemonic_widget(slider)
 		label.show()
 
 		gtk.HBox.__init__(self)
@@ -69,30 +71,45 @@ class PIDWindow(gtk.Window):
 		pScale = PSlider(pidController)
 		pScale.set_size_request(320, 50)
 		pScale.show()
-		pControl = SliderWrapper("kP", pScale)
+		pControl = SliderWrapper("k_P", pScale)
 
 		iScale = ISlider(pidController)
 		iScale.set_size_request(320, 50)
 		iScale.show()
-		iControl = SliderWrapper("kI", iScale)
+		iControl = SliderWrapper("k_I", iScale)
 
 		dScale = DSlider(pidController)
 		dScale.set_size_request(320, 50)
 		dScale.show()
-		dControl = SliderWrapper("kD", dScale)
+		dControl = SliderWrapper("k_D", dScale)
+
+		errorLabel = gtk.Label("Error")
+		errorLabel.show()
+		errorValue = gtk.Label("0")
+		errorValue.show()
+		errorValue.modify_font(pango.FontDescription("sans 48"))
+
+		gobject.timeout_add(100, lambda: errorValue.set_text(str(pidController.error)) or True)
+
+
+		errorWrapper = gtk.HBox()
+		errorWrapper.pack_start(errorLabel, False, False, 0)
+		errorWrapper.pack_start(errorValue, True, True, 0)
 
 		pControl.show()
 		iControl.show()
 		dControl.show()
+		errorWrapper.show()
 
 		mainWrapper = gtk.VBox()
 		mainWrapper.pack_start(pControl, False, False, 0)
 		mainWrapper.pack_start(iControl, False, False, 0)
 		mainWrapper.pack_start(dControl, False, False, 0)
+		mainWrapper.pack_start(errorWrapper, False, False, 0)
 		mainWrapper.show()
 
 		self.add(mainWrapper)
-
+		
 		self.show()
 
 	def main(self):
