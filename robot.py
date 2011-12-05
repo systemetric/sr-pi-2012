@@ -1,10 +1,12 @@
 import json
 
 #Load the config file
-config = json.load('config.json')
+config = json.load(open('config.json'))
+
+module = config["execute"]
 
 #Import the module
-__import__(config.execute)
+__import__(module)
 
 #Run its main method
-sys.modules[config.execute].main()
+sys.modules[module].main()
