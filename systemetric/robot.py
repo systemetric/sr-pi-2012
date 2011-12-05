@@ -4,10 +4,13 @@ import os
 import time
 import sr
 from collections import namedtuple
+import json
 
 from libs.pyeuclid import *
 from compassrobot import CompassRobot
 from compass import Compass
+
+config = json.load('config.json')
 
 Marker = namedtuple("Marker", "vertices normal location")
 Markers = namedtuple("Markers", "tokens robots arena buckets")
@@ -16,7 +19,7 @@ Token = namedtuple("Token", "markers id timestamp location")
 #info about the markers. Used in sr.vision
 MarkerInfo = namedtuple( "MarkerInfo", "code marker_type offset size" )
 
-DIE_HORRIBLY = 228 #TODO: make special marker
+DIE_HORRIBLY = config.killcode #special marker
 
 class Robot(CompassRobot):
 	'''A class derived from the base 'Robot' class provided by soton'''	 
