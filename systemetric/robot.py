@@ -89,6 +89,8 @@ class Robot(CompassRobot, KillableRobot):
 		markersById = self.getMarkersById()
 		
 		tokens = []
+		estimatedCentres = []
+
 		# For each token
 		for markerId, markers in markersById.tokens.iteritems():
 			newmarkers = []
@@ -105,8 +107,8 @@ class Robot(CompassRobot, KillableRobot):
 					))
 				
 				# Calculate the normal vector of the surface
-				edge1 = vertices[0] - vertices[1]
-				edge2 = vertices[2] - vertices[1]
+				edge1 = vertices[2] - vertices[1]
+				edge2 = vertices[0] - vertices[1]
 				normal = edge1.cross(edge2).normalize()
 				
 				# Keep the center position
@@ -117,12 +119,14 @@ class Robot(CompassRobot, KillableRobot):
 					normal = normal,
 					vertices = vertices
 				))
+				
+				estimatedCentres.append(location - normal * 0.05)
 			
 			token = Token(
 				markers = newmarkers,
 				timestamp = markers[0].timestamp,
 				id = markerId,
-				location = self.cameraMatrix * newmarkers[0].location
+				location = sum(estimatedCentres) / len(estimatedCentres)
 			)
 			# Take into account the position of the robot
 			# token.location = self.robotMatrix * token.Location
