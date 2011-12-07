@@ -8,6 +8,7 @@ import json
 
 from libs.pyeuclid import *
 from compassrobot import CompassRobot
+from killablerobot import KillableRobot
 from compass import Compass
 
 config = json.load(open('config.json'))
@@ -21,7 +22,7 @@ MarkerInfo = namedtuple( "MarkerInfo", "code marker_type offset size" )
 
 DIE_HORRIBLY = config.get('killCode') or 228 #special marker
 
-class Robot(CompassRobot):
+class Robot(CompassRobot, KillableRobot):
 	'''A class derived from the base 'Robot' class provided by soton'''	 
 	def __init__(self):
 		#Get the motors set up
@@ -38,13 +39,6 @@ class Robot(CompassRobot):
 			heading = 0,								 # rotation around the y axis
 			attitude = -10,							  # rotation around the x axis
 			bank = 0									 # rotation around the z axis
-		) 
-		
-		sr.vision.marker_luts['dev'][DIE_HORRIBLY] = MarkerInfo(
-			code = DIE_HORRIBLY,
-			marker_type = None,
-			offset = None,
-			size = 1 #Errors if 0
 		)
 		#Position and orientation of the robot
 		self.robotMatrix = Matrix3()
@@ -138,33 +132,8 @@ class Robot(CompassRobot):
 		tokens.sort(key=lambda m: m.location.magnitude())
 		return tokens
 		
-	def see(self, *args, **kw):
-		markers = sr.Robot.see(self, *args, **kw)
-		for marker in markers:
-			if marker.info.code == DIE_HORRIBLY:
-				self.end("Terminated by marker %d" % DIE_HORRIBLY, error=False)
-			   
-		return markers
-		
 	def driveDistance(self, distInMetres):
 		SPEED = .575
 		self.setSpeed(math.copysign(100, distInMetres))
 		time.sleep(abs(distInMetres) / SPEED)
 		self.stop()
-		
-	def end(self, message = 'robot stopped', error = True, shutdown = False):
-		'''Kill the robot in the nicest way possible'''
-		print message
-		
-		#stop the motors
-		self.stop()
-		#beep if error
-		if error:
-			self.power.beep([(440, 1), (220, 1), (880, 1)])
-		else:
-			self.power.beep([(262,2), (440, 2),(524, 2)])	
-		#end the program with an exit code
-		if shutdown:
-			os.system('shutdown -P now')
-		else:
-			sys.exit(int(error))
