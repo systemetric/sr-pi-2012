@@ -110,7 +110,7 @@ class Robot(CompassRobot, KillableRobot):
 				normal = edge1.cross(edge2).normalize()
 				
 				# Keep the center position
-				location = marker.center.world
+				location = marker.centre.world
 
 				newmarkers.append(Marker(
 					location = Point3(location.x, location.y, location.z),
@@ -120,9 +120,9 @@ class Robot(CompassRobot, KillableRobot):
 			
 			token = Token(
 				markers = newmarkers,
-				timestamp = marker[0].timestamp,
+				timestamp = markers[0].timestamp,
 				id = markerId,
-				location = self.cameraMatrix * newmarkers[0].center
+				location = self.cameraMatrix * newmarkers[0].location
 			)
 			# Take into account the position of the robot
 			# token.location = self.robotMatrix * token.Location
@@ -131,7 +131,7 @@ class Robot(CompassRobot, KillableRobot):
 		#sort by distance, for convenience
 		tokens.sort(key=lambda m: m.location.magnitude())
 		return tokens
-		
+
 	def driveDistance(self, distInMetres):
 		SPEED = .575
 		self.setSpeed(math.copysign(100, distInMetres))

@@ -7,7 +7,7 @@ config = json.load(open('config.json'))
 
 DIE_HORRIBLY = config.get('killCode') or 228 #special marker
 
-def KillableRobot(self):
+class KillableRobot(sr.Robot):
 	def __init__(self):
 		sr.vision.marker_luts['dev'][DIE_HORRIBLY] = sr.vision.MarkerInfo(
 			code = DIE_HORRIBLY,
