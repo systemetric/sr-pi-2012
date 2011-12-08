@@ -1,6 +1,6 @@
 class CompetitionArenaMap(ArenaMap):
 	def __init__(self):
-		self.zones = [
+		ArenaMap.__init__(self, [
 			{
 				0: Vector2(1, 0),
 				1: Vector2(2, 0), 
@@ -37,4 +37,4 @@ class CompetitionArenaMap(ArenaMap):
 				26: Vector2(0, 2),
 				27: Vector2(0, 1)
 			}
-		]
+		])

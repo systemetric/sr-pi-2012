@@ -1,9 +1,8 @@
 from libs.pyeuclid import *
 
 class ArenaMap(object)
-	def __init__(self):
-		if not self.zones:
-			raise NotImplementedError("You must derive from ArenaMap - it is abstract")
+	def __init__(self, zones):
+		self.zones = zones
 
 		#Magic line of code - joins all the wall dictionaries into one dictionary
 		self.all = dict(sum((zone.items() for zone in self.zones), []))
