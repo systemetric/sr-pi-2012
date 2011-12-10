@@ -2,12 +2,16 @@ import math
 from libs.pyeuclid import *
 
 class PointSet(list):
-	MAX_PRECISION = 360
+	"""
+	A class to store a set of Point2s, adding useful methods. The array should
+	_not_ be modified, as information is cached
+	"""
 
 	def __init__(self, points):
+		"""Create a PointSet from an existing list of Point2s"""
 		self[:] = points
-		self._centered = None
-		self._center = None
+		self.__centered = None
+		self.__center = None
 
 	def errorTo(self, other):
 		"""Calculate the sum of the squares of the error between two list of points"""
@@ -16,30 +20,30 @@ class PointSet(list):
 	@property
 	def center(self):
 		"""Calculate the geometric center of the points"""
-		if not self._center:
-			self._center = sum(self, Vector2()) / float(len(self))
+		if not self.__center:
+			self.__center = sum(self, Vector2()) / float(len(self))
 
-		return self._center
+		return self.__center
 
 	@property
 	def centered(self):
 		"""Center all the points around the origin"""
-		if not self._centered:
-			self._centered = PointSet([p - self.center for p in self])
+		if not self.__centered:
+			self.__centered = PointSet([p - self.center for p in self])
 		
-		return self._centered
+		return self.__centered
 
 	def transformedBy(self, matrix):
 		"""Transform every point in this set by a matrix"""
 		return PointSet([matrix * p for p in self])
 
-	def bestTransformTo(self, other):
+	def bestTransformTo(self, other, maxPrecision = 360):
 		"""Find the matrix transformation which best maps this point set onto another"""
 		tried = []
 
 		#Try `maxPrecision` rotations, in equal steps
-		for i in range(PointSet.MAX_PRECISION):
-			theta = i * math.pi * 2 / PointSet.MAX_PRECISION
+		for i in range(maxPrecision):
+			theta = i * math.pi * 2 / maxPrecision
 			rotation = Matrix3.new_rotate(theta)
 			
 			e = self.centered.transformedBy(rotation).errorTo(other.centered)
@@ -53,7 +57,7 @@ class PointSet(list):
 
 		return (transform, error)
 
-def tryIt():
+def main():
 	originalTransform = Matrix3.new_translate(5, 2) * Matrix3.new_rotate(math.pi/5) * Matrix3.new_translate(2, 6)
 
 	square = PointSet([
@@ -69,5 +73,3 @@ def tryIt():
 
 	print originalTransform
 	print calculatedTransform
-
-tryIt()
