@@ -48,94 +48,11 @@ class Robot(CompassRobot, KillableRobot):
 	@property 
 	def compassHeading(self):
 		return self.compass.heading
+
+	def see(self, *args, **kargs):
+		markers = KillableRobot.see(self, *args, **kargs)
+		return VisionResult(markers)
 	
-	def getMarkersById(self, *args, **kargs):
-		'''Get all the markers, grouped by id.
-		For example, to get the token with id 1, use:
-		
-			markers = R.getMarkersById()
-			
-			# Check if token 0 is visible
-			if 0 in markers.tokens:
-				markersOnFirstToken = markers.tokens[0]
-		'''
-		markers = self.see(*args, **kargs)
-		markersById = Markers(tokens={}, arena={}, robots={}, buckets={})
-		
-		for marker in markers:
-			id = marker.info.offset
-			type = marker.info.marker_type
-			
-			# What type of marker is it?
-			if type == sr.MARKER_TOKEN:
-				list = markersById.tokens
-			elif type == sr.MARKER_ARENA:
-				list = markersById.arena
-			elif type == sr.MARKER_ROBOT:
-				list = markersById.robots
-			else:
-				list = markersById.buckets
-			
-			#Is this the first marker we've seen for this object?
-			if not id in list:
-				list[id] = []
-				
-			#Add this marker to the list of markers for this object
-			list[id].append(marker)
-		
-		return markersById
-	
-	def visibleCubes(self):
-		markersById = self.getMarkersById()
-		
-		tokens = []
-		estimatedCentres = []
-
-		# For each token
-		for markerId, markers in markersById.tokens.iteritems():
-			newmarkers = []
-			# Convert all the markers to a nicer format, using pyeuclid
-			for marker in markers:
-			
-				vertices = []
-				# We only care about 3D coordinates - keep those
-				for v in marker.vertices:
-					vertices.append(Point3(
-						v.world.x,
-						v.world.y,
-						v.world.z
-					))
-				
-				# Calculate the normal vector of the surface
-				edge1 = vertices[2] - vertices[1]
-				edge2 = vertices[0] - vertices[1]
-				normal = edge1.cross(edge2).normalize()
-				
-				# Keep the center position
-				location = marker.centre.world
-
-				newmarkers.append(Marker(
-					location = Point3(location.x, location.y, location.z),
-					normal = normal,
-					vertices = vertices
-				))
-				
-				estimatedCentres.append(location - normal * 0.05)
-			
-			token = Token(
-				markers = newmarkers,
-				timestamp = markers[0].timestamp,
-				id = markerId,
-				location = sum(estimatedCentres) / len(estimatedCentres)
-			)
-			# Take into account the position of the robot
-			# token.location = self.robotMatrix * token.Location
-			tokens.append(token)
-		
-		#sort by distance, for convenience
-		tokens.sort(key=lambda m: m.location.magnitude())
-		return tokens
-
 	def driveDistance(self, distInMetres):
 		SPEED = .575
 		self.setSpeed(math.copysign(100, distInMetres))
