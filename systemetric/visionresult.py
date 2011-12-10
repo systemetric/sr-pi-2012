@@ -1,5 +1,6 @@
 import sr
 from libs.pyeuclid import *
+from pointset import PointSet
 
 class VisionResult(list):
 
@@ -132,5 +133,6 @@ class VisionResult(list):
 					edges += [edge2, edge4]
 				else:
 					edges += [edge4, edge2]
-		return [self.__projectToFieldPlane(edge) for edge in edges]
+					
+		return PointSet([self.__projectToFieldPlane(edge) for edge in edges])
 
