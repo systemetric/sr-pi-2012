@@ -9,9 +9,13 @@ MARKERS_POSITIONS = {
 	0: Point2(2, 0)
 }
 robotPosition = Point2(0, 0)
+def positionFromMarkerPair(marker1, marker2):
+	marker1Id = marker1.info.offset
+	marker2Id = marker2.info.offset
+	
 def positionFromMarker(marker):
 	markerId = marker.info.offset
-	markerPosition = MARKERS_POSITIONS.get(markerId)
+
 	if markerPosition:
 		angleSeenAt = marker.rot_y
 		relativeRotation = marker.orientation.rot_y
@@ -21,16 +25,16 @@ def positionFromMarker(marker):
 
 		#print "Angles: %.1f %.1f" % (angleSeenAt, relativeRotation)
 		distance = marker.dist
-		robotPosition = Point2(math.cos(angle) * distance, math.sin(angle) * distance)
+		relativePosition = Point2(math.cos(angle) * distance, math.sin(angle) * distance)
 
-		print 'pos:', robotPosition + markerPosition, 'angle:', angle
+		return relativePosition + markerPosition
 
 def main():
 	R = systemetric.Robot()
 
 	while True:
 		markers = R.see(res = (1280, 1024))
-		print map(markers, positionFromMarker)
+		print map(positionFromMarker, markers)
 		"""
 		if len(markers) == 1:
 			positionFromMarker(markers[0])

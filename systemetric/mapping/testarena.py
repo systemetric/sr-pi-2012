@@ -1,4 +1,6 @@
 from libs.pyeuclid import *
+import systemetric
+
 marker_width = (10/12.0) *0.25
 
 def arenaPosition(center, zone):
@@ -48,5 +50,21 @@ arena = {
 	26: arenaPosition(Point2(0, 2), 3),
 	27: arenaPosition(Point2(0, 1), 3)
 }
+def positionsFromCodes(codes):
+	positions = []
+	for code in codes:
+		pos = arena[code]
+		positions += pos
+	return positions
+
 def main():
+	R = systemetric.Robot()
+	while True:
+		markerIds = []
+		markers = R.see()
+		for marker in markers.arena:
+			markerIds += [marker.info.offset]
+		print positionsFromCodes(markerIds)
+
+
 	print arena
