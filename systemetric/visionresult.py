@@ -9,11 +9,12 @@ class VisionResult(list):
 		self.arena = []
 		self.robots = []
 		self.buckets = []
-		self.cameraMatrix = Matrix4.new_rotate_euler(	# https://github.com/dov/pyeuclid/blob/master/euclid.txt (line 385)
-			heading = 0,								 # rotation around the y axis
-			attitude = -5,							  # rotation around the x axis
-			bank = 0									 # rotation around the z axis
-		)
+		self.cameraMatrix = Matrix4()
+		#self.cameraMatrix = Matrix4.new_rotate_euler(	# https://github.com/dov/pyeuclid/blob/master/euclid.txt (line 385)
+		#	heading = 0,								 # rotation around the y axis
+		#	attitude = -5,							  # rotation around the x axis
+		#	bank = 0									 # rotation around the z axis
+		#)
 		self.__groupByType()
 
 	def __groupByType(self):
@@ -48,9 +49,12 @@ class VisionResult(list):
 			#Add this marker to the list of markers for this object
 			#list[id].append(marker)
 			list.append(marker)
+
+	def __convertPoint(self, point):
+		return Point3(point.world.x, point.world.y, point.world.z)
+
 	def __projectToFieldPlane(self, point):
-		point = Point3(point.world.x, point.world.y, point.world.z)
-		return Vector2(*(self.cameraMatrix * point).xy)
+		return Point2(*(self.cameraMatrix * point).xz)
 	
 	def visibleCubes(self):		
 		tokens = []
@@ -101,8 +105,32 @@ class VisionResult(list):
 		tokens.sort(key=lambda m: m.location.magnitude())
 		return tokens
 
+
 	def arenaMarkerEdges(self):
+		edges = []
 		for marker in self.arena:
-			corners = map(self.__projectToFieldPlane, marker.vertices)
-			print '\n'.join(map(str, corners))
+
+			corners = [self.__convertPoint(v) for v in marker.vertices]
+
+			#Midpoints of edges
+			edge1 = (corners[0] + corners[1]) / 2.0
+			edge2 = (corners[1] + corners[2]) / 2.0
+			edge3 = (corners[2] + corners[3]) / 2.0
+			edge4 = (corners[3] + corners[0]) / 2.0
+
+			#Horizontal distance between midpoints
+			d1 = (edge1 - edge3).x
+			d2 = (edge2 - edge4).x
+
+			if abs(d1) >= abs(d2):
+				if d1 > 0:
+					edges += [edge1, edge3]
+				else:
+					edges += [edge3, edge1]
+			else:
+				if d2 > 0:
+					edges += [edge2, edge4]
+				else:
+					edges += [edge4, edge2]
+		return [self.__projectToFieldPlane(edge) for edge in edges]
 
