@@ -9,6 +9,8 @@ import json
 from libs.pyeuclid import *
 from compassrobot import CompassRobot
 from killablerobot import KillableRobot
+from visionresult import VisionResult
+
 from compass import Compass
 
 config = json.load(open('config.json'))

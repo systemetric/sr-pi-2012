@@ -1,20 +1,20 @@
 import sr
-from pyeuclid import *
+from libs.pyeuclid import *
 
 class VisionResult(list):
-	tokens = {}
-	arena = {}
-	robots = {}
-	buckets = {}
 
 	def __init__(self, rawmarkers):
 		self[:] = rawmarkers
-		self.__groupByType()
+		self.tokens = []
+		self.arena = []
+		self.robots = []
+		self.buckets = []
 		self.cameraMatrix = Matrix4.new_rotate_euler(	# https://github.com/dov/pyeuclid/blob/master/euclid.txt (line 385)
 			heading = 0,								 # rotation around the y axis
-			attitude = -10,							  # rotation around the x axis
+			attitude = -5,							  # rotation around the x axis
 			bank = 0									 # rotation around the z axis
 		)
+		self.__groupByType()
 
 	def __groupByType(self):
 		'''Get all the markers, grouped by id.
@@ -27,7 +27,7 @@ class VisionResult(list):
 				markersOnFirstToken = markers.tokens[0]
 		'''		
 		for marker in self:
-			id = marker.info.offset
+			#id = marker.info.offset
 			type = marker.info.marker_type
 			
 			# What type of marker is it?
@@ -40,12 +40,17 @@ class VisionResult(list):
 			else:
 				list = self.buckets
 			
-			#Is this the first marker we've seen for this object?
-			if not id in list:
-				list[id] = []
-				
+			##Is this the first marker we've seen for this object?
+			#if not id in list:
+			#	list[id] = []
+			
+
 			#Add this marker to the list of markers for this object
-			list[id].append(marker)
+			#list[id].append(marker)
+			list.append(marker)
+	def __projectToFieldPlane(self, point):
+		point = Point3(point.world.x, point.world.y, point.world.z)
+		return Vector2(*(self.cameraMatrix * point).xy)
 	
 	def visibleCubes(self):		
 		tokens = []
@@ -96,7 +101,8 @@ class VisionResult(list):
 		tokens.sort(key=lambda m: m.location.magnitude())
 		return tokens
 
-	def arenaMarkerEdges():
+	def arenaMarkerEdges(self):
 		for marker in self.arena:
-			pass
+			corners = map(self.__projectToFieldPlane, marker.vertices)
+			print '\n'.join(map(str, corners))
 
