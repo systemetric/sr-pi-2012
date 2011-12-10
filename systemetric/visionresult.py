@@ -1,15 +1,20 @@
 import sr
 from pyeuclid import *
 
-class VisionResult(object):
+class VisionResult(list):
 	tokens = {}
 	arena = {}
 	robots = {}
 	buckets = {}
 
 	def __init__(self, rawmarkers):
-		self.rawMarkers = rawmarkers
+		self[:] = rawmarkers
 		self.__groupByType()
+		self.cameraMatrix = Matrix4.new_rotate_euler(	# https://github.com/dov/pyeuclid/blob/master/euclid.txt (line 385)
+			heading = 0,								 # rotation around the y axis
+			attitude = -10,							  # rotation around the x axis
+			bank = 0									 # rotation around the z axis
+		)
 
 	def __groupByType(self):
 		'''Get all the markers, grouped by id.
@@ -21,7 +26,7 @@ class VisionResult(object):
 			if 0 in markers.tokens:
 				markersOnFirstToken = markers.tokens[0]
 		'''		
-		for marker in self.rawmarkers:
+		for marker in self:
 			id = marker.info.offset
 			type = marker.info.marker_type
 			
@@ -90,3 +95,8 @@ class VisionResult(object):
 		#sort by distance, for convenience
 		tokens.sort(key=lambda m: m.location.magnitude())
 		return tokens
+
+	def arenaMarkerEdges():
+		for marker in self.arena:
+			pass
+
