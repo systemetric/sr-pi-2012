@@ -1,26 +1,23 @@
-import json
 import sr
-
 import os, sys
 
-config = json.load(open('config.json'))
-
-DIE_HORRIBLY = config.get('killCode') or 228 #special marker
-
 class KillableRobot(sr.Robot):
-	def __init__(self):
-		sr.vision.marker_luts['dev'][DIE_HORRIBLY] = sr.vision.MarkerInfo(
-			code = DIE_HORRIBLY,
+	"""An abstraction that allows a robot to be killed when a certain marker is seen"""
+	def __init__(self, killCode):
+		self.killCode = killCode
+		sr.vision.marker_luts['dev'][killCode] = sr.vision.MarkerInfo(
+			code = killCode,
 			marker_type = None,
 			offset = None,
 			size = 1 #Errors if 0
 		)
 	
 	def see(self, *args, **kw):
+		"""Intercept Robot.see, and kill the robot if the killCode is seen"""
 		markers = sr.Robot.see(self, *args, **kw)
 		for marker in markers:
-			if marker.info.code == DIE_HORRIBLY:
-				self.end("Terminated by marker %d" % DIE_HORRIBLY, error=False)
+			if marker.info.code == self.killCode:
+				self.end("Terminated by marker %d" % self.killCode, error=False)
 			   
 		return markers
 
