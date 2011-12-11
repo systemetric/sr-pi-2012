@@ -284,7 +284,10 @@ class Vector2:
         return self.x * other.x + \
                self.y * other.y
 
-    def cross(self):
+    def left_perpendicular(self):
+        return Vector2(-self.y, self.x)
+
+    def right_perpendicular(self):
         return Vector2(self.y, -self.x)
 
     def reflect(self, normal):
