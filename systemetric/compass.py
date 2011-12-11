@@ -9,10 +9,12 @@ class Compass(object):
             self.port.open()
         except Exception:
             raise Exception('Cannot connect to mbed')
+        
+        self.zeroOffset = Bearing(0)
 
     @property
-    def heading(self):
-        '''Get the compass heading from the mbed'''
+    def absoluteHeading(self):
+        '''Get the compass heading from the mbed, measured from due north'''
         heading = 'n/a'
         try:
             self.port.write('H')
@@ -21,7 +23,16 @@ class Compass(object):
         except:
             print 'got [' + heading + '] from the compass. Not correct!'
             return Bearing(float('nan')) #return NaN, because we don't know the heading
-    
+
+    @property
+    def heading(self):
+        '''Get the compass heading from the mbed, relative to the offset'''
+        return self.absoluteHeading - self.zeroOffset
+
+    def initializeZeroOffset(self):
+        '''Set conceptual zero to the current heading'''
+        self.zeroOffset = self.absoluteHeading
+
     def startCalibration(self):
         self.port.write('C')
         
