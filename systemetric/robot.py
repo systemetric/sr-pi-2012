@@ -24,6 +24,9 @@ class Robot(CompassRobot, KillableRobot):
 		)
 		#Position and orientation of the robot
 		self.robotMatrix = pyeuclid.Matrix3()
+
+		#Set compass zero offset
+		self.compass.initializeZeroOffset()
 	
 	#deprecated
 	@property 
