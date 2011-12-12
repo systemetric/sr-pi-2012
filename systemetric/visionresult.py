@@ -1,6 +1,7 @@
 import sr
 from libs.pyeuclid import *
 from mapping.pointset import PointSet
+from collections import defaultdict
 
 class VisionResult(list):
 	class Marker(object):
@@ -9,36 +10,73 @@ class VisionResult(list):
 		"""
 		def __init__(self, visionResult, rawmarker):
 			self.visionResult = visionResult
-			self.vertices     = [Point3(v.world.x, v.world.y, v.world.z) for v in rawmarker.vertices]
+			#Convert coordinates of things to a useful form
+			self.vertices     = [visionResult.trueLocationOf(v) for v in rawmarker.vertices]
+			self.center       = visionResult.trueLocationOf(rawmarker.centre.world)
+
+			#Copy across useful properties
 			self.code         = rawmarker.info.offset
-			self.location     = rawmarker.centre.world
+			self.type         = rawmarker.info.marker_type
 
 			#Pick two arbitrary edges and calculate the normal vector
-			edge1 = self.vertices[2] - self.vertices[1]
-			edge2 = self.vertices[0] - self.vertices[1]
-			self.normal = edge1.cross(edge2).normalize()
+			self.normal = (
+				self.vertices[2] - self.vertices[1]
+			).cross(
+				self.vertices[0] - self.vertices[1]
+			).normalize()
 
-	class ArenaMarker(Marker):
-		def __init__(self, visionResult, rawmarker):
-			VisionResult.Marker.__init__(self, visionResult, rawmarker)
+	def trueLocationOf(self, srpoint):
+		"""
+		Take a point of the datatype returned by sr code, convert it to a
+		pyeuclid format, then correct for camera orientation
+		"""
+		point = Point3(srpoint.world.x, srpoint.world.y, srpoint.world.z)
+		return self.worldTransform * point
 
-			#Projected corners
-			corners = [visionResult.projectToFieldPlane(c) for c in self.vertices]
+	def __init__(self, rawmarkers, worldTransform = Matrix3()):
+		self[:] = rawmarkers
+		self.tokens = []
+		self.arena = []
+		self.robots = []
+		self.buckets = []
+		self.worldTransform = worldTransform
 
-			#Midpoints of edges
-			mid1 = (corners[0] + corners[1]) / 2.0
-			mid2 = (corners[1] + corners[2]) / 2.0
-			mid3 = (corners[2] + corners[3]) / 2.0
-			mid4 = (corners[3] + corners[0]) / 2.0
+		for marker in rawmarkers:
+			marker = self.Marker(self, marker)
+			type = marker.type
+			
+			# What type of marker is it?
+			if type == sr.MARKER_TOKEN:
+				self.tokens += [ marker ]
+			elif type == sr.MARKER_ARENA:
+				self.arena += [ marker ]
+			elif type == sr.MARKER_ROBOT:
+				self.robots += [ marker ]
+			elif type == sr.MARKER_BUCKET:
+				self.buckets += [ marker ]
+	def processed(self):
+		return ProcessedVisionResult(self)
+
+class ProcessedVisionResult(object):
+	"""
+	2d representation of what can be seen
+	"""
+	class ArenaMarker(object):
+		def __init__(self, visionResult, marker):
+			self.id = marker.code
+
+			#Convert points to 2D, and find midpoints
+			v = [visionResult.planarLocationOf(v) for v in marker.vertices]
+			mid1 = (v[0] + v[1]) / 2.0
+			mid2 = (v[1] + v[2]) / 2.0
+			mid3 = (v[2] + v[3]) / 2.0
+			mid4 = (v[3] + v[0]) / 2.0
 
 			#distance between midpoints
 			d1 = abs(mid1 - mid3)
 			d2 = abs(mid2 - mid4)
 
-			if d1 > d2:
-				midpoints = (mid1, mid3)
-			else:
-				midpoints = (mid2, mid4)
+			midpoints = (mid1, mid3) if d1 > d2 else (mid2, mid4)
 			
 			#Calculate sin(angle between edges[0], the origin, and edges[1])
 			sinAngle = midpoints[0].left_perpendicular().dot(midpoints[1])
@@ -49,134 +87,45 @@ class VisionResult(list):
 				self.right = midpoints[1]
 			else:
 				#First point is to the right [CHECK!] of second point
-				self.left = midpoints
-				[1]
+				self.left = midpoints[1]
 				self.right = midpoints[0]
 
 	class Token(object):
 		SIZE = 0.1
-		def __init__(self, markers):
+		def __init__(self, visionResult, id, markers):
+			self.id = id
 			self.markers = markers
-			self.center = sum(m.location - m.normal * SIZE / 2 for m in markers) / len(markers)			
+			center = sum(m.center - m.normal * SIZE / 2 for m in markers) / len(markers)
+			self.center = planarLocationOf(center)
 
-	def __init__(self, rawmarkers, skip = ()):
-		self[:] = rawmarkers
+	class Robot(object):
+		def __init__(self, visionResult, markers):
+			pass
+
+	class Bucket(object):
+		def __init__(self, visionResult, markers):
+			pass
+
+	def planarLocationOf(self, point):
+		return Point2(point.x, point.z)
+
+	def __init__(self, visionResult):
+		self.arena = [self.ArenaMarker(self, m) for m in visionResult.arena]
 		self.tokens = []
-		self.arena = []
-		self.robots = []
-		self.buckets = []
-		self.cameraMatrix = Matrix4()
-		#self.cameraMatrix = Matrix4.new_rotate_euler(	# https://github.com/dov/pyeuclid/blob/master/euclid.txt (line 385)
-		#	heading = 0,								 # rotation around the y axis
-		#	attitude = -5,							  # rotation around the x axis
-		#	bank = 0									 # rotation around the z axis
-		#)
-		self.__groupByType(skip)
 
-	def __groupByType(self, skip):
-		'''Sub divides and processes the types of markers'''
-		for marker in self:
-			#id = marker.info.offset
-			type = marker.info.marker_type
-			
-			# What type of marker is it?
-			if type == sr.MARKER_TOKEN and 'tokens' not in skip:
-				self.tokens += marker #[ Marker(marker) ] - Leave to prevent breakage of existing code
-			elif type == sr.MARKER_ARENA and 'arena' not in skip:
-				self.arena += [ self.ArenaMarker(self, marker) ]
-			elif type == sr.MARKER_ROBOT and 'robots' not in skip:
-				self.robots += [ self.Marker(self, marker) ]
-			elif 'buckets' not in skip:
-				self.buckets += [ self.Marker(self, marker) ]
-			
-			##Is this the first marker we've seen for this object?
-			#if not id in list:
-			#	list[id] = []
-			
+		tokenmarkers = defaultdict(list)
 
-			#Add this marker to the list of markers for this object
-			#list[id].append(marker)
-			#list.append(marker)
-
-	def projectToFieldPlane(self, point):
-		return Point2(*(self.cameraMatrix * point).xz)
-	
-	def visibleCubes(self):		
-		tokens = []
-		estimatedCentres = []
-
-		# For each token
-		for markerId, markers in self.tokens.iteritems():
-			newmarkers = []
-			# Convert all the markers to a nicer format, using pyeuclid
-			for marker in markers:
-			
-				vertices = []
-				# We only care about 3D coordinates - keep those
-				for v in marker.vertices:
-					vertices.append(Point3(
-						v.world.x,
-						v.world.y,
-						v.world.z
-					))
-				
-				# Calculate the normal vector of the surface
-				edge1 = vertices[2] - vertices[1]
-				edge2 = vertices[0] - vertices[1]
-				normal = edge1.cross(edge2).normalize()
-				
-				# Keep the center position
-				location = marker.centre.world
-
-				newmarkers.append(Marker(
-					location = Point3(location.x, location.y, location.z),
-					normal = normal,
-					vertices = vertices
-				))
-				
-				estimatedCentres.append(location - normal * 0.05)
-			
-			token = Token(
-				markers = newmarkers,
-				timestamp = markers[0].timestamp,
-				id = markerId,
-				location = sum(estimatedCentres) / len(estimatedCentres)
-			)
-			# Take into account the position of the robot
-			# token.location = self.robotMatrix * token.Location
-			tokens.append(token)
+		for m in visionResult.arena:
+			tokenmarkers[m.code] += [m]
 		
-		#sort by distance, for convenience
-		tokens.sort(key=lambda m: m.location.magnitude())
-		return tokens
+		for code, markers in tokenmarkers.iteritems():
+			self.tokens += [ self.Token(self, code, markers) ]
 
-
-	def arenaMarkerEdges(self):
-		edges = []
-		for marker in self.arena:
-
-			corners = [self.__convertPoint(v) for v in marker.vertices]
-
-			#Midpoints of edges
-			edge1 = (corners[0] + corners[1]) / 2.0
-			edge2 = (corners[1] + corners[2]) / 2.0
-			edge3 = (corners[2] + corners[3]) / 2.0
-			edge4 = (corners[3] + corners[0]) / 2.0
-
-			#Horizontal distance between midpoints
-			d1 = (edge1 - edge3).x
-			d2 = (edge2 - edge4).x
-
-			if abs(d1) >= abs(d2):
-				if d1 > 0:
-					edges += [edge1, edge3]
-				else:
-					edges += [edge3, edge1]
-			else:
-				if d2 > 0:
-					edges += [edge2, edge4]
-				else:
-					edges += [edge4, edge2]
-					
-		return PointSet([self.__projectToFieldPlane(edge) for edge in edges])
-
+		self.tokens.sort(key=lambda m: m.center.magnitude())
+	
+	def arenaMarkerEnds(self):
+		return PointSet[
+			point
+			for marker in self.arena
+			for point in [marker.left, marker.right]
+		])
