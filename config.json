@@ -1,4 +1,4 @@
 {
-    "execute": "tests.arena", 
+    "execute": "tests.enhanced_vision_calculations", 
     "killCode": 228
 }
