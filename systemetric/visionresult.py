@@ -1,6 +1,6 @@
 import sr
 from libs.pyeuclid import *
-from pointset import PointSet
+from mapping.pointset import PointSet
 
 class VisionResult(list):
 	class Marker(object):
@@ -18,8 +18,7 @@ class VisionResult(list):
 			edge2 = self.vertices[0] - self.vertices[1]
 			self.normal = edge1.cross(edge2).normalize()
 
-
-	class ArenaMarker(VisionResult.Marker):
+	class ArenaMarker(Marker):
 		def __init__(self, visionResult, rawmarker):
 			VisionResult.Marker.__init__(self, visionResult, rawmarker)
 
@@ -46,12 +45,13 @@ class VisionResult(list):
 
 			if sinAngle > 0:
 				#First point is to the left [CHECK!] of second point
-				self.left = edges[0]
-				self.right = edges[1]
+				self.left = midpoints[0]
+				self.right = midpoints[1]
 			else:
 				#First point is to the right [CHECK!] of second point
-				self.left = edges[1]
-				self.right = edges[0]
+				self.left = midpoints
+				[1]
+				self.right = midpoints[0]
 
 	class Token(object):
 		SIZE = 0.1
@@ -83,11 +83,11 @@ class VisionResult(list):
 			if type == sr.MARKER_TOKEN and 'tokens' not in skip:
 				self.tokens += marker #[ Marker(marker) ] - Leave to prevent breakage of existing code
 			elif type == sr.MARKER_ARENA and 'arena' not in skip:
-				self.arena += [ ArenaMarker(marker) ]
+				self.arena += [ self.ArenaMarker(self, marker) ]
 			elif type == sr.MARKER_ROBOT and 'robots' not in skip:
-				self.robots += [ Marker(marker) ]
+				self.robots += [ self.Marker(self, marker) ]
 			elif 'buckets' not in skip:
-				self.buckets += [ Marker(marker) ]
+				self.buckets += [ self.Marker(self, marker) ]
 			
 			##Is this the first marker we've seen for this object?
 			#if not id in list:
@@ -96,7 +96,7 @@ class VisionResult(list):
 
 			#Add this marker to the list of markers for this object
 			#list[id].append(marker)
-			list.append(marker)
+			#list.append(marker)
 
 	def projectToFieldPlane(self, point):
 		return Point2(*(self.cameraMatrix * point).xz)

@@ -6,6 +6,7 @@ import systemetric
 def main():
     R = systemetric.Robot()
 
+    print R.compass.heading, R.compass.absoluteHeading
 
     while True:
         print "Reading markers"

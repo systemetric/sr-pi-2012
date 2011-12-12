@@ -47,6 +47,6 @@ class Robot(CompassRobot, KillableRobot):
 		distance goes backwards
 		"""
 		SPEED = .575
-		self.setSpeed(math.copysign(100, distInMetres))
+		self.drive(speed = math.copysign(100, distInMetres))
 		time.sleep(abs(distInMetres) / SPEED)
 		self.stop()
