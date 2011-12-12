@@ -14,7 +14,7 @@ class CompassRobot(TwoWheeledRobot):
 
         self.regulator = PID(
             getInput = lambda: self.compass.heading,
-            setOutput = lambda x: CompassRobot.drive(self, speed = self.speed, steer = x),
+            setOutput = lambda x: TwoWheeledRobot.drive(self, speed = self.speed, steer = x),
             outputRange = (-100, 100),
             iLimit = 0.25
         )

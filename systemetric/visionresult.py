@@ -1,6 +1,6 @@
 import sr
 from libs.pyeuclid import *
-from pointset import PointSet
+from mapping.pointset import PointSet
 
 class VisionResult(list):
 
