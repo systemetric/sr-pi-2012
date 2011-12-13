@@ -162,6 +162,8 @@ class Vector2:
                 _class = Point2
             return _class(self.x + other.x,
                           self.y + other.y)
+        elif other == 0:
+            return self
         else:
             assert hasattr(other, '__len__') and len(other) == 2
             return Vector2(self.x + other[0],
@@ -391,6 +393,8 @@ class Vector3:
             return _class(self.x + other.x,
                           self.y + other.y,
                           self.z + other.z)
+        elif other == 0:
+            return self
         else:
             assert hasattr(other, '__len__') and len(other) == 3
             return Vector3(self.x + other[0],
