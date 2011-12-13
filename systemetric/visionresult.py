@@ -12,7 +12,7 @@ class VisionResult(list):
 			self.visionResult = visionResult
 			#Convert coordinates of things to a useful form
 			self.vertices     = [visionResult.trueLocationOf(v) for v in rawmarker.vertices]
-			self.center       = visionResult.trueLocationOf(rawmarker.centre.world)
+			self.center       = visionResult.trueLocationOf(rawmarker.centre)
 
 			#Copy across useful properties
 			self.code         = rawmarker.info.offset
@@ -24,6 +24,9 @@ class VisionResult(list):
 			).cross(
 				self.vertices[0] - self.vertices[1]
 			).normalize()
+		
+		def __repr__(self):
+			return "<VisionResult.Marker (code=%d, type=%s, center=%s)>" % (self.code, self.type, repr(self.center))
 
 	def trueLocationOf(self, srpoint):
 		"""
@@ -33,7 +36,7 @@ class VisionResult(list):
 		point = Point3(srpoint.world.x, srpoint.world.y, srpoint.world.z)
 		return self.worldTransform * point
 
-	def __init__(self, rawmarkers, worldTransform = Matrix3()):
+	def __init__(self, rawmarkers, worldTransform = Matrix4()):
 		self[:] = rawmarkers
 		self.tokens = []
 		self.arena = []
@@ -54,6 +57,7 @@ class VisionResult(list):
 				self.robots += [ marker ]
 			elif type == sr.MARKER_BUCKET:
 				self.buckets += [ marker ]
+
 	def processed(self):
 		return ProcessedVisionResult(self)
 
@@ -95,8 +99,11 @@ class ProcessedVisionResult(object):
 		def __init__(self, visionResult, id, markers):
 			self.id = id
 			self.markers = markers
-			center = sum(m.center - m.normal * SIZE / 2 for m in markers) / len(markers)
+			center = sum(m.center - m.normal * self.SIZE / 2 for m in markers) / len(markers)
 			self.center = planarLocationOf(center)
+
+		def __repr__(self):
+			return "<ProcessedVisionResult.Token #%d at %s>" % (self.code, repr(self.center))
 
 	class Robot(object):
 		def __init__(self, visionResult, markers):
@@ -115,17 +122,19 @@ class ProcessedVisionResult(object):
 
 		tokenmarkers = defaultdict(list)
 
-		for m in visionResult.arena:
+		for m in visionResult.tokens:
 			tokenmarkers[m.code] += [m]
 		
+		print tokenmarkers
+
 		for code, markers in tokenmarkers.iteritems():
 			self.tokens += [ self.Token(self, code, markers) ]
 
-		self.tokens.sort(key=lambda m: m.center.magnitude())
+		self.tokens.sort(key=lambda m: abs(m.center))
 	
 	def arenaMarkerEnds(self):
-		return PointSet[
+		return PointSet([
 			point
 			for marker in self.arena
-			for point in [marker.left, marker.right]
+			for point in (marker.left, marker.right)
 		])
