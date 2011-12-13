@@ -54,6 +54,7 @@ class VisionResult(list):
 				self.robots += [ marker ]
 			elif type == sr.MARKER_BUCKET:
 				self.buckets += [ marker ]
+
 	def processed(self):
 		return ProcessedVisionResult(self)
 
@@ -121,11 +122,11 @@ class ProcessedVisionResult(object):
 		for code, markers in tokenmarkers.iteritems():
 			self.tokens += [ self.Token(self, code, markers) ]
 
-		self.tokens.sort(key=lambda m: m.center.magnitude())
+		self.tokens.sort(key=lambda m: abs(m.center))
 	
 	def arenaMarkerEnds(self):
-		return PointSet[
+		return PointSet([
 			point
 			for marker in self.arena
-			for point in [marker.left, marker.right]
+			for point in (marker.left, marker.right)
 		])
