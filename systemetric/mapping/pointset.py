@@ -9,6 +9,9 @@ class PointSet(list):
 
 	def __init__(self, points):
 		"""Create a PointSet from an existing list of Point2s"""
+		if len(points) == 0:
+			raise ValueError("That set is empty!")
+
 		self[:] = points
 		self.__centered = None
 		self.__center = None

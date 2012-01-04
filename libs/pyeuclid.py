@@ -89,6 +89,8 @@ class Vector2:
     __hash__ = None
 
     def __init__(self, x=0, y=0):
+        if type(x) == tuple or type(y) == tuple:
+            raise IOError
         self.x = x
         self.y = y
 
