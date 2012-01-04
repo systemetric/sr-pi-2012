@@ -71,6 +71,7 @@ class ProcessedVisionResult(object):
 
 			#Convert points to 2D, and find midpoints
 			v = [visionResult.planarLocationOf(v) for v in marker.vertices]
+
 			mid1 = (v[0] + v[1]) / 2.0
 			mid2 = (v[1] + v[2]) / 2.0
 			mid3 = (v[2] + v[3]) / 2.0
@@ -85,14 +86,16 @@ class ProcessedVisionResult(object):
 			#Calculate sin(angle between edges[0], the origin, and edges[1])
 			sinAngle = midpoints[0].left_perpendicular().dot(midpoints[1])
 
+			theOrigin = Point2()
+
 			if sinAngle > 0:
 				#First point is to the left [CHECK!] of second point
-				self.left = midpoints[0]
-				self.right = midpoints[1]
+				self.left = theOrigin + midpoints[0]
+				self.right = theOrigin + midpoints[1]
 			else:
 				#First point is to the right [CHECK!] of second point
-				self.left = midpoints[1]
-				self.right = midpoints[0]
+				self.left = theOrigin + midpoints[1]
+				self.right = theOrigin + midpoints[0]
 
 	class Token(object):
 		SIZE = 0.1
@@ -131,6 +134,8 @@ class ProcessedVisionResult(object):
 		self.tokens.sort(key=lambda m: abs(m.center))
 	
 	def arenaMarkerEnds(self):
+		# This may be useful:
+		# unzip = lambda zipped: (lambda *x: x)(*map(list,zip(*zipped)))
 		return PointSet([
 			point
 			for marker in self.arena
