@@ -100,10 +100,10 @@ class ProcessedVisionResult(object):
 			self.id = id
 			self.markers = markers
 			center = sum(m.center - m.normal * self.SIZE / 2 for m in markers) / len(markers)
-			self.center = planarLocationOf(center)
+			self.center = visionResult.planarLocationOf(center)
 
 		def __repr__(self):
-			return "<ProcessedVisionResult.Token #%d at %s>" % (self.code, repr(self.center))
+			return "<ProcessedVisionResult.Token #%d at %s>" % (self.id, repr(self.center))
 
 	class Robot(object):
 		def __init__(self, visionResult, markers):
@@ -124,8 +124,6 @@ class ProcessedVisionResult(object):
 
 		for m in visionResult.tokens:
 			tokenmarkers[m.code] += [m]
-		
-		print tokenmarkers
 
 		for code, markers in tokenmarkers.iteritems():
 			self.tokens += [ self.Token(self, code, markers) ]
