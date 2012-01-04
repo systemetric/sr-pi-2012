@@ -1,4 +1,4 @@
 {
-    "execute": "tests.arena", 
+    "execute": "tests.drive_to_cube_better", 
     "killCode": 228
 }

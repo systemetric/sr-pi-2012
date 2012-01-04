@@ -1,34 +1,16 @@
-from sr import *
 import time
-import math
 import systemetric
 
 def main():
     R = systemetric.Robot()
-
-    print R.compass.heading, R.compass.absoluteHeading
-
     while True:
         print "Reading markers"
         #Get only the tokens
-        allMarkers = R.see(res=(1280,1024))
-        
-        markers = allMarkers.tokens
+        tokens = R.see(res=(1280,1024)).processed().tokens
         
         # Are there any tokens?
-        if markers:
-            #Get the angle of the token
-            for marker in markers:
-                angle = marker.centre.polar.rot_y
-                
-                print "Marker seen at: ", angle
-                
-                R.rotateBy(angle)
-                print "Facing marker"
-                # Drive forward almost the distance to the marker
-                R.driveDistance(marker.dist-0.1)
-
-                break
+        if tokens:
+            R.driveTo(tokens[0].center, gap=0.2)
         else:
             print "No Marker..."
             

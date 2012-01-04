@@ -6,6 +6,7 @@ import libs.pyeuclid as pyeuclid
 from compassrobot import CompassRobot
 from killablerobot import KillableRobot
 from visionresult import VisionResult
+from bearing import Bearing
 
 class Robot(CompassRobot, KillableRobot):
 	'''A class derived from the base 'Robot' class provided by soton'''	 
@@ -19,11 +20,11 @@ class Robot(CompassRobot, KillableRobot):
 		# Camera orientation, using yaw, pitch, and roll
 		self.cameraMatrix = pyeuclid.Matrix4.new_rotate_euler(  
 			heading = 0,    #yaw
-			attitude = -10, #pitch
+			attitude = math.degrees(-10), #pitch
 			bank = 0        #roll
 		)
-		#Position and orientation of the robot
-		self.robotMatrix = pyeuclid.Matrix3()
+		# Cache, since .inverse is expensive
+		self.worldTransform = self.cameraMatrix.inverse()
 
 		#Set compass zero offset
 		self.compass.initializeZeroOffset()
@@ -39,7 +40,7 @@ class Robot(CompassRobot, KillableRobot):
 		extra members tacked on)
 		"""
 		markers = KillableRobot.see(self, *args, **kargs)
-		return VisionResult(markers)
+		return VisionResult(markers, worldTransform = self.worldTransform)
 	
 	def driveDistance(self, distInMetres):
 		"""
@@ -50,3 +51,7 @@ class Robot(CompassRobot, KillableRobot):
 		self.drive(speed = math.copysign(100, distInMetres))
 		time.sleep(abs(distInMetres) / SPEED)
 		self.stop()
+	
+	def driveTo(self, relativePosition, gap = 0):
+		self.rotateBy(Bearing.toPoint(relativePosition))
+		self.driveDistance(abs(relativePosition) - gap)
