@@ -20,7 +20,7 @@ class Robot(CompassRobot, KillableRobot):
 		# Camera orientation, using yaw, pitch, and roll
 		self.cameraMatrix = pyeuclid.Matrix4.new_rotate_euler(  
 			heading = 0,    #yaw
-			attitude = math.degrees(-10), #pitch
+			attitude = 0, #math.degrees(-10), #pitch
 			bank = 0        #roll
 		)
 		# Cache, since .inverse is expensive
