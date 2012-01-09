@@ -36,6 +36,13 @@ class ArenaMap(dict):
 
 		return PointSet(positions), codes
 
+	def estimateTransformFrom(self, visionResult):
+		if visionResult.arena:
+			apparent = visionResult.arenaMarkerEnds()
+			actual, codes = self.positionsFromCodes(visionResult)
+			theta, transform, error = apparent.bestTransformTo(actual)
+			return transform
+
 	def estimatePositionFrom(self, visionResult):
 		"""Calculate the robot position given what it can see"""
 		#commonMarkerIds = set(visionResult.keys()) & set(self.keys())
