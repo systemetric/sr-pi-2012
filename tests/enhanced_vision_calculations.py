@@ -9,6 +9,5 @@ def main():
 		#print markers.tokens
 		#print len(markers), markers
 		if markers.arena:
-			print markers.arenaMarkerEnds()
-			print "Position", arenaMap.estimatePositionFrom(markers)
+			print arenaMap.estimatePositionFrom(markers)
 			#print "==========="

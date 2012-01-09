@@ -1,4 +1,5 @@
 from libs.pyeuclid import *
+from systemetric.bearing import Bearing
 from pointset import PointSet
 
 class ArenaMap(dict):
@@ -27,20 +28,20 @@ class ArenaMap(dict):
 		return min(self, key = lambda i: abs(point - self[i].center))
 
 	def positionsFromCodes(self, visionResult):
+		codes = [marker.id for marker in visionResult.arena]
 		positions = []
-		for marker in visionResult.arena:
-			pos = self[marker.id]
+		for code in codes:
+			pos = self[code]
 			positions += [pos.right, pos.left]
-		return PointSet(positions)
+
+		return PointSet(positions), codes
 
 	def estimatePositionFrom(self, visionResult):
 		"""Calculate the robot position given what it can see"""
 		#commonMarkerIds = set(visionResult.keys()) & set(self.keys())
 		apparent = visionResult.arenaMarkerEnds()
-		actual = self.positionsFromCodes(visionResult)
-
-		print apparent, actual
+		actual, codes = self.positionsFromCodes(visionResult)
 
 		#Translation is the amount the origin is transformed
-		transform, error = actual.bestTransformTo(apparent)
-		return transform * Point2(0, 0)
+		theta, transform, error = apparent.bestTransformTo(actual)
+		return Bearing(radians=theta), transform * Point2(0, 0), error

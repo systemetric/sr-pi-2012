@@ -47,18 +47,18 @@ class PointSet(list):
 		#Try `maxPrecision` rotations, in equal steps
 		for i in range(maxPrecision):
 			theta = i * math.pi * 2 / maxPrecision
-			rotation = Matrix3.new_rotate(theta)
+			matrix = Matrix3.new_rotate(theta)
 			
-			e = self.centered.transformedBy(rotation).errorTo(other.centered)
+			e = self.centered.transformedBy(matrix).errorTo(other.centered)
 
-			tried.append((rotation, e))
+			tried.append((theta, matrix, e))
 
-		rotation, error = min(tried, key=lambda x: x[1])
+		theta, rotation, error = min(tried, key=lambda x: x[2])
 
 		#Add back on the translation components
 		transform = Matrix3.new_translate(*other.center.xy) * rotation * Matrix3.new_translate(*self.center.xy).inverse()
 
-		return (transform, error)
+		return (theta, transform, error)
 
 def main():
 	originalTransform = Matrix3.new_translate(5, 2) * Matrix3.new_rotate(math.pi/5) * Matrix3.new_translate(2, 6)
