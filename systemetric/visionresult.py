@@ -97,6 +97,13 @@ class ProcessedVisionResult(object):
 				self.left = theOrigin + midpoints[1]
 				self.right = theOrigin + midpoints[0]
 
+		def transform(self, matrix):
+			self.left = matrix * self.left;
+			self.right = matrix * self.right;
+
+		def __repr__(self):
+			return "<ArenaMarker #%d at %s, %s>" % (self.id, repr(self.left), repr(self.right))
+
 	class Token(object):
 		SIZE = 0.1
 		def __init__(self, visionResult, id, markers):
@@ -105,8 +112,11 @@ class ProcessedVisionResult(object):
 			center = sum(m.center - m.normal * self.SIZE / 2 for m in markers) / len(markers)
 			self.center = visionResult.planarLocationOf(center)
 
+		def transform(self, matrix):
+			self.center = matrix * self.center;
+
 		def __repr__(self):
-			return "<ProcessedVisionResult.Token #%d at %s>" % (self.id, repr(self.center))
+			return "<Token #%d at %s>" % (self.id, repr(self.center))
 
 	class Robot(object):
 		def __init__(self, visionResult, markers):
