@@ -42,18 +42,18 @@ class S007ArenaMapSingleWall(ArenaMap):
 	"""A class representing the layout of the S007 arena"""
 	def __init__(self):
 		ArenaMap.__init__(self, {
-			0: ArenaMap.Marker(Point2(0, 0), 0),
-			4: ArenaMap.Marker(Point2(1, 0), 0),
-			9: ArenaMap.Marker(Point2(2, 0), 0)
+			0: ArenaMap.Marker(Point2(0.0, 0.0), 0),
+			4: ArenaMap.Marker(Point2(1.0, 0.0), 0),
+			9: ArenaMap.Marker(Point2(2.0, 0.0), 0)
 		})
 
 class S007SmallArenaMapSingleWall(ArenaMap):
 	"""A class representing the layout of the S007 arena"""
 	def __init__(self):
 		ArenaMap.__init__(self, {
-			0: ArenaMap.Marker(Point2(0, 0), 0),
-			4: ArenaMap.Marker(Point2(0.5, 0), 0),
-			9: ArenaMap.Marker(Point2(1, 0), 0)
+			0: ArenaMap.Marker(Point2(0.0, 0.0), 0),
+			4: ArenaMap.Marker(Point2(0.5, 0.0), 0),
+			9: ArenaMap.Marker(Point2(1.0, 0.0), 0)
 		})
 
 class S007SmallArenaMapSingleWall(ArenaMap):
@@ -77,22 +77,22 @@ class S007SmallArenaMapSingleWall(ArenaMap):
 	"""
 	def __init__(self):
 		ArenaMap.__init__(self, {
-			23: ArenaMap.Marker(Point2(0, 0), 3),
-			24: ArenaMap.Marker(Point2(0, 0.5), 3),
-			25: ArenaMap.Marker(Point2(0, 1), 3),
-			26: ArenaMap.Marker(Point2(0, 1.5), 3),
-			27: ArenaMap.Marker(Point2(0, 2), 3),
+			23: ArenaMap.Marker(Point2(0.0, 0.0), 3),
+			24: ArenaMap.Marker(Point2(0.0, 0.5), 3),
+			25: ArenaMap.Marker(Point2(0.0, 1.0), 3),
+			26: ArenaMap.Marker(Point2(0.0, 1.5), 3),
+			27: ArenaMap.Marker(Point2(0.0, 2.0), 3),
 
-			0: ArenaMap.Marker(Point2(0.5, 2.5), 2),
-			1: ArenaMap.Marker(Point2(1, 2.5, 2),
-			2: ArenaMap.Marker(Point2(1.5, 2.5), 2),
-			3: ArenaMap.Marker(Point2(2, 2.5), 2),
-			4: ArenaMap.Marker(Point2(2.5, 2.5), 2),
-			5: ArenaMap.Marker(Point2(3, 2.5), 2),
+			0:  ArenaMap.Marker(Point2(0.5, 2.5), 2),
+			1:  ArenaMap.Marker(Point2(1.0, 2.5), 2),
+			2:  ArenaMap.Marker(Point2(1.5, 2.5), 2),
+			3:  ArenaMap.Marker(Point2(2.0, 2.5), 2),
+			4:  ArenaMap.Marker(Point2(2.5, 2.5), 2),
+			5:  ArenaMap.Marker(Point2(3.0, 2.5), 2),
 
-			6: ArenaMap.Marker(Point2(3.5, 2), 1),
-			7: ArenaMap.Marker(Point2(3.5, 1.5), 1),
-			8: ArenaMap.Marker(Point2(3.5, 1), 1),
-			9: ArenaMap.Marker(Point2(3.5, 0.5), 1),
-			10: ArenaMap.Marker(Point2(3.5, 0), 1),
+			6:  ArenaMap.Marker(Point2(3.5, 2.0), 1),
+			7:  ArenaMap.Marker(Point2(3.5, 1.5), 1),
+			8:  ArenaMap.Marker(Point2(3.5, 1.0), 1),
+			9:  ArenaMap.Marker(Point2(3.5, 0.5), 1),
+			10: ArenaMap.Marker(Point2(3.5, 0.0), 1),
 		})
