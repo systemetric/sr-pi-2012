@@ -1,4 +1,5 @@
 import json
+import sys
 
 #Load the config file
 config = json.load(open('config.json'))
