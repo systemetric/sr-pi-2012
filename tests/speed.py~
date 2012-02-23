@@ -23,5 +23,3 @@ def main():
     time.sleep(10)
     
     R.stop()
-
-    #a comment!
