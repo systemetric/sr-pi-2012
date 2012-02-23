@@ -19,7 +19,7 @@ class CompassThread(threading.Thread):
             self.R.drive(speed = self.speed, steer = error/2)
 
 def main():
-    R = SystemetricRobot()
+    R = Robot()
     t = CompassThread(R)
     t.start()
     

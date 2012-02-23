@@ -1,9 +1,9 @@
 import systemetric
-from systemetric.mapping.arenamaps import S007SmallArenaMap
+from systemetric.mapping.arenamaps import S007ArenaMap
 
 def main():
 	R = systemetric.Robot()
-	arenaMap = S007SmallArenaMap()
+	arenaMap = S007ArenaMap()
 	while True:
 		markers = R.see().processed()
 		#print markers.tokens
