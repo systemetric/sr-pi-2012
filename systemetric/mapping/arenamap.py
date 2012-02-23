@@ -20,7 +20,8 @@ class ArenaMap(dict):
 
 			self.left, self.right = center + side, center - side
 
-	def __init__(self, arenaMarkers):
+	def __init__(self, size, arenaMarkers):
+		self.size = size
 		self.update(arenaMarkers)
 
 	def nearestMarkerTo(self, point):
@@ -36,19 +37,20 @@ class ArenaMap(dict):
 
 		return PointSet(positions), codes
 
-	def estimateTransformFrom(self, visionResult):
+	def getLocationInfoFrom(self, visionResult):
 		if visionResult.arena:
 			apparent = visionResult.arenaMarkerEnds()
 			actual, codes = self.positionsFromCodes(visionResult)
 			theta, transform, error = apparent.bestTransformTo(actual)
-			return transform
 
-	def estimatePositionFrom(self, visionResult):
-		"""Calculate the robot position given what it can see"""
-		#commonMarkerIds = set(visionResult.keys()) & set(self.keys())
-		apparent = visionResult.arenaMarkerEnds()
-		actual, codes = self.positionsFromCodes(visionResult)
+			info = lambda: magic #extendable_object
 
-		#Translation is the amount the origin is transformed
-		theta, transform, error = apparent.bestTransformTo(actual)
-		return Bearing(radians=theta), transform * Point2(0, 0), error
+			info.heading = Bearing(radians=theta)
+			info.transform = transform
+			info.location = transform * Point2(0, 0)
+			info.accuracy = error
+
+			return info
+
+	def estimateTransformFrom(self, visionResult):
+		return getLocationInfoFrom(self, visionResult).transform

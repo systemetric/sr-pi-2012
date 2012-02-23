@@ -4,7 +4,7 @@ from libs.pyeuclid import Point2
 class CompetitionArenaMap(ArenaMap):
 	"""A class representing the layout of the actual competition arena"""
 	def __init__(self):
-		ArenaMap.__init__(self, {
+		ArenaMap.__init__(self, Point2(8.0, 8.0), {
 			0:  ArenaMap.Marker(Point2(1, 0), 0),
 			1:  ArenaMap.Marker(Point2(2, 0), 0),
 			2:  ArenaMap.Marker(Point2(3, 0), 0),
@@ -38,25 +38,25 @@ class CompetitionArenaMap(ArenaMap):
 			27: ArenaMap.Marker(Point2(0, 1), 3)
 		})
 
-class S007ArenaMapSingleWall(ArenaMap):
+class S007ArenaMapLargeWall(ArenaMap):
 	"""A class representing the layout of the S007 arena"""
 	def __init__(self):
-		ArenaMap.__init__(self, {
+		ArenaMap.__init__(self, Point2(2, 4), {
 			0: ArenaMap.Marker(Point2(0.0, 0.0), 0),
 			4: ArenaMap.Marker(Point2(1.0, 0.0), 0),
 			9: ArenaMap.Marker(Point2(2.0, 0.0), 0)
 		})
 
-class S007SmallArenaMapSingleWall(ArenaMap):
+class S007ArenaMapSmallWall(ArenaMap):
 	"""A class representing the layout of the S007 arena"""
 	def __init__(self):
-		ArenaMap.__init__(self, {
+		ArenaMap.__init__(self, Point2(1, 2), {
 			0: ArenaMap.Marker(Point2(0.0, 0.0), 0),
 			4: ArenaMap.Marker(Point2(0.5, 0.0), 0),
 			9: ArenaMap.Marker(Point2(1.0, 0.0), 0)
 		})
 
-class S007SmallArenaMapSingleWall(ArenaMap):
+class S007ArenaMap(ArenaMap):
 	"""A class representing the layout of the S007 arena. The width is 3.5m, length is 2.75m
 	^ Y
 	|
@@ -76,7 +76,7 @@ class S007SmallArenaMapSingleWall(ArenaMap):
 
 	"""
 	def __init__(self):
-		ArenaMap.__init__(self, {
+		ArenaMap.__init__(self, Point2(3.5, 2.75), {
 			23: ArenaMap.Marker(Point2(0.0, 0.0), 3),
 			24: ArenaMap.Marker(Point2(0.0, 0.5), 3),
 			25: ArenaMap.Marker(Point2(0.0, 1.0), 3),
