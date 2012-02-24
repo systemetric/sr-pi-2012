@@ -1,4 +1,4 @@
 {
-    "execute": "tests.enhanced_vision_calculations", 
+    "execute": "tests.gui.show_markers", 
     "killCode": 228
 }

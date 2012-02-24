@@ -1,6 +1,7 @@
 #import systemetric
 import gtk, gobject, cairo, math
 from systemetric.mapping.arenamaps import S007ArenaMap
+from systemetric.mapping.arenamaps import CompetitionArenaMap
 from libs.pyeuclid import *
 
 class Screen(gtk.DrawingArea):
@@ -28,28 +29,35 @@ class CubeDisplay(Screen):
         super(CubeDisplay, self).__init__()
         self.allTokens = {}
        # self.R = systemetric.Robot()
-        self.arenaMap = S007ArenaMap()
+        self.arenaMap = CompetitionArenaMap()
         self.tokens = {2: Point2(1, 1), 1200: Point2(0.5, 1.75), 0: Point2(3, 1.25)}
+        self.robotTransform = Matrix3.new_translate(2, 2.5).rotate(math.pi/3)
 
     def draw(self, w, h):
         self.cr.save()
         self.initScaling(self.cr, w, h)
     	self.drawArena(self.cr)
         self.drawTokens(self.cr)
+        self.drawRobot(self.cr)
         self.cr.restore()
 
     def drawRobot(self, cr):
         cr.save()
-        cr.rectangle(-0.3, -0.3, 0.6, 0.6)
+        m = self.robotTransform
+        m = cairo.Matrix(m.a, m.b, m.e, m.f, m.c, m.g)
+        cr.transform(m)
+        cr.rectangle(-0.1, -0.3, 0.2, 0.6)
         cr.set_source_rgb(1, 0, 0) 
         cr.fill()
+        cr.restore()
 
     def initScaling(self, cr, w, h):
         #Move to the middle of the screen
         cr.translate(w/2, h/2)
 
+        margin = 10 #px
         actualWidth, actualHeight = self.arenaMap.size.xy
-        scaleFactor = min(w/actualWidth, h/actualHeight)
+        scaleFactor = min( (w - 2*margin) /actualWidth, (h - 2*margin)/actualHeight)
 
         #Scale so that a measurement of 1 corresponds to one meter. Flip Y axis to give normal coords
         cr.scale(scaleFactor, -scaleFactor)
@@ -77,7 +85,7 @@ class CubeDisplay(Screen):
             cr.fill()
 
         cr.set_source_rgb(0, 0, 1)
-        cr.set_font_size(0.1)
+        cr.set_font_size(max(cr.device_to_user_distance(10, 10)))
         cr.select_font_face("Arial", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
         for id, token in self.tokens.iteritems():
             text = str(id)

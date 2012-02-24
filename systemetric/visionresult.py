@@ -4,9 +4,16 @@ from mapping.pointset import PointSet
 from collections import defaultdict
 
 class VisionResult(list):
+	"""
+	The class returned by `systemetric.Robot.see`. Splits the markers seen by
+	type, into `tokens`, `arena`, `robots`, and `buckets`, since that's how
+	they're most useful. For backwards compatibility, continues to behave as a
+	simple list	like the one returned by `sr.Robot.see`
+	"""
 	class Marker(object):
 		"""
-		A generic marker class that converts important information from the camera to pyeuclid types
+		A generic marker class that converts important information from the
+		sr geometry types to pyeuclid types
 		"""
 		def __init__(self, visionResult, rawmarker):
 			self.visionResult = visionResult
@@ -19,11 +26,9 @@ class VisionResult(list):
 			self.type         = rawmarker.info.marker_type
 
 			#Pick two arbitrary edges and calculate the normal vector
-			self.normal = (
-				self.vertices[2] - self.vertices[1]
-			).cross(
-				self.vertices[0] - self.vertices[1]
-			).normalize()
+			edge1             = self.vertices[2] - self.vertices[1]
+			edge2             = self.vertices[0] - self.vertices[1]
+			self.normal       = edge1.cross(edge2).normalize()
 		
 		def __repr__(self):
 			return "<VisionResult.Marker (code=%d, type=%s, center=%s)>" % (self.code, self.type, repr(self.center))
@@ -45,6 +50,7 @@ class VisionResult(list):
 		self.worldTransform = worldTransform
 
 		for marker in rawmarkers:
+			#Promote the object to the new type
 			marker = self.Marker(self, marker)
 			type = marker.type
 			
@@ -59,6 +65,7 @@ class VisionResult(list):
 				self.buckets += [ marker ]
 
 	def processed(self):
+		"""Process this vision result, into a ProcessedVisionResult"""
 		return ProcessedVisionResult(self)
 
 class ProcessedVisionResult(object):
@@ -66,18 +73,23 @@ class ProcessedVisionResult(object):
 	2d representation of what can be seen
 	"""
 	class ArenaMarker(object):
+		"""
+		A marker around the walls of the arena. Extracts information about the
+		left and right edge of the marker
+		"""
 		def __init__(self, visionResult, marker):
 			self.id = marker.code
 
 			#Convert points to 2D, and find midpoints
 			v = [visionResult.planarLocationOf(v) for v in marker.vertices]
 
+			#Midpoints of the sides
 			mid1 = (v[0] + v[1]) / 2.0
 			mid2 = (v[1] + v[2]) / 2.0
 			mid3 = (v[2] + v[3]) / 2.0
 			mid4 = (v[3] + v[0]) / 2.0
 
-			#distance between midpoints
+			#distance between opposite midpoints
 			d1 = abs(mid1 - mid3)
 			d2 = abs(mid2 - mid4)
 
@@ -105,6 +117,11 @@ class ProcessedVisionResult(object):
 			return "<ArenaMarker #%d at %s, %s>" % (self.id, repr(self.left), repr(self.right))
 
 	class Token(object):
+		"""
+		A cardboard cube. Groups all the markers of the same id into a single
+		object, and calculates where the center of the cube should be, by
+		pushing the normal vector of each surface back inside the cube
+		"""
 		SIZE = 0.1
 		def __init__(self, visionResult, id, markers):
 			self.id = id
