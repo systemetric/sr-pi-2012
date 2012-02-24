@@ -5,7 +5,7 @@ import json
 import libs.pyeuclid as pyeuclid
 from compassrobot import CompassRobot
 from killablerobot import KillableRobot
-from visionresult import VisionResult
+from vision import VisionResult
 from bearing import Bearing
 
 class Robot(CompassRobot, KillableRobot):

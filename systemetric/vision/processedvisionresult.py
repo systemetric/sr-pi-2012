@@ -1,5 +1,5 @@
 from libs.pyeuclid import *
-from mapping.pointset import PointSet
+from systemetric.mapping import PointSet
 from collections import defaultdict
 
 class ProcessedVisionResult(object):
@@ -81,6 +81,7 @@ class ProcessedVisionResult(object):
 		return Point2(point.x, point.z)
 
 	def __init__(self, visionResult):
+		self.timestamp = visionResult.timestamp
 		self.arena = [self.ArenaMarker(self, m) for m in visionResult.arena]
 		self.tokens = []
 

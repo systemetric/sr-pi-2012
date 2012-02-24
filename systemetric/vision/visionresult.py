@@ -1,6 +1,7 @@
 import sr
 from libs.pyeuclid import *
 from processedvisionresult import ProcessedVisionResult
+import time
 
 class VisionResult(list):
 	"""
@@ -41,6 +42,7 @@ class VisionResult(list):
 		return self.worldTransform * point
 
 	def __init__(self, rawmarkers, worldTransform = Matrix4()):
+		self.timestamp = time.time()
 		self[:] = rawmarkers
 		self.tokens = []
 		self.arena = []
