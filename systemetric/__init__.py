@@ -1,2 +1,2 @@
-from robot import *
+from robot import Robot
 from bearing import Bearing
