@@ -29,7 +29,7 @@ class CubeDisplay(Screen):
         self.allTokens = {}
        # self.R = systemetric.Robot()
         self.arenaMap = S007ArenaMap()
-        self.tokens = {2: Point2(1, 1), 12: Point2(0.5, 1.75), 0: Point2(3, 1.25)}
+        self.tokens = {2: Point2(1, 1), 1200: Point2(0.5, 1.75), 0: Point2(3, 1.25)}
 
     def draw(self, w, h):
         self.cr.save()
@@ -45,24 +45,21 @@ class CubeDisplay(Screen):
         cr.fill()
 
     def initScaling(self, cr, w, h):
-        matrix = cairo.Matrix()
-
         #Move to the middle of the screen
-        matrix.translate(w/2, h/2)
+        cr.translate(w/2, h/2)
 
         actualWidth, actualHeight = self.arenaMap.size.xy
         scaleFactor = min(w/actualWidth, h/actualHeight)
 
         #Scale so that a measurement of 1 corresponds to one meter. Flip Y axis to give normal coords
-        matrix.scale(scaleFactor, -scaleFactor)
+        cr.scale(scaleFactor, -scaleFactor)
 
         #Move the middle of the arena to the middle of the screen
-        matrix.translate(-actualWidth / 2, -actualHeight / 2)
-        cr.transform(matrix)
+        cr.translate(-actualWidth / 2, -actualHeight / 2)
 
     def drawArena(self, cr):
     	cr.save()
-    	cr.set_line_width(0.01)
+    	cr.set_line_width(max(cr.device_to_user_distance(2, 2)))
     	cr.set_source_rgb(1, 0, 0) 
         for key, marker in self.arenaMap.iteritems():
             cr.move_to(marker.left.x, marker.left.y)
@@ -79,14 +76,18 @@ class CubeDisplay(Screen):
             cr.arc(token.x, token.y, 0.05, 0.0, 2 * math.pi)
             cr.fill()
 
-        cr.set_source_rgb(1, 1, 1)
+        cr.set_source_rgb(0, 0, 1)
         cr.set_font_size(0.1)
-        m = cairo.Matrix()
-        m.scale(1, -1)
-        cr.transform(m)
+        cr.select_font_face("Arial", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
         for id, token in self.tokens.iteritems():
-            cr.move_to(token.x, token.y)
-            cr.show_text(str(id))
+            text = str(id)
+            cr.save()
+            cr.translate(token.x, token.y)
+            cr.scale(1, -1)
+            x_bearing, y_bearing, width, height = cr.text_extents(text)[:4]
+            cr.move_to(0.1, height/2)
+            cr.show_text(text)
+            cr.restore()
 
         cr.restore()
 
