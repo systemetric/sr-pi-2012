@@ -95,25 +95,25 @@ class MapRenderer(Screen):
 
 	def drawTokens(self, cr):
 		cr.save()
-		cr.set_source_rgb(0, 0, 1)
-		#Draw the tokens as 10cm circles
-		for id, token in self.map.tokens.iteritems():
-			cr.arc(token.x, token.y, 0.05, 0.0, 2 * math.pi)
-			cr.fill()
-
-		#Write the id of each token next to it
 		cr.set_font_size(max(cr.device_to_user_distance(10, 10)))
 		cr.select_font_face("Arial", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
-		for id, token in self.map.tokens.iteritems():
-			text = str(id)
-			cr.save()
-			cr.translate(token.x, token.y)
-			cr.scale(1, -1)
-			x_bearing, y_bearing, width, height = cr.text_extents(text)[:4]
-			cr.move_to(0.1, height/2)
-			cr.show_text(text)
-			cr.restore()
+		#Draw the tokens as 10cm circles, and write the id of each token next to it
+		for id, entity in self.map.tokens.iteritems():
+			if entity.item:
+				cr.set_source_rgba(0, 0, 1, entity.reliability())
 
+				cr.arc(entity.item.x, entity.item.y, 0.05, 0.0, 2 * math.pi)
+				cr.fill()
+
+				text = str(id)
+				cr.save()
+				cr.translate(entity.item.x, entity.item.y)
+				cr.scale(1, -1)
+				x_bearing, y_bearing, width, height = cr.text_extents(text)[:4]
+				cr.move_to(0.1, height/2)
+				cr.show_text(text)
+				cr.restore()
+				
 		cr.restore()
 
 def main():

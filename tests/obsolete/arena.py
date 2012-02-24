@@ -1,3 +1,5 @@
+"""Initial testing for arena location. Works for only some markers in some positions"""
+
 from sr import *
 import systemetric
 from libs.pyeuclid import *
