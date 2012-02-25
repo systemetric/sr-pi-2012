@@ -40,7 +40,7 @@ class PointSet(list):
 		"""Transform every point in this set by a matrix"""
 		return PointSet([matrix * p for p in self])
 
-	def bestTransformTo(self, other, maxPrecision = 720):
+	def bestTransformTo(self, other, maxPrecision = 360):
 		"""Find the matrix transformation which best maps this point set onto another"""
 		tried = []
 
