@@ -10,18 +10,22 @@ def printTokens(d):
 	))
 
 def main():
-	startTime = time.time()
 	allTokens = {}
 
-	R = systemetric.Robot()
 	arenaMap = S007ArenaMap()
+
+	locationInfo = None
+
+	R = systemetric.Robot()
+	startTime = time.time()
+
 	while True:
 		print
 		print time.time() - startTime
 		vision = R.see().processed()
 		#print markers.tokens
 		#print len(markers), markers
-		locationInfo = arenaMap.getLocationInfoFrom(vision)
+		locationInfo = arenaMap.getLocationInfoFrom(vision) or locationInfo
 
 		if locationInfo:
 			print "Robot at", locationInfo.location
@@ -63,9 +67,11 @@ def main():
 				elif distance > 1 + ROBOT_SIZE:
 					print "More than 1m from %s" % nearestMarker
 					R.driveDistance(1)
+					locationInfo = None
 				else:
 					print "Less than 1m from %s" % nearestMarker
-					R.driveDistance(distance - ROBOT_SIZE)
+					R.driveDistance(distance - ROBOT_SIZE + 0.05)
+					locationInfo = None
 			else:
 				print "No tokens found"
 				print "Spin on spot"
