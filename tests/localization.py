@@ -1,5 +1,13 @@
 import systemetric
-from systemetric.mapping.arenamaps import S007ArenaMap
+from systemetric.mapping.arenamaps import *
+import time
+
+def printTokens(d):
+	#Print out the location of ALL THE TOKENS
+	print dict(map(
+		lambda pair: (pair[0], pair[1].center),
+		d.iteritems()
+	))
 
 def main():
 	allTokens = {}
@@ -13,6 +21,7 @@ def main():
 		locationInfo = arenaMap.getLocationInfoFrom(vision)
 
 		if locationInfo:
+			print "at", locationInfo.location
 			for token in vision.tokens:
 				#Transform the token to object space
 				token.transform(locationInfo.transform)
@@ -25,11 +34,27 @@ def main():
 				for id, token in allTokens.iteritems():
 					distanceTo[id] = allTokens[id].center - locationInfo.location
 
-				nearestMarker = min(distanceTo, key = lambda x: abs(distanceTo[x]))
-				print "Nearest marker is", allTokens[nearestMarker]
+				nearestMarkerId = min(distanceTo, key = lambda x: abs(distanceTo[x]))
+				print "Nearest marker is", allTokens[nearestMarkerId]
+
+				vectorToCube = locationInfo.transform.inverse() * distanceTo[nearestMarkerId]
+				R.turnToFace(vectorToCube)
+
+				distance = abs(vectorToCube)
+
+				if distance < 0.4:
+					#found
+					del allTokens[nearestMarkerId]
+					
+					R.power.beep(440, 1)
+					time.sleep(1)
+					R.power.beep(880, 1)
+					time.sleep(1)
+					R.power.beep(440, 1)
+					time.sleep(1)
+				elif distance > 1:
+					R.driveDistance(1 - 0.3)
+				else:
+					R.driveDistance(distance - 0.3)
 			
-		#Print out the location of ALL THE TOKENS
-		print dict(map(
-			lambda pair: (pair[0], pair[1].center),
-			allTokens.iteritems()
-		))
+		
