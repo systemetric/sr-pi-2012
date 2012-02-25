@@ -51,9 +51,9 @@ class S007ArenaMapSmallWall(ArenaMap):
 	"""A class representing the layout of the S007 arena"""
 	def __init__(self):
 		ArenaMap.__init__(self, Point2(1, 2), {
-			0: ArenaMap.Marker(Point2(0.0, 0.0), 0),
-			4: ArenaMap.Marker(Point2(0.5, 0.0), 0),
-			9: ArenaMap.Marker(Point2(1.0, 0.0), 0)
+			3: ArenaMap.Marker(Point2(0.0, 0.0), 2),
+			4: ArenaMap.Marker(Point2(0.5, 0.0), 2),
+			5: ArenaMap.Marker(Point2(1.0, 0.0), 2)
 		})
 
 class S007ArenaMap(ArenaMap):

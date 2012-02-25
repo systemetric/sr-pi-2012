@@ -57,21 +57,22 @@ class MapRenderer(Screen):
 
 		#Convert matrix to the cairo format
 		m = self.map.robot
-		m = cairo.Matrix(m.a, m.b, m.e, m.f, m.c, m.g)
-		cr.transform(m)
+		if m:
+			m = cairo.Matrix(m.a, m.b, m.e, m.f, m.c, m.g)
+			cr.transform(m)
 
-		cr.move_to(0.25, 0)
-		cr.line_to(0.25, 0.25)
-		cr.line_to(-0.25, 0.25)
-		cr.line_to(-0.25, 0)
-		cr.arc(0, 0, 0.25, math.pi, 2*math.pi)
+			cr.move_to(0.25, 0)
+			cr.line_to(0.25, 0.25)
+			cr.line_to(-0.25, 0.25)
+			cr.line_to(-0.25, 0)
+			cr.arc(0, 0, 0.25, math.pi, 2*math.pi)
 
-		cr.set_source_rgb(0.5, 0.5, 0.5) #gray
-		cr.fill()
+			cr.set_source_rgb(0.5, 0.5, 0.5) #gray
+			cr.fill()
 
-		cr.set_line_width(max(cr.device_to_user_distance(1,1)))
-		cr.set_source_rgb(0.25, 0.25, 0.25) #gray
-		cr.stroke()
+			cr.set_line_width(max(cr.device_to_user_distance(1,1)))
+			cr.set_source_rgb(0.25, 0.25, 0.25) #gray
+			cr.stroke()
 
 		cr.restore()
 
@@ -116,7 +117,10 @@ class MapRenderer(Screen):
 				
 		cr.restore()
 
+import systemetric
+
 def main():
+	R = systemetric.Robot()
 	m = Map(arena=CompetitionArenaMap())
 	mr = MapRenderer(m)
 	mr.show()
@@ -130,6 +134,9 @@ def main():
 	gtk.gdk.threads_init()
 	t = threading.Thread(target=gtk.main)
 	t.start()
+
+	while True:
+		m.updateEntities(R.see().processed())
 
 	m.fakeUpdateEntities(
 		tokens={2: Point2(1, 1), 12: Point2(0.5, 1.75), 0: Point2(3, 1.25)},
