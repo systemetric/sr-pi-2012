@@ -47,7 +47,7 @@ class Robot(CompassRobot, KillableRobot):
 		Drive a certain distance forward in metres, using timing only. Negative
 		distance goes backwards
 		"""
-		print "\tRobot.driveDistance"
+		print "\tRobot.driveDistance(%.2f)" % distInMetres
 		print "\t\tHeading before:", self.compass.heading
 		SPEED = .575
 		self.drive(speed = math.copysign(100, distInMetres))
