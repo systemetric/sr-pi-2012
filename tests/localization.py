@@ -45,7 +45,7 @@ def main():
 				if distance < 0.4:
 					#found
 					del allTokens[nearestMarkerId]
-					
+
 					R.power.beep(440, 1)
 					time.sleep(1)
 					R.power.beep(880, 1)
@@ -56,5 +56,13 @@ def main():
 					R.driveDistance(1 - 0.3)
 				else:
 					R.driveDistance(distance - 0.3)
+			else:
+				#no tokens yet!
+				R.rotateBy(40)
+				R.stop()
+		else:
+			#no tokens yet, and I'm lost!
+			R.rotateBy(40)
+			R.stop()
 			
 		

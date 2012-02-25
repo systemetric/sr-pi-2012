@@ -47,11 +47,28 @@ class Robot(CompassRobot, KillableRobot):
 		Drive a certain distance forward in metres, using timing only. Negative
 		distance goes backwards
 		"""
+		print "\tRobot.driveDistance"
+		print "\t\tHeading before:", self.compass.heading
 		SPEED = .575
 		self.drive(speed = math.copysign(100, distInMetres))
 		time.sleep(abs(distInMetres) / SPEED)
 		self.stop()
+		print "\t\tHeading after:", self.compass.heading
+
+	def turnToFace(self, relativePosition):
+		print "\tRobot.turnToFace(%s)" % relativePosition
+		bearing = Bearing.toPoint(relativePosition)
+		print "\t\tTurning:", bearing
+		self.rotateBy(bearing)
+		self.stop()
 	
 	def driveTo(self, relativePosition, gap = 0):
-		self.rotateBy(Bearing.toPoint(relativePosition))
-		self.driveDistance(abs(relativePosition) - gap)
+		bearing = Bearing.toPoint(relativePosition)
+		dist = abs(relativePosition) - gap
+		print "Robot.driveTo:"
+		print "\tTurning:", bearing
+		self.rotateBy(bearing)
+		self.stop()
+		time.sleep(0.25)
+		print "\tDriving:", dist
+		self.driveDistance(dist)
