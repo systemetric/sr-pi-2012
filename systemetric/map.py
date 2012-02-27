@@ -30,13 +30,14 @@ class Map(object):
 
 		self.robot = transform
 
-	def updateEntityLocations(self, vision):
+	def updateEntities(self, vision):
 		"""Update the map with the new set of vision information"""
 
 		#TODO: Maybe keep a timestamp on tokens, and "forget" them after a while?
 		locInfo = self.arena.getLocationInfoFrom(vision)
 		if locInfo:
 			self.robot = locInfo.transform.inverse()
+			
 			for token in vision.tokens:
 				self.tokens[token.id].position  = locInfo.transform * token.center
 				self.tokens[token.id].timestamp = vision.timestamp

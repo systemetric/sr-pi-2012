@@ -57,6 +57,7 @@ class MapRenderer(Screen):
 
 		#Convert matrix to the cairo format
 		m = self.map.robot
+		print m
 		if m:
 			m = cairo.Matrix(m.a, m.b, m.e, m.f, m.c, m.g)
 			cr.transform(m)
@@ -101,7 +102,7 @@ class MapRenderer(Screen):
 		#Draw the tokens as 10cm circles, and write the id of each token next to it
 		for id, entity in enumerate(self.map.tokens):
 			pos = entity.position
-			if entity.pos:
+			if pos:
 
 				cr.save()
 				cr.translate(pos.x, pos.y)
@@ -125,7 +126,7 @@ import systemetric
 
 def main():
 	R = systemetric.Robot()
-	m = Map(arena=CompetitionArenaMap())
+	m = Map(arena=S007ArenaMap())
 	mr = MapRenderer(m)
 	mr.show()
 
