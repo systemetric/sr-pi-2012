@@ -103,3 +103,12 @@ class ProcessedVisionResult(object):
 			for marker in self.arena
 			for point in (marker.left, marker.right)
 		])
+
+
+import sys
+
+# Hack to make pickle work properly - http://stackoverflow.com/a/1948057
+setattr(sys.modules[__name__], 'ArenaMarker', ProcessedVisionResult.ArenaMarker) 
+setattr(sys.modules[__name__], 'Token', ProcessedVisionResult.Token) 
+setattr(sys.modules[__name__], 'Robot', ProcessedVisionResult.Robot) 
+setattr(sys.modules[__name__], 'Bucket', ProcessedVisionResult.Bucket) 

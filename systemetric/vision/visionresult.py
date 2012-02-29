@@ -2,6 +2,7 @@ import sr
 from libs.pyeuclid import *
 from processedvisionresult import ProcessedVisionResult
 import time
+import sys
 
 class VisionResult(list):
 	"""
@@ -69,3 +70,6 @@ class VisionResult(list):
 		"""Process this vision result, into a ProcessedVisionResult"""
 		return ProcessedVisionResult(self)
 
+
+# Hack to make pickle work properly - http://stackoverflow.com/a/1948057
+setattr(sys.modules[__name__], 'Marker', VisionResult.Marker) 
