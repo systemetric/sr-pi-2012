@@ -2,6 +2,14 @@ import systemetric
 from systemetric.mapping.arenamaps import *
 import time
 
+class Timer(object):
+    def __enter__(self):
+        self.start = time.time()
+
+    def __exit__(self, t, v, tb):
+        self.time = time.time() - self.start
+        return False
+
 def printTokens(d):
 	#Print out the location of ALL THE TOKENS
 	print dict(map(
@@ -10,6 +18,8 @@ def printTokens(d):
 	))
 
 def main():
+	timer = Timer()
+
 	allTokens = {}
 
 	arenaMap = S007ArenaMap()
@@ -20,34 +30,58 @@ def main():
 	startTime = time.time()
 
 	while True:
+		times = {}
 		print
 		print time.time() - startTime
-		vision = R.see().processed()
+
+		with timer:
+			vision = R.see()
+		times["see"] = timer.time
+		with t:
+			vision = vision.processed()
+		times["processed"] = timer.time
+
 		#print markers.tokens
 		#print len(markers), markers
-		locationInfo = arenaMap.getLocationInfoFrom(vision) or locationInfo
+		with timer:
+			locationInfo = arenaMap.getLocationInfoFrom(vision) or locationInfo
+		times["locationInfo"] = timer.time
 
 		if locationInfo:
 			print "Robot at", locationInfo.location
-			for token in vision.tokens:
-				#Transform the token to object space
-				token.transform(locationInfo.transform)
-				#Update its position
-				allTokens[token.id] = token
+			with t:
+				for token in vision.tokens:
+					#Transform the token to object space
+					token.transform(locationInfo.transform)
+					#Update its position
+					allTokens[token.id] = token
+			times["transform"] = timer.time
 
 			distanceTo = {}
 			printTokens(allTokens)
 
 			if allTokens:
-				for id, token in allTokens.iteritems():
-					distanceTo[id] = allTokens[id].center - locationInfo.location
+				with timer:
+					for id, token in allTokens.iteritems():
+						distanceTo[id] = allTokens[id].center - locationInfo.location
+				times["distanceTo"] = timer.time
 
-				nearestMarkerId = min(distanceTo, key = lambda x: abs(distanceTo[x]))
-				nearestMarker = allTokens[nearestMarkerId]
+
+				with timer:
+					nearestMarkerId = min(distanceTo, key = lambda x: abs(distanceTo[x]))
+				times["nearestMarkerId"] = timer.time
+				with timer:
+					nearestMarker = allTokens[nearestMarkerId]
+				times["nearestMarker"] = timer.time
 				print "Nearest marker is", nearestMarker
 
-				vectorToCube = locationInfo.transform.inverse() * distanceTo[nearestMarkerId]
-				R.turnToFace(vectorToCube)
+				with timer:
+					vectorToCube = locationInfo.transform.inverse() * distanceTo[nearestMarkerId]
+				times["vectorToCube"] = timer.time
+
+				with timer:
+					R.turnToFace(vectorToCube)
+				time["turnToFace"] = timer.time
 
 				distance = abs(vectorToCube)
 
@@ -56,7 +90,9 @@ def main():
 				if distance < ROBOT_SIZE:
 					print "Found %s" % nearestMarker
 					#found
+					
 					del allTokens[nearestMarkerId]
+
 
 					R.power.beep(440, 1)
 					time.sleep(1)
@@ -86,3 +122,4 @@ def main():
 			R.stop()
 			
 		time.sleep(0.25)
+		print times
