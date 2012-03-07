@@ -1,6 +1,7 @@
 from libs.pyeuclid import *
 from systemetric.bearing import Bearing
 from pointset import PointSet
+import time
 
 class Timer(object):
     def __enter__(self):
@@ -52,13 +53,13 @@ class ArenaMap(dict):
 		if visionResult.arena:
 			with timer:
 				apparent = visionResult.arenaMarkerEnds()
-			times["arenaMarkerEnds"] = timer.times
+			times["arenaMarkerEnds"] = timer.time
 			with timer:
 				actual, codes = self.positionsFromCodes(visionResult)
-			times["positionsFromCodes"] = timer.times
+			times["positionsFromCodes"] = timer.time
 			with timer:
 				theta, transform, error = apparent.bestTransformTo(actual)
-			times["bestTransformTo"] = timer.times
+			times["bestTransformTo"] = timer.time
 
 			info = lambda: magic #extendable_object
 
