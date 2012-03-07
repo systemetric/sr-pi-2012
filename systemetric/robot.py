@@ -39,8 +39,14 @@ class Robot(CompassRobot, KillableRobot):
 		Call the native see method, but return a VisionResult (a list with some
 		extra members tacked on)
 		"""
-		markers = KillableRobot.see(self, *args, **kargs)
-		return VisionResult(markers, worldTransform = self.worldTransform)
+		if kargs['stats']:
+			markers, times = KillableRobot.see(self, *args, **kargs)
+		else:
+			markers = KillableRobot.see(self, *args, **kargs)
+			
+		vr = VisionResult(markers, worldTransform = self.worldTransform)
+
+		return (vr, times) if kargs['stats'] else vr
 	
 	def driveDistance(self, distInMetres):
 		"""
