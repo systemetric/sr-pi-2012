@@ -52,10 +52,10 @@ class ArenaMap(dict):
 		if visionResult.arena:
 			with timer:
 				apparent = visionResult.arenaMarkerEnds()
-			times["arenaMarkerEnds"] = timer.time
+			times["arenaMarkerEnds"] = timer.times
 			with timer:
 				actual, codes = self.positionsFromCodes(visionResult)
-			times["positionsFromCodes"] = timer.time
+			times["positionsFromCodes"] = timer.times
 			with timer:
 				theta, transform, error = apparent.bestTransformTo(actual)
 			times["bestTransformTo"] = timer.times
