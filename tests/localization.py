@@ -37,7 +37,7 @@ def main():
 		with timer:
 			vision = R.see()
 		times["see"] = timer.time
-		with t:
+		with timer:
 			vision = vision.processed()
 		times["processed"] = timer.time
 
@@ -49,7 +49,7 @@ def main():
 
 		if locationInfo:
 			print "Robot at", locationInfo.location
-			with t:
+			with timer:
 				for token in vision.tokens:
 					#Transform the token to object space
 					token.transform(locationInfo.transform)
@@ -81,7 +81,7 @@ def main():
 
 				with timer:
 					R.turnToFace(vectorToCube)
-				time["turnToFace"] = timer.time
+				times["turnToFace"] = timer.time
 
 				distance = abs(vectorToCube)
 
