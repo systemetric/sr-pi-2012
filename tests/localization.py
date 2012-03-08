@@ -34,9 +34,8 @@ def main():
 		print
 		print time.time() - startTime
 
-		with timer:
-			vision = R.see()
-		times["see"] = timer.time
+		vision, vt = R.see(stats=True)
+		times["see"] = vt
 		with timer:
 			vision = vision.processed()
 		times["processed"] = timer.time
