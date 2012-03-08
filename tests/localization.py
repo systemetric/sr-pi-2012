@@ -9,12 +9,21 @@ def printTokens(d):
 		d.iteritems()
 	))
 
+def grabCube():
+	R.power.beep(440, 1)
+	time.sleep(1)
+	R.power.beep(880, 1)
+	time.sleep(1)
+	R.power.beep(440, 1)
+	time.sleep(1)
+
 def main():
 	allTokens = {}
 
-	arenaMap = S007ArenaMap()
+	gameMap = Map(arena=S007ArenaMap())
 
 	locationInfo = None
+
 
 	R = systemetric.Robot()
 	startTime = time.time()
@@ -23,6 +32,31 @@ def main():
 		print
 		print time.time() - startTime
 		vision = R.see().processed()
+
+		#If there are tokens within a meter
+		if vision.tokens and min(abs(t.center) for t in vision.tokens) < 1:
+			#Drive towards them, pick them up, update map in background
+			#gameMap.updateEntities(vision)
+		else:
+			if True: #we have moved
+				gameMap.updateEntities(vision)
+				#Recalculate our position
+			else
+				#No point updating map
+				pass;
+
+			#If we know the location of some tokens
+			if gameMap.tokens:
+				#find the nearest one
+				#turn to face it
+				#Resume loop, with cube now directly in front, ready to be picked up by next iteration
+				#Keep track of what we should see, so we can remove it from the map if it is not there?
+				pass
+
+
+
+		# check for
+
 		#print markers.tokens
 		#print len(markers), markers
 		locationInfo = arenaMap.getLocationInfoFrom(vision) or locationInfo
@@ -55,15 +89,8 @@ def main():
 
 				if distance < ROBOT_SIZE:
 					print "Found %s" % nearestMarker
-					#found
 					del allTokens[nearestMarkerId]
-
-					R.power.beep(440, 1)
-					time.sleep(1)
-					R.power.beep(880, 1)
-					time.sleep(1)
-					R.power.beep(440, 1)
-					time.sleep(1)
+					grabCube()
 				elif distance > 1 + ROBOT_SIZE:
 					print "More than 1m from %s" % nearestMarker
 					R.driveDistance(1)
