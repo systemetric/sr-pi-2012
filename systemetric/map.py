@@ -36,7 +36,7 @@ class Map(object):
 		#TODO: Maybe keep a timestamp on tokens, and "forget" them after a while?
 		locInfo = self.arena.getLocationInfoFrom(vision)
 		if locInfo:
-			self.robot = locInfo.transform.inverse()
+			self.robot = locInfo
 			
 			for token in vision.tokens:
 				self.tokens[token.id].position  = locInfo.transform * token.center
