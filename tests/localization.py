@@ -18,7 +18,6 @@ def printTokens(d):
 	))
 
 def main():
-	timer = Timer()
 
 	allTokens = {}
 
@@ -30,57 +29,50 @@ def main():
 	startTime = time.time()
 
 	while True:
+		with systemetric.Timer("profiling") as t:
 		times = {}
 		print
 		print time.time() - startTime
 
 		vision, vt = R.see(stats=True)
 		times["see"] = vt
-		with timer:
+		with t.event("processed"):
 			vision = vision.processed()
-		times["processed"] = timer.time
 
 		#print markers.tokens
 		#print len(markers), markers
-		with timer:
+		with t.event("locationInfo"):
 			locationInfo = arenaMap.getLocationInfoFrom(vision) or locationInfo
-		times["locationInfo"] = timer.time
 
 		if locationInfo:
 			print "Robot at", locationInfo.location
-			with timer:
+			with t.event("transform"):
 				for token in vision.tokens:
 					#Transform the token to object space
 					token.transform(locationInfo.transform)
 					#Update its position
 					allTokens[token.id] = token
-			times["transform"] = timer.time
 
 			distanceTo = {}
 			printTokens(allTokens)
 
 			if allTokens:
-				with timer:
+				with t.event("distanceTo"):
 					for id, token in allTokens.iteritems():
 						distanceTo[id] = allTokens[id].center - locationInfo.location
-				times["distanceTo"] = timer.time
 
 
-				with timer:
+				with t.event("nearestMarkerId"):
 					nearestMarkerId = min(distanceTo, key = lambda x: abs(distanceTo[x]))
-				times["nearestMarkerId"] = timer.time
-				with timer:
+				with t.event("nearestMarker"):
 					nearestMarker = allTokens[nearestMarkerId]
-				times["nearestMarker"] = timer.time
 				print "Nearest marker is", nearestMarker
 
-				with timer:
+				with t.event("vectorToCube"):
 					vectorToCube = locationInfo.transform.inverse() * distanceTo[nearestMarkerId]
-				times["vectorToCube"] = timer.time
 
-				with timer:
+				with t.event("turnToFace"):
 					R.turnToFace(vectorToCube)
-				times["turnToFace"] = timer.time
 
 				distance = abs(vectorToCube)
 

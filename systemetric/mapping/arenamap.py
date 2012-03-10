@@ -2,6 +2,7 @@ from libs.pyeuclid import *
 from systemetric.bearing import Bearing
 from pointset import PointSet
 import time
+import systemetric
 
 class Timer(object):
     def __enter__(self):
@@ -47,19 +48,16 @@ class ArenaMap(dict):
 		return PointSet(positions), codes
 
 	def getLocationInfoFrom(self, visionResult):
-		timer = Timer()
+		t = systemetric.Timer()
 		times = {}
 
 		if visionResult.arena:
-			with timer:
+			with t.event("arenaMarkerEnds"):
 				apparent = visionResult.arenaMarkerEnds()
-			times["arenaMarkerEnds"] = timer.time
-			with timer:
+			with t.event("positionsFromCodes"):
 				actual, codes = self.positionsFromCodes(visionResult)
-			times["positionsFromCodes"] = timer.time
-			with timer:
+			with t.event("bestTransformTo"):
 				theta, transform, error = apparent.bestTransformTo(actual)
-			times["bestTransformTo"] = timer.time
 
 			info = lambda: magic #extendable_object
 
