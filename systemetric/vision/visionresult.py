@@ -49,7 +49,8 @@ class VisionResult(list):
 		self.tokens = []
 		self.arena = []
 		self.robots = []
-		self.buckets = []
+		self.bucketEnds = []
+		self.bucketSides = []
 		self.worldTransform = worldTransform
 
 		for marker in rawmarkers:
@@ -64,8 +65,10 @@ class VisionResult(list):
 				self.arena += [ marker ]
 			elif type == sr.MARKER_ROBOT:
 				self.robots += [ marker ]
-			elif type == sr.MARKER_BUCKET:
-				self.buckets += [ marker ]
+			elif type == sr.MARKER_BUCKET_END:
+				self.bucketEnds += [ marker ]
+			elif type == sr.MARKER_BUCKET_SIDE:
+				self.bucketSides += [ marker ]
 
 	def processed(self):
 		"""Process this vision result, into a ProcessedVisionResult"""
