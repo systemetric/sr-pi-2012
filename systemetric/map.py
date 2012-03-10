@@ -1,6 +1,7 @@
 from libs.pyeuclid import *
 from copy import copy
 from time import time
+
 class Map(object):
 	"""Stores a map of the arena"""
 	class Entity(object):
@@ -15,11 +16,11 @@ class Map(object):
 			return 2.0**(-dt/HALF_LIFE)
 
 	def __init__(self, arena):
-		self.arena = arena
+		self.arena     = arena
 		self.tokens    = [Map.Entity() for i in range(20)]
 		self.buckets   = [Map.Entity() for i in range(4)]
 		self.opponents = [Map.Entity() for i in range(4)]
-		self.robot = None
+		self.robot     = None
 
 	def fakeUpdateEntities(self, transform, tokens):
 		"""Used for vision-less testing"""

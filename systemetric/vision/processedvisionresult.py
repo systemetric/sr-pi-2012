@@ -64,7 +64,7 @@ class ProcessedVisionResult(object):
 			self.center = visionResult.planarLocationOf(center)
 
 		def transform(self, matrix):
-			self.center = matrix * self.center;
+			self.center = matrix * self.center
 
 		def __repr__(self):
 			return "<Token #%d at %s>" % (self.id, repr(self.center))
@@ -74,24 +74,47 @@ class ProcessedVisionResult(object):
 			pass
 
 	class Bucket(object):
-		def __init__(self, visionResult, markers):
-			pass
+		"""
+		The bucket with wheels. Used to store tokens.
+		"""
+		LENGTH = 0.372
+		WIDTH  = 0.245
+		def __init__(self, visionResult, id, markers):
+			self.id = id
+			center = sum(m.center - m.normal * 
+			            (self.LENGTH if m.type == sr.MARKER_BUCKET_END else self.WIDTH)
+			            / 2 for m in markers) / len(markers)
+
+		def transform(self, matrix):
+			self.center = matrix * self.center
+
+		def __repr__(self):
+			return "<Bucket #%d at %s>" % (self.id, repr(self.center))
+			
 
 	def planarLocationOf(self, point):
 		return Point2(point.x, point.z)
 
 	def __init__(self, visionResult):
 		self.timestamp = visionResult.timestamp
-		self.arena = [self.ArenaMarker(self, m) for m in visionResult.arena]
-		self.tokens = []
+		self.arena     = [self.ArenaMarker(self, m) for m in visionResult.arena]
+		self.tokens    = []
+		self.buckets   = []
 
-		tokenmarkers = defaultdict(list)
+		tokenmarkers   = defaultdict(list)
+		bucketmarkers  = defaultdict(list)
 
 		for m in visionResult.tokens:
 			tokenmarkers[m.code] += [m]
 
+		for m in visionResult.buckets:
+			bucketmarkers[m.code] += [m]
+
 		for code, markers in tokenmarkers.iteritems():
 			self.tokens += [ self.Token(self, code, markers) ]
+
+		for code, markers in bucketmarkers.iteritems():
+			self.buckets += [ self.Bucket(self, code, markers)]
 
 		self.tokens.sort(key=lambda m: abs(m.center))
 	
