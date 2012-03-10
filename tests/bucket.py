@@ -1,15 +1,16 @@
-from sr import *
 import systemetric
 import time
+from systemetric.vision import ProcessedVisionResult
 
 R = systemetric.Robot()
 
 while True:
 	markers = R.see()
 	for m in markers.bucketSides:
-		if m == MARKER_BUCKET_SIDE:
-			 R.driveTo(m.centre, gap=0.2)
-			 R.driveDistance(1)
+		target = ProcessedVisionResult.planarLocationOf(
+			None, m.center + m.normal * 0.5
+		)
+		R.driveTo(target)
 	time.sleep(1)
 	R.rotateBy(20)
 	R.stop()
