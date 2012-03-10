@@ -10,6 +10,34 @@ def printTokens(d):
 	))
 
 def main():
+	def grabCube():
+		R.power.beep(440, 1)
+		time.sleep(1)
+		R.power.beep(880, 1)
+		time.sleep(1)
+		R.power.beep(440, 1)
+		time.sleep(1)
+
+	def driveTowards(relativeLocation):
+		"""Drive at most 1 meter towards a cube. Return True if the cube was reached"""
+		R.turnToFace(relativeLocation)
+		distance = abs(relativeLocation)
+
+		ROBOT_SIZE = 0.2
+
+		if distance < ROBOT_SIZE:
+			print "Found %s" % nearestMarker
+			return True
+
+		elif distance > 1 + ROBOT_SIZE:
+			print "More than 1m from %s" % nearestMarker
+			R.driveDistance(1)
+			return False
+		else:
+			print "Less than 1m from %s" % nearestMarker
+			R.driveDistance(distance - ROBOT_SIZE + 0.05)
+			return False
+
 	allTokens = {}
 
 	arenaMap = S007ArenaMap()
@@ -23,8 +51,7 @@ def main():
 		print
 		print time.time() - startTime
 		vision = R.see().processed()
-		#print markers.tokens
-		#print len(markers), markers
+
 		locationInfo = arenaMap.getLocationInfoFrom(vision) or locationInfo
 
 		if locationInfo:
@@ -47,30 +74,12 @@ def main():
 				print "Nearest marker is", nearestMarker
 
 				vectorToCube = locationInfo.transform.inverse() * distanceTo[nearestMarkerId]
-				R.turnToFace(vectorToCube)
 
-				distance = abs(vectorToCube)
-
-				ROBOT_SIZE = 0.2
-
-				if distance < ROBOT_SIZE:
-					print "Found %s" % nearestMarker
-					#found
+				gotCube = driveTowards(vectorToCube)
+				if gotCube:
+					grabCube()
 					del allTokens[nearestMarkerId]
-
-					R.power.beep(440, 1)
-					time.sleep(1)
-					R.power.beep(880, 1)
-					time.sleep(1)
-					R.power.beep(440, 1)
-					time.sleep(1)
-				elif distance > 1 + ROBOT_SIZE:
-					print "More than 1m from %s" % nearestMarker
-					R.driveDistance(1)
-					locationInfo = None
 				else:
-					print "Less than 1m from %s" % nearestMarker
-					R.driveDistance(distance - ROBOT_SIZE + 0.05)
 					locationInfo = None
 			else:
 				print "No tokens found"
