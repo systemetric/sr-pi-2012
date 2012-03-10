@@ -51,7 +51,7 @@ def main():
 
 				distance = abs(vectorToCube)
 
-				ROBOT_SIZE = 0.4
+				ROBOT_SIZE = 0.2
 
 				if distance < ROBOT_SIZE:
 					print "Found %s" % nearestMarker
