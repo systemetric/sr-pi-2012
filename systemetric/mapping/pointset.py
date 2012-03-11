@@ -54,8 +54,8 @@ class PointSet(list):
 		"""
 		#Error upon rotating by 0, 90, and 180 degrees
 		e0   = (self.centered).errorTo(other.centered)
-		e90  = (self.centered.transformedBy(__rotate90)).errorTo(other.centered)
-		e180 = (self.centered.transformedBy(__rotate180)).errorTo(other.centered)
+		e90  = (self.centered.transformedBy(PointSet.__rotate90)).errorTo(other.centered)
+		e180 = (self.centered.transformedBy(PointSet.__rotate180)).errorTo(other.centered)
 
 		#Sum two points in antiphase, and the sine waves cancel, leaving twice the offset
 		offset = (e0 + e180) / 2
@@ -70,7 +70,7 @@ class PointSet(list):
 		#             r0 = -amplitude * cos(-optimalTheta)
 		#                = -amplitude * cos(optimalTheta)
 		#-r0 / amplitude = cos(optimalTheta)
-		optimalTheta     = math.acos(-r0 / amplitude)
+		optimalTheta     = math.acos(-e0 / amplitude)
 
 		transform = Matrix3.new_translate(*other.center.xy) \
 		          * Matrix3.new_rotate(optimalTheta)        \
@@ -79,7 +79,7 @@ class PointSet(list):
 		return (optimalTheta, transform, offset - amplitude)
 
 def main():
-	originalTransform = Matrix3.new_translate(5, 2) * Matrix3.new_rotate(math.pi/5) * Matrix3.new_translate(2, 6)
+	originalTransform = Matrix3.new_translate(5, 2) * Matrix3.new_rotate(math.pi/3) * Matrix3.new_translate(2, 6)
 
 	square = PointSet([
 		Point2(0, 0),
