@@ -81,12 +81,35 @@ class ProcessedVisionResult(object):
 		WIDTH  = 0.245
 		def __init__(self, visionResult, id, markers):
 			self.id = id
-			center = sum(m.center - m.normal * 
-			            (self.LENGTH if m.type == sr.MARKER_BUCKET_END else self.WIDTH)
-			            / 2 for m in markers) / len(markers)
+
+			#Find the center
+			center = sum(
+				m.center - m.normal * (
+					self.LENGTH if m.type == sr.MARKER_BUCKET_END else self.WIDTH
+				) / 2 for m in markers
+			) / len(markers)
+			self.center = visionResult.planarLocationOf(center)
+
+			#Find the normal vector of a long edge
+			m = markers[0]
+			self.facing = visionResult.planarDirectionOf(m.normal)
+			if m.type == sr.MARKER_BUCKET_END:
+				self.facing = self.facing.left_perpendicular()
+
+			self.facing.normalize()
+
 
 		def transform(self, matrix):
 			self.center = matrix * self.center
+			self.facing = matrix * self.facing
+
+		@property
+		def desirableRobotTargets(distance = 0.5):
+			"""The positions which the robot could be driven to for optimal deployment of cubes"""
+			return (
+				self.center + self.facing * distance,
+				self.center - self.facing * distance
+			)
 
 		def __repr__(self):
 			return "<Bucket #%d at %s>" % (self.id, repr(self.center))
@@ -94,6 +117,9 @@ class ProcessedVisionResult(object):
 
 	def planarLocationOf(self, point):
 		return Point2(point.x, point.z)
+
+	def planarDirectionOf(self, vector):
+		return Vector2(vector.x, vector.z)
 
 	def __init__(self, visionResult):
 		self.timestamp = visionResult.timestamp
