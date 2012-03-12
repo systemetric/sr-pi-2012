@@ -11,7 +11,10 @@ while True:
 		target = min(b.desirableRobotTargets, key=abs)
 		targetFacing = b.center - target
 		R.driveTo(target)
+		time.sleep(0.2)
 		R.rotateBy(systemetric.Bearing(radians=target.angle(targetFacing)))
+		R.stop()
+		time.sleep(0.2)
 		R.driveDistance(0.5)
 
 	time.sleep(1)
