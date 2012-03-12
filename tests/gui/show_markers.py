@@ -111,7 +111,7 @@ class MapRenderer(Screen):
 				cr.save()
 				cr.translate(pos.x, pos.y)
 
-				cr.set_source_rgba(0, 0, 1, entity.reliability())
+				cr.set_source_rgba(0, 0, 1, entity.reliability)
 				
 				cr.arc(0, 0, 0.05, 0.0, 2 * math.pi)
 				cr.fill()
