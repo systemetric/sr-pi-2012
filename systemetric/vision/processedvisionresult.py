@@ -2,6 +2,8 @@ from libs.pyeuclid import *
 from systemetric.mapping import PointSet
 from collections import defaultdict
 
+import sr
+
 class ProcessedVisionResult(object):
 	"""
 	2d representation of what can be seen
@@ -104,7 +106,7 @@ class ProcessedVisionResult(object):
 			self.facing = matrix * self.facing
 
 		@property
-		def desirableRobotTargets(distance = 0.5):
+		def desirableRobotTargets(self, distance = 0.5):
 			"""The positions which the robot could be driven to for optimal deployment of cubes"""
 			return (
 				self.center + self.facing * distance,
@@ -133,7 +135,7 @@ class ProcessedVisionResult(object):
 		for m in visionResult.tokens:
 			tokenmarkers[m.code] += [m]
 
-		for m in visionResult.buckets:
+		for m in visionResult.bucketEnds + visionResult.bucketSides:
 			bucketmarkers[m.code] += [m]
 
 		for code, markers in tokenmarkers.iteritems():

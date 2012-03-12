@@ -12,14 +12,21 @@ class KillableRobot(sr.Robot):
 			size = 1 #Errors if 0
 		)
 	
-	def see(self, *args, **kw):
+	def see(self, stats = False, *args, **kw):
 		"""Intercept Robot.see, and kill the robot if the killCode is seen"""
-		markers = sr.Robot.see(self, *args, **kw)
+		res = sr.Robot.see(self, stats = stats, *args, **kw)
+
+		if stats:
+			markers = res[0]
+			stats = res[1]
+		else:
+			markers = res
+
 		for marker in markers:
 			if marker.info.code == self.killCode:
 				self.end("Terminated by marker %d" % self.killCode, error=False)
 			   
-		return markers
+		return markers, stats if stats else markers
 
 		
 	def end(self, message = 'robot stopped', error = True, shutdown = False):

@@ -1,17 +1,14 @@
 import systemetric
 import time
 from systemetric.vision import ProcessedVisionResult
-from pyeuclid import *
+from libs.pyeuclid import *
 
 R = systemetric.Robot()
 
-def planarLocationOf(self, point):
-	return Point2(point.x, point.z)
-
 while True:
 	markers = R.see()
-	for m in markers.bucketSides:
-		target = planarLocationOf(m.center + m.normal * 0.5)
+	for b in markers.processed().buckets:
+		target = min(b.desirableRobotTargets(), key=abs)
 		R.driveTo(target)
 	time.sleep(1)
 	R.rotateBy(20)
