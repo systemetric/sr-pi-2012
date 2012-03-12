@@ -12,7 +12,7 @@ def main():
 		R.power.beep(440, 1)
 		time.sleep(1)
 
-	def driveTowards(relativeLocation):
+	def driveTowards(relativeLocation, token):
 		"""Drive at most 1 meter towards a cube. Return True if the cube was reached"""
 		R.turnToFace(relativeLocation)
 		distance = abs(relativeLocation)
@@ -20,15 +20,15 @@ def main():
 		ROBOT_SIZE = 0.2
 
 		if distance < ROBOT_SIZE:
-			print "Found %s" % nearestMarker
+			print "Found %s" % token
 			return True
 
 		elif distance > 1 + ROBOT_SIZE:
-			print "More than 1m from %s" % nearestMarker
+			print "More than 1m from %s" % token
 			R.driveDistance(1)
 			return False
 		else:
-			print "Less than 1m from %s" % nearestMarker
+			print "Less than 1m from %s" % token
 			R.driveDistance(distance - ROBOT_SIZE + 0.05)
 			return False
 
@@ -62,7 +62,7 @@ def main():
 
 				vectorToCube = gameMap.robot.transform.inverse() * distanceTo[nearestToken]
 
-				gotCube = driveTowards(vectorToCube)
+				gotCube = driveTowards(vectorToCube, nearestToken)
 				if gotCube:
 					grabCube()
 					nearestToken.invalidate()
