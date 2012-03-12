@@ -1,13 +1,7 @@
 import systemetric
 from systemetric.mapping.arenamaps import *
+from systemetric.map import Map
 import time
-
-def printTokens(d):
-	#Print out the location of ALL THE TOKENS
-	print dict(map(
-		lambda pair: (pair[0], pair[1].center),
-		d.iteritems()
-	))
 
 def main():
 	def grabCube():
@@ -38,11 +32,7 @@ def main():
 			R.driveDistance(distance - ROBOT_SIZE + 0.05)
 			return False
 
-	allTokens = {}
-
-	arenaMap = S007ArenaMap()
-
-	locationInfo = None
+	gameMap = Map(arena=S007ArenaMap())
 
 	R = systemetric.Robot()
 	startTime = time.time()
@@ -52,35 +42,32 @@ def main():
 		print time.time() - startTime
 		vision = R.see().processed()
 
-		locationInfo = arenaMap.getLocationInfoFrom(vision) or locationInfo
+		gameMap.updateEntities(vision)
 
-		if locationInfo:
-			print "Robot at", locationInfo.location
-			for token in vision.tokens:
-				#Transform the token to object space
-				token.transform(locationInfo.transform)
-				#Update its position
-				allTokens[token.id] = token
-
+		if gameMap.robot:
+			print "Robot at", gameMap.robot.location
+			
 			distanceTo = {}
-			printTokens(allTokens)
 
-			if allTokens:
-				for id, token in allTokens.iteritems():
-					distanceTo[id] = allTokens[id].center - locationInfo.location
+			knownTokens = filter(lambda i: i.exists, gameMap.tokens)
+			print gameMap.tokens
 
-				nearestMarkerId = min(distanceTo, key = lambda x: abs(distanceTo[x]))
-				nearestMarker = allTokens[nearestMarkerId]
-				print "Nearest marker is", nearestMarker
+			if knownTokens:
+				for entity in knownTokens:
+					distanceTo[entity] = entity.position - gameMap.robot.location
 
-				vectorToCube = locationInfo.transform.inverse() * distanceTo[nearestMarkerId]
+				nearestToken = min(distanceTo, key = lambda e: abs(distanceTo[e]))
+
+				print "Nearest marker is #%s at %s" % (nearestToken.id, nearestToken.position)
+
+				vectorToCube = gameMap.robot.transform.inverse() * distanceTo[nearestToken]
 
 				gotCube = driveTowards(vectorToCube)
 				if gotCube:
 					grabCube()
-					del allTokens[nearestMarkerId]
+					nearestToken.invalidate()
 				else:
-					locationInfo = None
+					gameMap.invalidateRobotPosition()
 			else:
 				print "No tokens found"
 				print "Spin on spot"
