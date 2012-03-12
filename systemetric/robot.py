@@ -34,13 +34,16 @@ class Robot(CompassRobot, KillableRobot):
 	def compassHeading(self):
 		return self.compass.heading
 
-	def see(self, *args, **kargs):
+	def see(self, stats = False, *args, **kargs):
 		"""
 		Call the native see method, but return a VisionResult (a list with some
 		extra members tacked on)
 		"""
-		markers = KillableRobot.see(self, *args, **kargs)
-		return VisionResult(markers, worldTransform = self.worldTransform)
+		res = KillableRobot.see(self, stats=stats, *args, **kargs)
+		if stats:
+			return VisionResult(res[0], worldTransform = self.worldTransform), res[1]
+		else:
+			return VisionResult(res, worldTransform = self.worldTransform)
 	
 	def driveDistance(self, distInMetres):
 		"""
