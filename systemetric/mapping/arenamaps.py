@@ -76,7 +76,7 @@ class S007ArenaMap(ArenaMap):
 
 	"""
 	def __init__(self):
-		ArenaMap.__init__(self, Point2(3.5, 2.75), {
+		ArenaMap.__init__(self, Point2(3.5, 2.5), {
 			23: ArenaMap.Marker(Point2(0.0, 0.0), 3),
 			24: ArenaMap.Marker(Point2(0.0, 0.5), 3),
 			25: ArenaMap.Marker(Point2(0.0, 1.0), 3),

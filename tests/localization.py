@@ -1,109 +1,84 @@
 import systemetric
 from systemetric.mapping.arenamaps import *
-from systemetric.timer import Timer
+from systemetric.map import Map
 import time
 
-def printTokens(d):
-	#Print out the location of ALL THE TOKENS
-	print dict(map(
-		lambda pair: (pair[0], pair[1].center),
-		d.iteritems()
-	))
-
 def main():
+	def grabCube():
+		R.power.beep(440, 1)
+		time.sleep(1)
+		R.power.beep(880, 1)
+		time.sleep(1)
+		R.power.beep(440, 1)
+		time.sleep(1)
 
-	allTokens = {}
+	def driveTowards(relativeLocation, token):
+		"""Drive at most 1 meter towards a cube. Return True if the cube was reached"""
+		R.turnToFace(relativeLocation)
+		distance = abs(relativeLocation)
 
-	arenaMap = S007ArenaMap()
+		ROBOT_SIZE = 0.2
 
-	locationInfo = None
+		if distance < ROBOT_SIZE:
+			print "Found %s" % token
+			return True
+
+		elif distance > 1 + ROBOT_SIZE:
+			print "More than 1m from %s" % token
+			R.driveDistance(1)
+			return False
+		else:
+			print "Less than 1m from %s" % token
+			R.driveDistance(distance - ROBOT_SIZE + 0.05)
+			return False
+
+	gameMap = Map(arena=S007ArenaMap())
 
 	R = systemetric.Robot()
 	startTime = time.time()
 
 	while True:
-		with Timer("profiling") as t:
-			times = {}
-			print
-			print time.time() - startTime
+		print
+		print time.time() - startTime
+		vision = R.see().processed()
 
-			vision, vt = R.see(stats=True)
-			times["see"] = vt
-			with t.event("processed"):
-				vision = vision.processed()
+		gameMap.updateEntities(vision)
 
-			#print markers.tokens
-			#print len(markers), markers
-			with t.event("locationInfo"):
-				locationInfo = arenaMap.getLocationInfoFrom(vision) or locationInfo
+		if gameMap.robot:
+			print "Robot at", gameMap.robot.location
+			
+			distanceTo = {}
 
-			if locationInfo:
-				print "Robot at", locationInfo.location
-				with t.event("transform"):
-					for token in vision.tokens:
-						#Transform the token to object space
-						token.transform(locationInfo.transform)
-						#Update its position
-						allTokens[token.id] = token
+			knownTokens = filter(lambda i: i.exists, gameMap.tokens)
+			print gameMap.tokens
 
-				distanceTo = {}
-				printTokens(allTokens)
+			if knownTokens:
+				for entity in knownTokens:
+					distanceTo[entity] = entity.position - gameMap.robot.location
 
-				if allTokens:
-					with t.event("distanceTo"):
-						for id, token in allTokens.iteritems():
-							distanceTo[id] = allTokens[id].center - locationInfo.location
+				nearestToken = min(distanceTo, key = lambda e: abs(distanceTo[e]))
 
+				print "Nearest marker is #%s at %s" % (nearestToken.id, nearestToken.position)
 
-					with t.event("nearestMarkerId"):
-						nearestMarkerId = min(distanceTo, key = lambda x: abs(distanceTo[x]))
-					with t.event("nearestMarker"):
-						nearestMarker = allTokens[nearestMarkerId]
-					print "Nearest marker is", nearestMarker
+				vectorToCube = gameMap.robot.transform.inverse() * distanceTo[nearestToken]
 
-					with t.event("vectorToCube"):
-						vectorToCube = locationInfo.transform.inverse() * distanceTo[nearestMarkerId]
-
-					with t.event("turnToFace"):
-						R.turnToFace(vectorToCube)
-
-					distance = abs(vectorToCube)
-
-					ROBOT_SIZE = 0.4
-
-					if distance < ROBOT_SIZE:
-						print "Found %s" % nearestMarker
-						#found
-						
-						del allTokens[nearestMarkerId]
-
-
-						R.power.beep(440, 1)
-						time.sleep(1)
-						R.power.beep(880, 1)
-						time.sleep(1)
-						R.power.beep(440, 1)
-						time.sleep(1)
-					elif distance > 1 + ROBOT_SIZE:
-						print "More than 1m from %s" % nearestMarker
-						R.driveDistance(1)
-						locationInfo = None
-					else:
-						print "Less than 1m from %s" % nearestMarker
-						R.driveDistance(distance - ROBOT_SIZE + 0.05)
-						locationInfo = None
+				gotCube = driveTowards(vectorToCube, nearestToken)
+				if gotCube:
+					grabCube()
+					nearestToken.invalidate()
 				else:
-					print "No tokens found"
-					print "Spin on spot"
-					#no tokens yet!
-					R.rotateBy(40)
-					R.stop()
+					gameMap.invalidateRobotPosition()
 			else:
-				print "I'm lost!"
+				print "No tokens found"
 				print "Spin on spot"
-				#no tokens yet, and I'm lost!
+				#no tokens yet!
 				R.rotateBy(40)
 				R.stop()
-				
-			time.sleep(0.25)
-			print times
+		else:
+			print "I'm lost!"
+			print "Spin on spot"
+			#no tokens yet, and I'm lost!
+			R.rotateBy(40)
+			R.stop()
+			
+		time.sleep(0.25)

@@ -3,6 +3,7 @@ import gtk, gobject, cairo, math, threading, time
 from systemetric.mapping.arenamaps import CompetitionArenaMap, S007ArenaMap
 from libs.pyeuclid import *
 from systemetric.map import Map
+import random
 
 class Screen(gtk.DrawingArea):
 	""" This class is a Drawing Area"""
@@ -56,11 +57,14 @@ class MapRenderer(Screen):
 		cr.save()
 
 		#Convert matrix to the cairo format
-		m = self.map.robot
-		print m
-		if m:
-			m = cairo.Matrix(m.a, m.b, m.e, m.f, m.c, m.g)
-			cr.transform(m)
+		locInfo = self.map.robot
+		print locInfo
+		if locInfo:
+			p = locInfo.location
+			r = locInfo.heading.radians
+
+			cr.translate(p.x, p.y)
+			cr.rotate(r)
 
 			cr.move_to(0.25, 0)
 			cr.line_to(0.25, 0.25)
@@ -107,7 +111,7 @@ class MapRenderer(Screen):
 				cr.save()
 				cr.translate(pos.x, pos.y)
 
-				cr.set_source_rgba(0, 0, 1, entity.reliability())
+				cr.set_source_rgba(0, 0, 1, entity.reliability)
 				
 				cr.arc(0, 0, 0.05, 0.0, 2 * math.pi)
 				cr.fill()

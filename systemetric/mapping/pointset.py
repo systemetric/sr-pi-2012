@@ -40,28 +40,46 @@ class PointSet(list):
 		"""Transform every point in this set by a matrix"""
 		return PointSet([matrix * p for p in self])
 
-	def bestTransformTo(self, other, maxPrecision = 360):
-		"""Find the matrix transformation which best maps this point set onto another"""
-		tried = []
+	"""Some prebuilt matrices for private use"""
+	__rotate90 = Matrix3.new_rotate(math.pi/2)
+	__rotate180 = Matrix3.new_scale(-1, -1)
 
-		#Try `maxPrecision` rotations, in equal steps
-		for i in range(maxPrecision):
-			theta = i * math.pi * 2 / maxPrecision
-			matrix = Matrix3.new_rotate(theta)
-			
-			e = self.centered.transformedBy(matrix).errorTo(other.centered)
+	def bestTransformTo(self, other):
+		"""
+		Use a super-optimal method, since error as a function of rotation was found to be of the form
 
-			tried.append((theta, matrix, e))
+		    f(theta) = offset - amplitude * cos(theta - optimalTheta)
+		
+		through testing, and them some logical thought
+		"""
+		#Error upon rotating by 0, 90, and 180 degrees
+		e0   = (self.centered).errorTo(other.centered)
+		e90  = (self.centered.transformedBy(PointSet.__rotate90)).errorTo(other.centered)
+		e180 = (self.centered.transformedBy(PointSet.__rotate180)).errorTo(other.centered)
 
-		theta, rotation, error = min(tried, key=lambda x: x[2])
+		#Sum two points in antiphase, and the sine waves cancel, leaving twice the offset
+		offset = (e0 + e180) / 2
 
-		#Add back on the translation components
-		transform = Matrix3.new_translate(*other.center.xy) * rotation * Matrix3.new_translate(*self.center.xy).inverse()
+		#remote the offsets - e180 not used any more
+		e0  -= offset
+		e90 -= offset
 
-		return (theta, transform, error)
+		#Pythagorean distance between two points 90 degrees out of phase is the amplitude
+		amplitude = math.sqrt(e0**2 + e90**2)
+
+		#             r0 = -amplitude * cos(-optimalTheta)
+		#                = -amplitude * cos(optimalTheta)
+		#-r0 / amplitude = cos(optimalTheta)
+		optimalTheta     = math.acos(-e0 / amplitude)
+
+		transform = Matrix3.new_translate(*other.center.xy) \
+		          * Matrix3.new_rotate(optimalTheta)        \
+		          * Matrix3.new_translate(*self.center.xy).inverse()
+		#angle, matrix, error
+		return (optimalTheta, transform, offset - amplitude)
 
 def main():
-	originalTransform = Matrix3.new_translate(5, 2) * Matrix3.new_rotate(math.pi/5) * Matrix3.new_translate(2, 6)
+	originalTransform = Matrix3.new_translate(5, 2) * Matrix3.new_rotate(math.pi/3) * Matrix3.new_translate(2, 6)
 
 	square = PointSet([
 		Point2(0, 0),
