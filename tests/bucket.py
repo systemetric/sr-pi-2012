@@ -12,9 +12,12 @@ while True:
 		targetFacing = b.center - target
 		R.driveTo(target)
 		time.sleep(0.2)
-		R.rotateBy(systemetric.Bearing(radians=target.angle(targetFacing)))
+		
+		angleDifference = Bearing.ofVector(target) - Bearing.ofVector(targetFacing)
+		R.rotateBy(angleDifference)
 		R.stop()
 		time.sleep(0.2)
+		
 		R.driveDistance(0.5)
 
 	time.sleep(1)
