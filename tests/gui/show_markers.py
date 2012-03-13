@@ -3,6 +3,7 @@ import gtk, gobject, cairo, math, threading, time
 from systemetric.mapping.arenamaps import CompetitionArenaMap, S007ArenaMap
 from libs.pyeuclid import *
 from systemetric.map import Map
+from systemetric.timer import Timer
 import random
 
 class Screen(gtk.DrawingArea):
@@ -145,7 +146,10 @@ def main():
 	t.start()
 
 	while True:
-		m.updateEntities(R.see().processed())
+		with Timer("Profiling") as t:
+	 		with t.event("see"):       see = R.see()
+			with t.event("processed"): processed = see.processed()
+			with t.event("update"):    m.updateEntities(processed)
 
 	m.fakeUpdateEntities(
 		tokens={2: Point2(1, 1), 12: Point2(0.5, 1.75), 0: Point2(3, 1.25)},
