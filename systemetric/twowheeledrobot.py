@@ -1,10 +1,12 @@
 from sr import *
 import math
+import atexit
 
 class TwoWheeledRobot(Robot):
     def __init__(self):
         #Make sure the soton class is initiated, so we can connect to motors
         Robot.__init__(self)
+        atexit.register(self.stop)
         
         #Name the motors, for easy access
         self.leftMotor = self.motors[0]

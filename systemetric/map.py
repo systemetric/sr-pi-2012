@@ -33,11 +33,19 @@ class Map(object):
 			return '<Map.Entity %s #%d at %s>' % (self.type, self.id, self.position)
 
 	def __init__(self, arena):
+<<<<<<< HEAD
 		self.arena     = arena
 		self.tokens    = [Map.Entity('Token', i)  for i in range(20)]
 		self.buckets   = [Map.Entity('Bucket', i) for i in range(4)]
 		self.opponents = [Map.Entity('Robot', i)  for i in range(4)]
 		self.robot     = None
+=======
+		self.arena = arena
+		self.tokens    = [Map.Entity('Token', i)  for i in range(20)]
+		self.buckets   = [Map.Entity('Bucket', i) for i in range(4)]
+		self.opponents = [Map.Entity('Robot', i)  for i in range(4)]
+		self.robot = None
+>>>>>>> master
 
 	def fakeUpdateEntities(self, transform, tokens):
 		"""Used for vision-less testing"""
