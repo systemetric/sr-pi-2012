@@ -13,12 +13,14 @@ while True:
 		R.driveTo(target)
 		time.sleep(0.2)
 		
-		angleDifference = Bearing.ofVector(target) - Bearing.ofVector(targetFacing)
+		angleDifference = Bearing.ofVector(targetFacing) - Bearing.ofVector(target)
 		R.rotateBy(angleDifference)
 		R.stop()
 		time.sleep(0.2)
 		
-		R.driveDistance(0.5)
+		R.drive(15)
+		time.sleep(1)
+		R.stop()
 
 	time.sleep(1)
 	R.rotateBy(20)
