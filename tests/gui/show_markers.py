@@ -59,7 +59,6 @@ class MapRenderer(Screen):
 
 		#Convert matrix to the cairo format
 		locInfo = self.map.robot
-		print locInfo
 		if locInfo:
 			p = locInfo.location
 			r = locInfo.heading.radians
