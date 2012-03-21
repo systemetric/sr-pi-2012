@@ -29,7 +29,7 @@ class Map(object):
 			return self.timestamp != 0
 
 		def __repr__(self):
-			return "<Map.Entity %s #%d at %s>" % (self.type, self.id, self.position)
+			return '<Map.Entity %s #%d at %s>' % (self.type, self.id, self.position)
 
 	def __init__(self, arena):
 		self.arena = arena

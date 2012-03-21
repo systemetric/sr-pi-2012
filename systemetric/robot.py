@@ -34,20 +34,18 @@ class Robot(CompassRobot, KillableRobot):
 	def compassHeading(self):
 		return self.compass.heading
 
-	def see(self, *args, **kargs):
+	def see(self, stats = False, *args, **kargs):
 		"""
 		Call the native see method, but return a VisionResult (a list with some
 		extra members tacked on)
 		"""
-		if kargs['stats']:
-			markers, times = KillableRobot.see(self, *args, **kargs)
-		else:
-			markers = KillableRobot.see(self, *args, **kargs)
-			
-		vr = VisionResult(markers, worldTransform = self.worldTransform)
 
-		return (vr, times) if kargs['stats'] else vr
-	
+		res = KillableRobot.see(self, stats=stats, *args, **kargs)
+		if stats:
+			return VisionResult(res[0], worldTransform = self.worldTransform), res[1]
+		else:
+			return VisionResult(res, worldTransform = self.worldTransform)
+
 	def driveDistance(self, distInMetres):
 		"""
 		Drive a certain distance forward in metres, using timing only. Negative
