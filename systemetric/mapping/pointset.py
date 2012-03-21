@@ -70,7 +70,9 @@ class PointSet(list):
 		#             r0 = -amplitude * cos(-optimalTheta)
 		#                = -amplitude * cos(optimalTheta)
 		#-r0 / amplitude = cos(optimalTheta)
-		optimalTheta     = math.acos(-e0 / amplitude)
+
+		#Here be dragons
+		optimalTheta = math.atan2(-e90, -e0)
 
 		transform = Matrix3.new_translate(*other.center.xy) \
 		          * Matrix3.new_rotate(optimalTheta)        \
