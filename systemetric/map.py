@@ -47,7 +47,7 @@ class Map(object):
 
 		self.robot = transform
 
-	def invalidateRobotPosition():
+	def invalidateRobotPosition(self):
 		self.robot = None
 
 	def updateEntities(self, vision):
