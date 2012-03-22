@@ -25,10 +25,9 @@ class KillableRobot(sr.Robot):
 		for marker in markers:
 			if marker.info.code == self.killCode:
 				self.end("Terminated by marker %d" % self.killCode, error=False)
-			   
+	   
 		return (markers, stats) if stats else markers
-
-		
+	
 	def end(self, message = 'robot stopped', error = True, shutdown = False):
 		'''Kill the robot in the nicest way possible'''
 		print message

@@ -39,12 +39,13 @@ class Robot(CompassRobot, KillableRobot):
 		Call the native see method, but return a VisionResult (a list with some
 		extra members tacked on)
 		"""
+
 		res = KillableRobot.see(self, stats=stats, *args, **kargs)
 		if stats:
 			return VisionResult(res[0], worldTransform = self.worldTransform), res[1]
 		else:
 			return VisionResult(res, worldTransform = self.worldTransform)
-	
+
 	def driveDistance(self, distInMetres):
 		"""
 		Drive a certain distance forward in metres, using timing only. Negative
