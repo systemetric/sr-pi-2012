@@ -61,6 +61,7 @@ class ProcessedVisionResult(object):
 			self.id = id
 			self.markers = markers
 			center = sum(m.center - m.normal * self.SIZE / 2 for m in markers) / len(markers)
+			self.captured = center.y > 0.5
 			self.center = visionResult.planarLocationOf(center)
 
 		def transform(self, matrix):

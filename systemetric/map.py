@@ -59,5 +59,9 @@ class Map(object):
 			self.robot = locInfo
 			
 			for token in vision.tokens:
-				self.tokens[token.id].position  = locInfo.transform * token.center
-				self.tokens[token.id].timestamp = vision.timestamp
+				if token.captured:
+					print "token %s captured" % token.id
+					self.tokens[token.id].invalidate()
+				else:
+					self.tokens[token.id].position  = locInfo.transform * token.center
+					self.tokens[token.id].timestamp = vision.timestamp
