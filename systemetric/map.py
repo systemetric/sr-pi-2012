@@ -4,7 +4,8 @@ from time import time
 class Map(object):
 	"""Stores a map of the arena"""
 	class Entity(object):
-		def __init__(self, type, id, position = None, timestamp = 0):
+		def __init__(self, map, type, id, position = None, timestamp = 0):
+			self.map = map
 			self.type = type
 			self.position = position
 			self.timestamp = timestamp
@@ -19,6 +20,7 @@ class Map(object):
 
 		def invalidate(self):
 			self.timestamp = 0
+			self.map.onUpdate()
 
 		def desirability(robotpos):
 			distance = abs(robotpos - self.position)
@@ -33,9 +35,9 @@ class Map(object):
 
 	def __init__(self, arena):
 		self.arena     = arena
-		self.tokens    = [Map.Entity('Token', i)  for i in range(20)]
-		self.buckets   = [Map.Entity('Bucket', i) for i in range(4)]
-		self.opponents = [Map.Entity('Robot', i)  for i in range(4)]
+		self.tokens    = [Map.Entity(self, 'Token', i)  for i in range(20)]
+		self.buckets   = [Map.Entity(self, 'Bucket', i) for i in range(4)]
+		self.opponents = [Map.Entity(self, 'Robot', i)  for i in range(4)]
 		self.robot     = None
 		self.onUpdate  = systemetric.Event()
 
@@ -50,6 +52,7 @@ class Map(object):
 
 	def invalidateRobotPosition(self):
 		self.robot = None
+		self.onUpdate()
 
 	def updateEntities(self, vision):
 		"""Update the map with the new set of vision information"""
@@ -66,3 +69,5 @@ class Map(object):
 				else:
 					self.tokens[token.id].position  = locInfo.transform * token.center
 					self.tokens[token.id].timestamp = vision.timestamp
+
+		self.onUpdate()
