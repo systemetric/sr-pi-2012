@@ -1,6 +1,7 @@
 from libs.pyeuclid import *
 from copy import copy
 from time import time
+from event import Event
 class Map(object):
 	"""Stores a map of the arena"""
 	class Entity(object):
@@ -37,7 +38,7 @@ class Map(object):
 		self.buckets   = [Map.Entity('Bucket', i) for i in range(4)]
 		self.opponents = [Map.Entity('Robot', i)  for i in range(4)]
 		self.robot     = None
-		self.onUpdate  = systemetric.Event()
+		self.onUpdate  = Event()
 
 	def fakeUpdateEntities(self, transform, tokens):
 		"""Used for vision-less testing"""
