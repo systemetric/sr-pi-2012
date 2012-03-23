@@ -1,11 +1,12 @@
 import time
-import json
+import sys
 class Timer(object):
-	def __init__(self, name = "Timer", parent = None):
+	def __init__(self, name = "Timer", parent = None, printTo = sys.stdout):
 		self.parent = parent
 		self.name = name
 		self.reset()
 		self.time = 0
+		self.printTo = printTo
 
 	def __enter__(self):
 		self.start = time.time()
@@ -21,18 +22,18 @@ class Timer(object):
 		return False
 
 	def event(self, name):
-		return Timer(name, self)
+		return Timer(name, self, printTo=self.printTo)
 
 	def reset(self):
 		self.times = []
 
 	def toTimeTree(self, indent = 0):
-		print '\t' * indent + '%s: %f' % (self.name, self.time)
+		print >> self.printTo, '\t' * indent + '%s: %f' % (self.name, self.time)
 		for child in self.times:
 			child.toTimeTree(indent+1)
 
 def main():
-	with Timer("profiling") as t:
+	with Timer("profiling", printTo = open(r'test.txt', 'w')) as t:
 		with t.event("a") as a:
 			time.sleep(1)
 
@@ -47,5 +48,3 @@ def main():
 
 		with t.event("c"):
 			time.sleep(0.2)
-
-	
