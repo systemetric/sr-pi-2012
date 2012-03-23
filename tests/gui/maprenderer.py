@@ -15,9 +15,7 @@ class Screen(gtk.DrawingArea):
 
 	def tick(self):
 		## This invalidates the screen, causing the expose event to fire.
-		self.alloc = self.get_allocation()
-		rect = gtk.gdk.Rectangle(self.alloc.x, self.alloc.y, self.alloc.width, self.alloc.height)
-		self.window.invalidate_rect(rect, True)        
+		self.queue_draw()
 		return True # Causes timeout to tick again.
 
 	## When expose event fires, this is run
@@ -30,6 +28,11 @@ class MapRenderer(Screen):
 	def __init__(self, map):
 		super(MapRenderer, self).__init__()
 		self.map = map
+
+		def update():
+			print "update"
+		
+		self.map.onUpdate += update
 
 	def draw(self, w, h):
 		self.cr.save()
