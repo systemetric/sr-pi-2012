@@ -35,7 +35,7 @@ while True:
 			R.drive(15)
 			time.sleep(1)
 			R.stop()
-			break;
+			time.sleep(10)
 
 		else:
 			if abs(target) > STEPDIST:
