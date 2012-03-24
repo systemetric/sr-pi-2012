@@ -1,15 +1,10 @@
 import serial
 from bearing import Bearing
+from mbed import Mbed
 
 class Compass(object):
-    def __init__(self, port = '/dev/ttyACM0'):
-        try:
-            self.port = serial.Serial(port)
-           # self.port.timeout = 0.25
-            self.port.open()
-        except Exception:
-            raise Exception('Cannot connect to mbed')
-        
+    def __init__(self, mbed = None):
+        self.mbed = mbed or Mbed.get()
         self.zeroOffset = Bearing(0)
 
     @property
@@ -17,8 +12,7 @@ class Compass(object):
         '''Get the compass heading from the mbed, measured from due north'''
         heading = 'n/a'
         try:
-            self.port.write('H')
-            heading = self.port.readline()
+            heading = self.mbed.sendCommand('H')
             return Bearing(int(heading) / 10.0) #convert the int we get from the mbed into a float.
         except:
             print 'got [' + heading + '] from the compass. Not correct!'
@@ -34,7 +28,7 @@ class Compass(object):
         self.zeroOffset = self.absoluteHeading
 
     def startCalibration(self):
-        self.port.write('C')
+        self.mbed.sendCommand('C')
         
     def stopCalibration(self):
-        self.port.write('C')
+        self.mbed.sendCommand('C')
