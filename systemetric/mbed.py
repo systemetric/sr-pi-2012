@@ -23,7 +23,4 @@ class Mbed(object):
         if not cls._mainMbed:
             _mainMbed = cls('/dev/ttyACM0')
 
-        return _mainMbed 
-
-
-    
+        return _mainMbed     
