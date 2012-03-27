@@ -25,4 +25,4 @@ class Gyro(object):
 
 	def stopScaleCalibration(self, angleRotatedThrough):
 		self.mbed.sendCommand('Gs')
-		self.mbed.sendCommand(struct.pack(s, angleRotatedThrough))
+		self.mbed.sendCommand(angleRotatedThrough)
