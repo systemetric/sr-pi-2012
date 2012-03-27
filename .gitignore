@@ -1,4 +1,4 @@
 *.zip
 *~
 config.json
-.pyc
+*.pyc
