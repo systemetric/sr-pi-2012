@@ -1,5 +1,3 @@
-import serial
-from bearing import Bearing
 from mbed import MbedDevice
 
 class Ultrasonic(MbedDevice):

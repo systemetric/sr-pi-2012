@@ -1,10 +1,8 @@
-import serial
-from bearing import Bearing
 from mbed import MbedDevice
 
 class Gyro(MbedDevice):
 	def __init__(self, mbed = None):
-		super(Ultrasonic, self).__init__('G', mbed)
+		super(Gyro, self).__init__('G', mbed)
 
 	@property
 	def angularVelocity(self):
