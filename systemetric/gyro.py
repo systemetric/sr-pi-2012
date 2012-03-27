@@ -7,12 +7,16 @@ class Gyro(MbedDevice):
 		super(Ultrasonic, self).__init__('G', mbed)
 
 	@property
-	def angle(self):
-		return float(self.request('a'))
-
-	@property
 	def angularVelocity(self):
 		return float(self.request('v'))
+		
+	@property
+	def angle(self):
+		return float(self.request('a'))
+		
+	@angle.setter
+	def angle(self, value):
+		return float(self.request('r', value))
 
 	def startOffsetCalibration(self):
 		self.request('o')
@@ -24,5 +28,4 @@ class Gyro(MbedDevice):
 		self.request('s')
 
 	def stopScaleCalibration(self, angleRotatedThrough):
-		self.request('s')
-		self.request(angleRotatedThrough)
+		self.request('s', angleRotatedThrough)
