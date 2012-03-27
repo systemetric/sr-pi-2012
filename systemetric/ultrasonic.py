@@ -1,15 +1,14 @@
 import serial
 from bearing import Bearing
-from mbed import Mbed
+from mbed import MbedDevice
 
-class Ultrasonic(object):
+class Ultrasonic(MbedDevice):
 	def __init__(self, mbed = None):
-		self.mbed = mbed or Mbed.get()
+		super(Ultrasonic, self).__init__('U', mbed)
 		self.distances = [float("nan")] * 4  
 
 	def ping(self):
-		distances = self.mbed.sendCommand('U').split()
-		self.distances = map(float, distances)
+		self.distances = map(float, self.request().split())
 
 	@property
 	def front(self):
