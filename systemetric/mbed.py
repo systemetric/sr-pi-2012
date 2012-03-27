@@ -1,6 +1,18 @@
 import serial
 from threading import Lock
 
+class MbedDevice(object):
+    def __init__(self, id, mbed):
+        self.mbed = mbed or Mbed.get()
+        self.id = id
+
+    def request(self, thing='', *args):
+        command = self.id + thing
+        if args:
+            command += ','.join(str(r) for r in args)
+        
+        return self.mbed.sendCommand(command)
+
 class Mbed(object):
     _mainMbed = None
     def __init__(self, port):

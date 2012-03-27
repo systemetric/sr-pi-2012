@@ -1,10 +1,10 @@
 import serial
 from bearing import Bearing
-from mbed import Mbed
+from mbed import MbedDevice
 
-class Compass(object):
+class Compass(MbedDevice):
     def __init__(self, mbed = None):
-        self.mbed = mbed or Mbed.get()
+        super(Compass, self).__init__('C', mbed)
         self.zeroOffset = Bearing(0)
 
     @property
@@ -12,7 +12,7 @@ class Compass(object):
         '''Get the compass heading from the mbed, measured from due north'''
         heading = 'n/a'
         try:
-            heading = self.mbed.sendCommand('H')
+            heading = self.request('h')
             return Bearing(int(heading) / 10.0) #convert the int we get from the mbed into a float.
         except:
             print 'got [' + heading + '] from the compass. Not correct!'
@@ -28,7 +28,7 @@ class Compass(object):
         self.zeroOffset = self.absoluteHeading
 
     def startCalibration(self):
-        self.mbed.sendCommand('C')
+        self.request('c')
         
     def stopCalibration(self):
-        self.mbed.sendCommand('C')
+        self.request('c')
