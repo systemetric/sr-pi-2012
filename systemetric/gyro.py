@@ -1,28 +1,28 @@
 import serial
 from bearing import Bearing
-from mbed import Mbed
+from mbed import MbedDevice
 
-class Gyro(object):
+class Gyro(MbedDevice):
 	def __init__(self, mbed = None):
-		self.mbed = mbed or Mbed.get()
+		super(Ultrasonic, self).__init__('G', mbed)
 
 	@property
 	def angle(self):
-		return float(self.mbed.sendCommand('Ga'))
+		return float(self.request('a'))
 
 	@property
 	def angularVelocity(self):
-		return float(self.mbed.sendCommand('Gv'))
+		return float(self.request('v'))
 
 	def startOffsetCalibration(self):
-		self.mbed.sendCommand('Go')
+		self.request('o')
 	
 	def stopOffsetCalibration(self):
-		self.mbed.sendCommand('Go')
+		self.request('o')
 
 	def startScaleCalibration(self):
-		self.mbed.sendCommand('Gs')
+		self.request('s')
 
 	def stopScaleCalibration(self, angleRotatedThrough):
-		self.mbed.sendCommand('Gs')
-		self.mbed.sendCommand(angleRotatedThrough)
+		self.request('s')
+		self.request(angleRotatedThrough)
