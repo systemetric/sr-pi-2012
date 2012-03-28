@@ -9,7 +9,7 @@ class MbedDevice(object):
     def request(self, thing='', *args):
         command = self.id + thing
         if args:
-            command += ','.join(str(r) for r in args)
+            command += '(' + ','.join(str(r) for r in args) + ')'
         
         return self.mbed.sendCommand(command)
 
@@ -28,6 +28,7 @@ class Mbed(object):
     def sendCommand(self, c):
         with self._lock:
             self.port.write(c)
+            print c
             return self.port.readline()
 
     @classmethod

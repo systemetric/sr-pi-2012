@@ -31,3 +31,10 @@ class Compass(MbedDevice):
         
     def stopCalibration(self):
         self.request('c')
+
+def main():
+    comp = Compass()
+
+    while True:
+        print 'absolute heading: %f' % comp.absoluteHeading
+        print 'heading: %f' % comp.heading 
