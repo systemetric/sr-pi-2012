@@ -2,7 +2,7 @@ import math
 import time
 import json
 
-import libs.pyeuclid as pyeuclid
+from libs.pyeuclid import Matrix4
 from compassrobot import CompassRobot
 from killablerobot import KillableRobot
 from vision import VisionResult
@@ -17,22 +17,17 @@ class Robot(CompassRobot, KillableRobot):
 		with open('config.json') as configFile:
 			KillableRobot.__init__(self, killCode = json.load(configFile).get('killCode') or 228)
 		
-		# Camera orientation, using yaw, pitch, and roll
-		self.cameraMatrix = pyeuclid.Matrix4.new_rotate_euler(  
-			heading = 0,    #yaw
-			attitude = 0, #math.degrees(-10), #pitch
-			bank = 0        #roll
+		# Camera orientation - numbers need checking
+		self.cameraMatrix = (
+			Matrix4.new_translate(0, 0.5, 0) *      #0.5m up from the center of the robot
+			Matrix4.new_rotatex(math.radians(10))   #Tilted forward by 10 degrees
 		)
+
 		# Cache, since .inverse is expensive
 		self.worldTransform = self.cameraMatrix.inverse()
 
 		#Set compass zero offset
-		self.compass.initializeZeroOffset()
-	
-	#deprecated
-	@property 
-	def compassHeading(self):
-		return self.compass.heading
+		self.compass.heading = 0
 
 	def see(self, stats = False, *args, **kargs):
 		"""
