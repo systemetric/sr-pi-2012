@@ -29,9 +29,10 @@ class Compass(object):
         '''Get the compass heading from the mbed, relative to the offset'''
         return self.absoluteHeading - self.zeroOffset
 
-    def initializeZeroOffset(self):
+    @heading.setter
+    def heading(self, value):
         '''Set conceptual zero to the current heading'''
-        self.zeroOffset = self.absoluteHeading
+        self.zeroOffset = self.absoluteHeading - value
 
     def startCalibration(self):
         self.port.write('C')
