@@ -4,28 +4,38 @@ from systemetric import Bearing
 
 R = systemetric.Robot()
 
+#Whether searching for cubes or a bucket
 followState = "cube"
+#Any cubes already found
 foundCubes = set()
 
+#Distance between each step to move towards a bucket in meters
+#(e.g. if 2 meter step, every 2 meters it will check location of bucket again)
 STEPDIST = 1
 
 while True:
+	#Find all markers it can see
 	markers = R.see(res=(1280,1024)).processed()
+
+	#If finding cubes
 	if followState == "cube":
 		print "Reading markers"
-		#Get only the tokens
+		#Get only the unique (not found already) tokens
 		tokens = [m for m in markers.tokens if m.id not in foundCubes]
 		
 		# Are there any tokens?
 		if tokens:
 			if abs(tokens[0].center) < 0.45:
+				#If close enough to cube to grab then 'grab'
 				foundCubes.add(tokens[0].id)
 				print "Found cube #%d!" % tokens[0].id
 				R.power.beep(440, 1)
 				time.sleep(1)
 			else:
+				#Else attempt to drive to cube
 				R.driveTo(tokens[0].center, gap=0.2)
 		else:
+			#Couldn't find any markers
 			print "No Marker..."
 			
 			# Spin 30 degrees clockwise
@@ -35,17 +45,23 @@ while True:
 			R.stop()
 
 		if len(foundCubes) > 1:
+			#If found 2 or more cubes, start finding bucket
 			followState = "bucket"
+			#Reset found cubes
 			foundCubes = set()
 
 	elif followState == "bucket":
+		#If finding bucket, get all seen buckets
 		buckets = markers.buckets
 
 		if buckets:
+			#If any buckets found, target first bucket in list
 			b = buckets[0]
 
+			#Choose the best point on the bucket to align to
 			target = min(b.desirableRobotTargets, key=abs)
 
+			#Print bucket information
 			print "Bucket seen at %s" % b.center
 			print "Driving to %s" % target
 
@@ -67,6 +83,7 @@ while True:
 				R.stop()
 				R.power.beep(440, 1)
 				
+				#Start following cubes again, skip the rest of the loop
 				followState = "cube"
 				continue
 
@@ -85,7 +102,7 @@ while True:
 				print "Turning to face bucket again"
 				R.rotateBy(angleDifference)
 				R.stop()
-			
+		
 		time.sleep(1)
 		R.rotateBy(20)
 
