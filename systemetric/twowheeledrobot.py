@@ -40,11 +40,10 @@ class TwoWheeledRobot(Robot):
         
     def drive(self, speed=50, steer=0):
         '''Drive the robot forwards or backwards at a certain speed, with an optional steer'''
-        self.right = speed - steer
-        self.left = speed + steer
+        self.right = speed + steer
+        self.left = speed - steer
         
     def turn(self, speed):
         '''Rotate the robot at a certain speed. Positive is clockwise'''
-        self.right = -speed
-        self.left = speed
-    
+        self.right = speed
+        self.left = -speed
