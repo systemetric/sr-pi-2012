@@ -48,7 +48,7 @@ class Robot(CompassRobot, KillableRobot):
 		"""
 		print "\tRobot.driveDistance(%.2f)" % distInMetres
 		print "\t\tHeading before:", self.compass.heading
-		SPEED = .575
+		SPEED = .6	# we measured 3m in 5s
 		self.drive(speed = math.copysign(100, distInMetres))
 		time.sleep(abs(distInMetres) / SPEED)
 		self.stop()
