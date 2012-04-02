@@ -19,4 +19,11 @@ class Arm(MbedDevice):
 	@property
 	def atBottom(self):
 		"""Bottom limit switches pressed?"""
-		self.request('b') #atBottom
+		return self.request('b') == 'True' #atBottom
+
+def main():
+	A = Arm()
+	
+	while True:
+		time.sleep(1)
+		print A.atBottom
