@@ -19,8 +19,8 @@ class Robot(CompassRobot, KillableRobot):
 		
 		# Camera orientation - numbers need checking
 		self.cameraMatrix = (
-			Matrix4.new_translate(0, 0.5, 0) *      #0.5m up from the center of the robot
-			Matrix4.new_rotatex(math.radians(10))   #Tilted forward by 10 degrees
+			Matrix4.new_translate(0, 0.48, 0) *      #0.5m up from the center of the robot
+			Matrix4.new_rotatex(math.radians(18))   #Tilted forward by 10 degrees
 		)
 
 		# Cache, since .inverse is expensive
