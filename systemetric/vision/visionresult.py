@@ -4,6 +4,7 @@ from processedvisionresult import ProcessedVisionResult
 import time
 import sys
 
+
 class VisionResult(list):
 	"""
 	The class returned by `systemetric.Robot.see`. Splits the markers seen by

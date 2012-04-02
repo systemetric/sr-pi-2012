@@ -2,6 +2,7 @@ from libs.pyeuclid import *
 from copy import copy
 from time import time
 from event import Event
+
 class Map(object):
 	"""Stores a map of the arena"""
 	class Entity(object):

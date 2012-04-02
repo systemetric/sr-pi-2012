@@ -19,8 +19,8 @@ class Robot(CompassRobot, KillableRobot):
 		
 		# Camera orientation - numbers need checking
 		self.cameraMatrix = (
-			Matrix4.new_translate(0, 0.5, 0) *      #0.5m up from the center of the robot
-			Matrix4.new_rotatex(math.radians(10))   #Tilted forward by 10 degrees
+			Matrix4.new_translate(0, 0.48, 0) *      #0.5m up from the center of the robot
+			Matrix4.new_rotatex(math.radians(18))   #Tilted forward by 18 degrees
 		)
 
 		# Cache, since .inverse is expensive
@@ -48,7 +48,7 @@ class Robot(CompassRobot, KillableRobot):
 		"""
 		print "\tRobot.driveDistance(%.2f)" % distInMetres
 		print "\t\tHeading before:", self.compass.heading
-		SPEED = .575
+		SPEED = .6	# we measured 3m in 5s
 		self.drive(speed = math.copysign(100, distInMetres))
 		time.sleep(abs(distInMetres) / SPEED)
 		self.stop()
