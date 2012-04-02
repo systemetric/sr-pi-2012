@@ -28,7 +28,7 @@ class TwoWheeledRobot(Robot):
         '''Property to control the speed of the right motor, without the hassle of `.target`'''
         return self.rightMotor.target
         
-    @right.setter    
+    @right.setter
     def right(self, value):
         if not math.isnan(value):
             self.rightMotor.target = value

@@ -2,6 +2,8 @@ from libs.pyeuclid import *
 from systemetric.mapping import PointSet
 from collections import defaultdict
 
+import sr
+
 class ProcessedVisionResult(object):
 	"""
 	2d representation of what can be seen
@@ -65,7 +67,7 @@ class ProcessedVisionResult(object):
 			self.center = visionResult.planarLocationOf(center)
 
 		def transform(self, matrix):
-			self.center = matrix * self.center;
+			self.center = matrix * self.center
 
 		def __repr__(self):
 			return "<Token #%d at %s>" % (self.id, repr(self.center))
@@ -75,24 +77,73 @@ class ProcessedVisionResult(object):
 			pass
 
 	class Bucket(object):
-		def __init__(self, visionResult, markers):
-			pass
+		"""
+		The bucket with wheels. Used to store tokens.
+		"""
+		LENGTH = 0.372
+		WIDTH  = 0.245
+		def __init__(self, visionResult, id, markers):
+			self.id = id
+
+			#Find the center
+			center = sum(
+				m.center - m.normal * (
+					self.LENGTH if m.type == sr.MARKER_BUCKET_END else self.WIDTH
+				) / 2 for m in markers
+			) / len(markers)
+			self.center = visionResult.planarLocationOf(center)
+
+			#Find the normal vector of a long edge
+			m = markers[0]
+			self.facing = visionResult.planarDirectionOf(m.normal)
+			if m.type == sr.MARKER_BUCKET_END:
+				self.facing = self.facing.left_perpendicular()
+
+			self.facing.normalize()
+
+
+		def transform(self, matrix):
+			self.center = matrix * self.center
+			self.facing = matrix * self.facing
+
+		@property
+		def desirableRobotTargets(self, distance = 0.5):
+			"""The positions which the robot could be driven to for optimal deployment of cubes"""
+			return (
+				self.center + self.facing * distance,
+				self.center - self.facing * distance
+			)
+
+		def __repr__(self):
+			return "<Bucket #%d at %s>" % (self.id, repr(self.center))
+			
 
 	def planarLocationOf(self, point):
 		return Point2(point.x, point.z)
 
+	def planarDirectionOf(self, vector):
+		return Vector2(vector.x, vector.z)
+
 	def __init__(self, visionResult):
 		self.timestamp = visionResult.timestamp
-		self.arena = [self.ArenaMarker(self, m) for m in visionResult.arena]
-		self.tokens = []
+		self.arena     = [self.ArenaMarker(self, m) for m in visionResult.arena]
+		self.tokens    = []
+		self.buckets   = []
 
-		tokenmarkers = defaultdict(list)
+		tokenmarkers   = defaultdict(list)
+		bucketmarkers  = defaultdict(list)
 
 		for m in visionResult.tokens:
 			tokenmarkers[m.code] += [m]
 
+		for m in visionResult.bucketEnds + visionResult.bucketSides:
+			bucketmarkers[m.code] += [m]
+
 		for code, markers in tokenmarkers.iteritems():
 			self.tokens += [ self.Token(self, code, markers) ]
+
+		for code, markers in bucketmarkers.iteritems():
+			self.buckets += [ self.Bucket(self, code, markers)]
 
 		self.tokens.sort(key=lambda m: abs(m.center))
 	
