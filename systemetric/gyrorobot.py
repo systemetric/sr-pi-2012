@@ -4,16 +4,16 @@
 
 import time
 from twowheeledrobot import TwoWheeledRobot
-from compass import Compass
+from gyro import Gyro
 from pid import PID
 
-class CompassRobot(TwoWheeledRobot):
+class GyroRobot(TwoWheeledRobot):
     def __init__(self):
         TwoWheeledRobot.__init__(self)
-        self.compass = Compass()
+        self.gyro = Gyro()
 
         self.regulator = PID(
-            getInput = lambda: self.compass.heading,
+            getInput = lambda: self.gyro.angle,
             setOutput = lambda x: TwoWheeledRobot.drive(self, speed = self.speed, steer = x),
             outputRange = (-100, 100),
             iLimit = 0.25
@@ -59,7 +59,7 @@ class CompassRobot(TwoWheeledRobot):
         """
         self.regulate = True
         self.speed = 0
-        self.rotateTo((self.regulator.target if fromTarget else self.compass.heading) + angle)
+        self.rotateTo((self.regulator.target if fromTarget else self.gyro.angle) + angle)
         
     def setSpeed(self, speed):
         print "deprecated - use drive instead"
@@ -76,7 +76,7 @@ class CompassRobot(TwoWheeledRobot):
         if regulate:
             self.speed = speed
         else:
-            CompassRobot.drive(self, speed, steer)
+            GyroRobot.drive(self, speed, steer)
             
         
     def stop(self):

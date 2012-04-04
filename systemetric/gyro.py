@@ -40,21 +40,9 @@ def main():
 	print 'rotate the gyro 90 degrees'
 	time.sleep(5)
 	gyro.stopScaleCalibration(90)
-
-	for i in xrange(20):
-		try:
-			print 'angular velocity: %f' % gyro.angularVelocity
-			print 'angle: %f' % gyro.angle
-			time.sleep(0.5)
-		except:
-			print 'failed'
-
 	gyro.angle = 0
-
-	for i in xrange(20):
-		try:
-			print 'angular velocity: %f' % gyro.angularVelocity
-			print 'angle: %f' % gyro.angle
-			time.sleep(0.5)
-		except:
-			print 'failed'
+	
+	while True:
+		print 'angular velocity: %f' % gyro.angularVelocity
+		print 'angle: %f' % gyro.angle
+		time.sleep(0.5)

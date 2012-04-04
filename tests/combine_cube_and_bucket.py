@@ -3,6 +3,7 @@ import time
 from systemetric import Bearing
 
 R = systemetric.Robot()
+A = systemetric.Arm()
 
 #Whether searching for cubes or a bucket
 followState = "cube"
@@ -29,8 +30,7 @@ while True:
 				#If close enough to cube to grab then 'grab'
 				foundCubes.add(tokens[0].id)
 				print "Found cube #%d!" % tokens[0].id
-				R.power.beep(440, 1)
-				time.sleep(1)
+				A.grabCube(wait=True)
 			else:
 				#Else attempt to drive to cube
 				R.driveTo(tokens[0].center, gap=0.2)

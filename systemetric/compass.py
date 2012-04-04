@@ -34,8 +34,10 @@ class Compass(MbedDevice):
         self.request('c')
 
 def main():
+    import time
     comp = Compass()
 
     while True:
+        time.sleep(0.5)
         print 'absolute heading: %f' % comp.absoluteHeading
-        print 'heading: %f' % comp.heading 
+        print 'heading: %f' % comp.heading
