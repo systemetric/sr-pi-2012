@@ -7,6 +7,8 @@ from compassrobot import CompassRobot
 from killablerobot import KillableRobot
 from vision import VisionResult
 from bearing import Bearing
+from lifter import Lifter
+from arm import Arm
 
 class Robot(CompassRobot, KillableRobot):
 	'''A class derived from the base 'Robot' class provided by soton'''	 
@@ -28,6 +30,9 @@ class Robot(CompassRobot, KillableRobot):
 
 		#Set compass zero offset
 		self.compass.heading = 0
+
+		self.arm = Arm()
+		self.lifter = Lifter()
 
 	def see(self, stats = False, *args, **kargs):
 		"""
