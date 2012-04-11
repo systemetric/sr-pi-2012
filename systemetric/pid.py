@@ -75,7 +75,7 @@ class PID(threading.Thread):
             time.sleep(self.period)
         
     def onTarget(self, tolerance = 5):
-        return not self.enabled or math.fabs(self.error) < tolerance
+        return not self.enabled or abs(self.error) < tolerance
     
     def tuneFromZieglerNichols(self, ku, pu):
         self.kp = 0.6 * ku

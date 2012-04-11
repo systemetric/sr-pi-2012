@@ -37,6 +37,7 @@ class ISlider(PIDSlider):
 		PIDSlider.__init__(self, pidController)
 	def sliderMoved(self, _, adj):
 		self.pidController.ki = adj.value
+		self.pidController._reset();
 
 class DSlider(PIDSlider):
 	def __init__(self, pidController):
@@ -49,6 +50,7 @@ class DSlider(PIDSlider):
 		PIDSlider.__init__(self, pidController)
 	def sliderMoved(self, _, adj):
 		self.pidController.kd = adj.value
+		self.pidController._reset();
 
 class SliderWrapper(gtk.HBox):
 	def __init__(self, name, slider):

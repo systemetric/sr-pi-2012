@@ -4,6 +4,7 @@ from tests.gui.slider import *
 
 def main():
 	R = CompassRobot()
+	R.compass.heading = 0
 
 	regulator = R.regulator
 	regulator.kp  = 0
