@@ -1,11 +1,8 @@
 import time
-import threading
-from libs import compass
-
-from systemetricRobot import SystemetricRobot
+from systemetric import Robot
 
 def main():
-    R = SystemetricRobot()
+    R = Robot()
     
     R.compass.startCalibration()
     R.turn(8)
