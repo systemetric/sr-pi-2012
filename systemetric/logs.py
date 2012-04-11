@@ -105,6 +105,19 @@ def roundStarted():
 	global _roundStarted
 	_roundStarted = time.time()
 
+def to(log):
+	def decorator(f):
+		"""Redirects stdout to point to a log file, within the scope of a function - NOT THREAD SAFE!"""
+		@functools.wraps(f)
+		def wrapped(*args, **kargs):
+			old = sys.stdout
+			sys.stdout = log
+			result = f(*args, **kargs)
+			sys.stdout = old
+			return result
+		return wrapped
+	return decorator
+
 # HERE BE DRAGONS
 
 # def to(log):
@@ -170,7 +183,8 @@ def main():
 	print >> movement, "World"
 	print >> movement, "World"
 	print >> movement, "World"
-	"""
+
+	
 	class test():
 		@to(movement)
 		def it(self, p, q):
@@ -199,6 +213,6 @@ def main():
 	roundStarted()
 	t.it(3, 4)
 	time.sleep(1)
-	print t.that"""
+	print t.that
 
 main()
