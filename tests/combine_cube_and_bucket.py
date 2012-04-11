@@ -3,7 +3,6 @@ import time
 from systemetric import Bearing
 
 R = systemetric.Robot()
-A = systemetric.Arm()
 
 #Whether searching for cubes or a bucket
 followState = "cube"
@@ -22,18 +21,19 @@ while True:
 	if followState == "cube":
 		print "Reading markers"
 		#Get only the unique (not found already) tokens
-		tokens = [m for m in markers.tokens if m.id not in foundCubes]
+		tokens = markers.tokens
 		
 		# Are there any tokens?
 		if tokens:
-			if abs(tokens[0].center) < 0.45:
-				#If close enough to cube to grab then 'grab'
+			if abs(tokens[0].center) > 1:
+				R.driveTo(tokens[0].center, gap=0.75)
+			else:
+				R.driveTo(tokens[0].center, gap=0.2)
 				foundCubes.add(tokens[0].id)
 				print "Found cube #%d!" % tokens[0].id
-				A.grabCube(wait=True)
-			else:
-				#Else attempt to drive to cube
-				R.driveTo(tokens[0].center, gap=0.2)
+				R.arm.grabCube(wait=True)
+				time.sleep(2);
+				R.driveDistance(-0.25)
 		else:
 			#Couldn't find any markers
 			print "No Marker..."
@@ -44,8 +44,8 @@ while True:
 			# Disable heading correction
 			R.stop()
 
-		if len(foundCubes) > 1:
-			#If found 2 or more cubes, start finding bucket
+		if len(foundCubes) >= 3:
+			#If found 3 or more cubes, start finding bucket
 			followState = "bucket"
 			#Reset found cubes
 			foundCubes = set()
@@ -65,7 +65,7 @@ while True:
 			print "Bucket seen at %s" % b.center
 			print "Driving to %s" % target
 
-			if abs(target) < 0.1:
+			if abs(target) < 0.2:
 				#Nearly at the target, don't move any more
 				print "Nearly there"
 				angle = Bearing.ofVector(b.center)
@@ -78,10 +78,13 @@ while True:
 
 				#Angle is ok now - go for it!
 				print "Success!"
+				R.driveDistance(0.75)
 				R.drive(15)
 				time.sleep(1)
 				R.stop()
-				R.power.beep(440, 1)
+				R.lifter.up()
+				time.sleep(1)
+				R.lifter.down()
 				
 				#Start following cubes again, skip the rest of the loop
 				followState = "cube"
@@ -102,8 +105,7 @@ while True:
 				print "Turning to face bucket again"
 				R.rotateBy(angleDifference)
 				R.stop()
-		
-		time.sleep(1)
-		R.rotateBy(20)
+	
+		R.rotateBy(30, fromTarget=True)
 
 		R.stop()
