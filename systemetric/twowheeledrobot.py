@@ -2,6 +2,7 @@ from sr import *
 import math
 import atexit
 
+
 class TwoWheeledRobot(Robot):
     def __init__(self):
         #Make sure the soton class is initiated, so we can connect to motors
@@ -11,6 +12,12 @@ class TwoWheeledRobot(Robot):
         #Name the motors, for easy access
         self.leftMotor = self.motors[0]
         self.rightMotor = self.motors[1]
+
+    def _setSpeed(self, motor, speed):
+        if abs(speed) >= 5:
+            motor.target = speed
+        else:
+            motor.target = 0
         
     #Getters and setters for left motor. Allows you to write R.left = 100 for full speed forward
     @property
@@ -21,7 +28,7 @@ class TwoWheeledRobot(Robot):
     @left.setter
     def left(self, value):
         if not math.isnan(value):
-            self.leftMotor.target = value
+            self._setSpeed(self.leftMotor, value)
         
     @property  
     def right(self):
@@ -31,13 +38,13 @@ class TwoWheeledRobot(Robot):
     @right.setter
     def right(self, value):
         if not math.isnan(value):
-            self.rightMotor.target = value
+            self._setSpeed(self.rightMotor, value)
     
     def stop(self):
         '''Stop the robot, by setting the speed of both motors to 0'''
         self.right = 0
         self.left = 0
-        
+
     def drive(self, speed=50, steer=0):
         '''Drive the robot forwards or backwards at a certain speed, with an optional steer'''
         self.right = speed + steer
