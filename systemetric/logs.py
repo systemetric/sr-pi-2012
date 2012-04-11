@@ -98,9 +98,12 @@ class IndentingLogger(StreamWrapper):
 
 
 
-_timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
-logsdir = 'C:\\Documents and Settings\Eric' #os.getcwd()  #os.path.join('/mnt/user/', 'custom-logs', _timestamp)
-
+_timestamp = time.strftime("%Y-%m-%d %H.%M.%S", time.gmtime())
+logsdir = os.path.join('/mnt/user/', 'custom-logs', _timestamp)
+try:
+	os.makedirs(logsdir)
+except:
+	pass
 sys.stdout = IndentingLogger(TimestampedLogger(sys.stdout))
 movement = IndentingLogger(MirroringStream(TimestampedLogger(open(os.path.join(logsdir, 'movement.txt'), 'w')), name='movement', to=sys.stdout))
 events   = IndentingLogger(MirroringStream(TimestampedLogger(open(os.path.join(logsdir, 'events.txt'  ), 'w')), name='event',    to=sys.stdout))
