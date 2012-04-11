@@ -3,47 +3,72 @@ import os, time, sys, functools, inspect, time, collections, threading
 _robotStarted = time.time()
 _roundStarted = None
 
+# class ThreadedOutputStream(object):
+# 	def __init__(self, inner):
+# 		self.streams = collections.defaultdict(lambda: inner)
+
+# 	@property
+# 	def stream(self): return self.streams[threading.current_thread()]
+# 	@stream.setter
+# 	def stream(self, s): self.streams[threading.current_thread()] = s
+# 	@stream.deleter
+# 	def stream(self): del self.streams[threading.current_thread()]
+
+# 	def write(self, data):
+# 		self.stream.write(data)
+
 class StreamWrapper(object):
+	"""
+	Wraps a stream, and buffers it line at a time, to allow messages to be
+	appended or prepended to
+	"""
 	def __init__(self, stream):
 		self.stream = stream
-
-	def wraps(self, stream):
-		return self.stream == stream or isinstance(self.stream, StreamWrapper) and self.stream.wraps(stream)
-
-
-class ThreadedOutputStream(object):
-	def __init__(self, inner):
-		super(ThreadedOutputStream, self).__setattr__('streams', collections.defaultdict(lambda: inner))
-
-	@property
-	def stream(self): return self.streams[threading.current_thread()]
-	@stream.setter
-	def stream(self, s): self.streams[threading.current_thread()] = s
-	@stream.deleter
-	def stream(self): del self.streams[threading.current_thread()]
-
-	def write(self, data):
-		self.stream.write(data)
-
-class LineBufferedStream(StreamWrapper):
-	def __init__(self, stream):
-		super(LineBufferedStream, self).__init__(stream)
 		self.line = ''
 
-	def writeLine(self, data):
-		self.stream.write(data)
-
 	def write(self, data):
-		self.line += data
+		"""Called when print is used"""
+		if '\n' in data:
+			lines = data.split('\n')
+			lines[0] = self.line + lines[0]
+			lines, self.line = lines[:-1], lines[-1]
+			for line in lines:
+				self.writeLine(line)
+		else:
+			self.line += data
 
-		if data[-1] == '\n':
-			self.writeLine(self.line)
-			self.line = ''
+	def writeLine(self, data):
+		"""Write one line to the stream. Called by write(). Override in derived classes"""
+		if isinstance(self.stream, StreamWrapper):
+			self.stream.writeLine(data)
+		else:
+			self.stream.write(data + '\n')
 
-class TimestampedLogger(LineBufferedStream):
-	def __init__(self, stream, name=''):
-		super(TimestampedLogger, self).__init__(stream)
+	def wraps(self, stream):
+		"""Check if this stream wraps another stream"""
+		return self.stream == stream or isinstance(self.stream, StreamWrapper) and self.stream.wraps(stream)
+
+class MirroringStream(StreamWrapper):
+	"""
+	Mirrors the output of one stream to another, adding a prefix to the second
+	with the name of the first
+	"""
+	def __init__(self, stream, name, to):
+		super(MirroringStream, self).__init__(stream)
 		self.name = name
+		self.to = to
+
+	def writeLine(self, line):
+		super(MirroringStream, self).writeLine(line)
+		self.to.writeLine(self.name + ':\t' + line)
+
+
+class TimestampedLogger(StreamWrapper):
+	"""
+	Adds the round time in seconds to the start of every line
+	"""
+	def __init__(self, stream):
+		super(TimestampedLogger, self).__init__(stream)
 
 	def writeLine(self, data):
 		if _roundStarted:
@@ -51,96 +76,101 @@ class TimestampedLogger(LineBufferedStream):
 		else:
 			t = '#%.1f ' % (time.time() - _robotStarted)
 
-		self.stream.write(t + data)
-		if self.name: _stdout.write(self.name + ':\t' + data)
+		super(TimestampedLogger, self).writeLine(t + data)
 
-	def __getattr__(self, attr): 
-		return getattr(self.stream, attr)
-
-class IndentingLogger(LineBufferedStream):
+class IndentingLogger(StreamWrapper):
+	"""
+	Indents each line by a certain number of tabs
+	"""
 	def __init__(self, stream, indent):
 		super(IndentingLogger, self).__init__(stream)
 		self.indent = indent
 
 	def writeLine(self, data):
-		self.stream.write('\t'*self.indent + data)
+		super(StreamWrapper, self).writeLine('\t'*self.indent + data)
 
 
 sys.stdout = TimestampedLogger(sys.stdout)
-_stdout = sys.stdout
-sys.stdout = ThreadedOutputStream(sys.stdout)
 
 _timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+logsdir = 'C:\\Documents and Settings\Eric' #os.getcwd()  #os.path.join('/mnt/user/', 'custom-logs', _timestamp)
 
-logsdir = 'V:\\' #os.getcwd()  #os.path.join('/mnt/user/', 'custom-logs', timestamp)
-movement = TimestampedLogger(open(os.path.join(logsdir, 'movement.txt'), 'w'), 'movement')
-events   = TimestampedLogger(open(os.path.join(logsdir, 'events.txt'  ), 'w'), 'event')
-errors   = TimestampedLogger(open(os.path.join(logsdir, 'errors.txt'  ), 'w'), 'error')
-vision   = TimestampedLogger(open(os.path.join(logsdir, 'errors.txt'  ), 'w'), 'vision')
-
+movement = MirroringStream(TimestampedLogger(open(os.path.join(logsdir, 'movement.txt'), 'w')), name='movement', to=sys.stdout)
+events   = MirroringStream(TimestampedLogger(open(os.path.join(logsdir, 'events.txt'  ), 'w')), name='event',    to=sys.stdout)
+errors   = MirroringStream(TimestampedLogger(open(os.path.join(logsdir, 'errors.txt'  ), 'w')), name='error',    to=sys.stdout)
+vision   = MirroringStream(TimestampedLogger(open(os.path.join(logsdir, 'errors.txt'  ), 'w')), name='vision',   to=sys.stdout)
 
 def roundStarted():
+	"""Start the round timer"""
 	global _roundStarted
 	_roundStarted = time.time()
 
-def to(log):
-	"""Create a decorator that makes a function log it's argument to a file"""
-	def decorator(f):
-		"""Decorator for functions"""
-		method = 'self' in inspect.getargspec(f).args
-		name = f.__name__
+# HERE BE DRAGONS
 
-		def logit(args, kargs, self = None):
-			arglist = ', '.join(str(arg) for arg in args)
-			if kargs: 
-				arglist += ', '
-				arglist += ', '.join('%s=%s' % (k, v) for k, v in kargs.iteritems())
+# def to(log):
+# 	"""Create a decorator that makes a function log it's argument to a file"""
+# 	def decorator(f):
+# 		"""Decorator for functions"""
+# 		method = 'self' in inspect.getargspec(f).args
+# 		name = f.__name__
 
-			msg = '%s(%s):'% (name, arglist)
-			if self:
-				msg = self.__class__.__name__ + '.' + msg
-			#if result:
-			#	msg += '->' + str(result)
-			print msg
+# 		def logit(args, kargs, self = None):
+# 			arglist = ', '.join(str(arg) for arg in args)
+# 			if kargs: 
+# 				arglist += ', '
+# 				arglist += ', '.join('%s=%s' % (k, v) for k, v in kargs.iteritems())
 
-		if method:
-			def wrapped(self, *args, **kargs):
-				oldStream = sys.stdout.stream
+# 			msg = '%s(%s):'% (name, arglist)
+# 			if self:
+# 				msg = self.__class__.__name__ + '.' + msg
+# 			#if result:
+# 			#	msg += '->' + str(result)
+# 			print msg
 
-				if not oldStream.wraps(log): sys.stdout.stream = log
+# 		if method:
+# 			def wrapped(self, *args, **kargs):
+# 				oldStream = sys.stdout
+
+# 				if not oldStream.wraps(log): sys.stdout = log
 				
-				logit(args, kargs, self)
+# 				logit(args, kargs, self)
 				
-				sys.stdout.stream = IndentingLogger(sys.stdout.stream, 1)
+# 				sys.stdout= IndentingLogger(sys.stdout, 1)
 				
-				result = f(self, *args, **kargs)
-				if result: print 'returned %s' % str(result)
+# 				result = f(self, *args, **kargs)
+# 				if result: print 'returned %s' % str(result)
 
-				sys.stdout.stream = oldStream
-				return result
-		else:
-			def wrapped(*args, **kargs):
-				oldStream = sys.stdout.stream
-				if not oldStream.wraps(log):
-					sys.stdout.stream = log
+# 				sys.stdout = oldStream
+# 				return result
+# 		else:
+# 			def wrapped(*args, **kargs):
+# 				oldStream = sys.stdout
+# 				if not oldStream.wraps(log):
+# 					sys.stdout.stream = log
 
-				logit(args, kargs)
+# 				logit(args, kargs)
 				
-				sys.stdout.stream = IndentingLogger(sys.stdout.stream, 1)
+# 				sys.stdout = IndentingLogger(sys.stdout, 1)
 
-				result = f(*args, **kargs)
-				if result: print 'returned %s' % str(result)
-				sys.stdout.stream = oldStream
-				return result
-		return functools.wraps(f)(wrapped)
-	return decorator
+# 				result = f(*args, **kargs)
+# 				if result: print 'returned %s' % str(result)
+# 				sys.stdout = oldStream
+# 				return result
+# 		return functools.wraps(f)(wrapped)
+# 	return decorator
 
 
 def main():
 	print >> movement, "Hello"
 	print "test"
+	print "test"
+	print "test"
+	print "test"
 	print >> movement, "World"
-
+	print >> movement, "World"
+	print >> movement, "World"
+	print >> movement, "World"
+	"""
 	class test():
 		@to(movement)
 		def it(self, p, q):
@@ -169,6 +199,6 @@ def main():
 	roundStarted()
 	t.it(3, 4)
 	time.sleep(1)
-	print t.that
+	print t.that"""
 
 main()
