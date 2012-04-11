@@ -11,6 +11,9 @@ def main():
         # Are there any tokens?
         if tokens:
             R.driveTo(tokens[0].center, gap=0.2)
+            R.arm.grabCube(wait = False);
+            time.sleep(3)
+            R.driveDistance(-0.5)
         else:
             print "No Marker..."
             
