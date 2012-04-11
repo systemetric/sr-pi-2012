@@ -1,6 +1,6 @@
 import systemetric
 import gtk
-import logs
+import systemetric.logs as logs
 
 
 keys = {
@@ -22,16 +22,20 @@ def main():
 			steer -= 100
 		if keys[gtk.keysyms.Right]:
 			steer += 100
-		R.drive(speed, steer)
+		print "Driving"
+		R.drive(speed, steer, regulate = False)
 
 
 	def key_press_event(self, event):
 		if event.keyval == gtk.keysyms.A:
 			R.arm.grabCube(wait = False)
+			print "Grabbed cube!"
 		elif event.keyval == gtk.keysyms.Page_Down:
-			R.lifter.up(wait = False)
-		elif event.keyval == gtk.keysyms.Page_Up:
 			R.lifter.down(wait = False)
+			print "Lifter up!"
+		elif event.keyval == gtk.keysyms.Page_Up:
+			R.lifter.up(wait = False)
+			print "Lifter down!"
 		else:
 			keys[event.keyval] = True
 			update()
