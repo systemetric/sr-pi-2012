@@ -1,4 +1,4 @@
-import os, time, sys, functools, inspect, time, collections, threading
+import os, time, sys, functools, inspect, time, collections, threading, contextlib
 
 _robotStarted = time.time()
 _roundStarted = None
@@ -46,7 +46,7 @@ class StreamWrapper(object):
 
 	def wraps(self, stream):
 		"""Check if this stream wraps another stream"""
-		return self.stream == stream or isinstance(self.stream, StreamWrapper) and self.stream.wraps(stream)
+		return self == stream or isinstance(self.stream, StreamWrapper) and self.stream.wraps(stream) or self.stream == stream
 
 class MirroringStream(StreamWrapper):
 	"""
@@ -82,23 +82,30 @@ class IndentingLogger(StreamWrapper):
 	"""
 	Indents each line by a certain number of tabs
 	"""
-	def __init__(self, stream, indent):
+	def __init__(self, stream, indent = 0):
 		super(IndentingLogger, self).__init__(stream)
 		self.indent = indent
 
 	def writeLine(self, data):
-		super(StreamWrapper, self).writeLine('\t'*self.indent + data)
+		super(IndentingLogger, self).writeLine('\t'*self.indent + data)
+
+	@property
+	@contextlib.contextmanager
+	def indented(self):
+		self.indent += 1
+		yield
+		self.indent -= 1
 
 
-sys.stdout = TimestampedLogger(sys.stdout)
 
 _timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
 logsdir = 'C:\\Documents and Settings\Eric' #os.getcwd()  #os.path.join('/mnt/user/', 'custom-logs', _timestamp)
 
-movement = MirroringStream(TimestampedLogger(open(os.path.join(logsdir, 'movement.txt'), 'w')), name='movement', to=sys.stdout)
-events   = MirroringStream(TimestampedLogger(open(os.path.join(logsdir, 'events.txt'  ), 'w')), name='event',    to=sys.stdout)
-errors   = MirroringStream(TimestampedLogger(open(os.path.join(logsdir, 'errors.txt'  ), 'w')), name='error',    to=sys.stdout)
-vision   = MirroringStream(TimestampedLogger(open(os.path.join(logsdir, 'errors.txt'  ), 'w')), name='vision',   to=sys.stdout)
+sys.stdout = IndentingLogger(TimestampedLogger(sys.stdout))
+movement = IndentingLogger(MirroringStream(TimestampedLogger(open(os.path.join(logsdir, 'movement.txt'), 'w')), name='movement', to=sys.stdout))
+events   = IndentingLogger(MirroringStream(TimestampedLogger(open(os.path.join(logsdir, 'events.txt'  ), 'w')), name='event',    to=sys.stdout))
+errors   = IndentingLogger(MirroringStream(TimestampedLogger(open(os.path.join(logsdir, 'errors.txt'  ), 'w')), name='error',    to=sys.stdout))
+vision   = IndentingLogger(MirroringStream(TimestampedLogger(open(os.path.join(logsdir, 'errors.txt'  ), 'w')), name='vision',   to=sys.stdout))
 
 def roundStarted():
 	"""Start the round timer"""
@@ -111,8 +118,16 @@ def to(log):
 		@functools.wraps(f)
 		def wrapped(*args, **kargs):
 			old = sys.stdout
-			sys.stdout = log
-			result = f(*args, **kargs)
+			if not old.wraps(log):
+				sys.stdout = log
+
+			print f.__name__ + ' {'
+
+			with sys.stdout.indented:
+				result = f(*args, **kargs)
+
+			print '}'
+
 			sys.stdout = old
 			return result
 		return wrapped
