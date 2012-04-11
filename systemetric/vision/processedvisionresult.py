@@ -107,7 +107,7 @@ class ProcessedVisionResult(object):
 			self.facing = matrix * self.facing
 
 		@property
-		def desirableRobotTargets(self, distance = 0.5):
+		def desirableRobotTargets(self, distance = 1):
 			"""The positions which the robot could be driven to for optimal deployment of cubes"""
 			return (
 				self.center + self.facing * distance,
