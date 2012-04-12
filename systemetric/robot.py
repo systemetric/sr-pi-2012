@@ -48,6 +48,8 @@ class Robot(CompassRobot, KillableRobot, SingleThreadAccess):
 	def __init__(self):
 		#Get the motors set up
 		CompassRobot.__init__(self)
+		SingleThreadAccess.__init__(self)
+		logs.roundStarted()
 
 		with open('config.json') as configFile:
 			KillableRobot.__init__(self, killCode = json.load(configFile).get('killCode') or 228)
