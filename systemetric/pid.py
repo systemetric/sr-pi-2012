@@ -5,6 +5,7 @@ import math
 class PID(threading.Thread):
     def __init__(self, getInput, setOutput, outputRange = (float("-inf"), float("inf")), iLimit = 1):
         threading.Thread.__init__(self)
+        self.daemon = True
         
         self.getInput = getInput
         self.setOutput = setOutput
