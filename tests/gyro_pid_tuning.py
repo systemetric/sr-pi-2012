@@ -4,6 +4,7 @@ from tests.gui.slider import *
 
 def main():
 	R = GyroAndCompassRobot()
+	R.gyro.calibrate()
 
 
 	# R.gyro.startOffsetCalibration()
@@ -28,8 +29,8 @@ def main():
 		elif event.keyval == gtk.keysyms.Page_Down and R.speed > -100:
 			R.speed -= 10
 	
-	window = PIDWindow(regulator)
+	window = PIDWindow(regulator, max = (50, 50, 50))
 	window.connect("key_press_event", keypressed)
 	window.runInBackground()
-	
+
 	regulator.enabled = True

@@ -15,24 +15,24 @@ class PIDSlider(gtk.HScale):
 		pass
 
 class PSlider(PIDSlider):
-	def __init__(self, pidController):
+	def __init__(self, pidController, max):
 		self.pidRange = gtk.Adjustment(
 			value = pidController.kp,
 			lower = 0,
-			upper = 5,
-			step_incr = 0.025
+			upper = max,
+			step_incr = max / 200.0
 		)
 		PIDSlider.__init__(self, pidController)
 	def sliderMoved(self, _, adj):
 		self.pidController.kp = adj.value
 
 class ISlider(PIDSlider):
-	def __init__(self, pidController):
+	def __init__(self, pidController, max):
 		self.pidRange = gtk.Adjustment(
 			value = pidController.ki,
 			lower = 0,
-			upper = 5,
-			step_incr = 0.025
+			upper = max,
+			step_incr = max / 200.0
 		)
 		PIDSlider.__init__(self, pidController)
 	def sliderMoved(self, _, adj):
@@ -40,12 +40,12 @@ class ISlider(PIDSlider):
 		self.pidController._reset();
 
 class DSlider(PIDSlider):
-	def __init__(self, pidController):
+	def __init__(self, pidController, max):
 		self.pidRange = gtk.Adjustment(
 			value = pidController.kd,
 			lower = 0,
-			upper = 0.5,
-			step_incr = 0.0025
+			upper = max,
+			step_incr = max / 200.0
 		)
 		PIDSlider.__init__(self, pidController)
 	def sliderMoved(self, _, adj):
@@ -65,22 +65,22 @@ class SliderWrapper(gtk.HBox):
 		self.pack_start(slider, True, True, 0)
 
 class PIDWindow(gtk.Window):
-	def __init__(self, pidController):
+	def __init__(self, pidController, max = (5, 20, 0.5)):
 		gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
 		self.set_border_width(10)
 		self.set_title("PID Adjustment")
 
-		pScale = PSlider(pidController)
+		pScale = PSlider(pidController, max[0])
 		pScale.set_size_request(320, 50)
 		pScale.show()
 		pControl = SliderWrapper("k_P", pScale)
 
-		iScale = ISlider(pidController)
+		iScale = ISlider(pidController, max[1])
 		iScale.set_size_request(320, 50)
 		iScale.show()
 		iControl = SliderWrapper("k_I", iScale)
 
-		dScale = DSlider(pidController)
+		dScale = DSlider(pidController, max[2])
 		dScale.set_size_request(320, 50)
 		dScale.show()
 		dControl = SliderWrapper("k_D", dScale)
