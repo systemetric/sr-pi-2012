@@ -1,4 +1,5 @@
 from systemetric.compassrobot import *
+from systemetric import Bearing
 import time
 from tests.gui.slider import * 
 
@@ -7,12 +8,27 @@ def main():
 	R.compass.heading = 0
 
 	regulator = R.regulator
-	regulator.kp  = 0
+	regulator.kp = 0
 	regulator.ki = 0
 	regulator.kd = 0
 	regulator.target = 0
+
+	def keypressed(self, event):
+		if event.keyval == gtk.keysyms.n:
+			regulator.target = Bearing(0)
+		elif event.keyval == gtk.keysyms.e:
+			regulator.target = Bearing(90)
+		elif event.keyval == gtk.keysyms.s:
+			regulator.target = Bearing(180)
+		elif event.keyval == gtk.keysyms.w:
+			regulator.target = Bearing(270)
+		elif event.keyval == gtk.keysyms.Page_Up and R.speed < 100:
+			R.speed += 10
+		elif event.keyval == gtk.keysyms.Page_Down and R.speed > -100:
+			R.speed -= 10
 	
 	window = PIDWindow(regulator)
+	window.connect("key_press_event", keypressed)
 	window.runInBackground()
 
 
