@@ -1,5 +1,4 @@
 from mbed import MbedDevice
-from bearing import Bearing
 import time
 
 class Gyro(MbedDevice):
@@ -9,40 +8,14 @@ class Gyro(MbedDevice):
 	@property
 	def angularVelocity(self):
 		return float(self.request('v'))
-		
-	@property
-	def angle(self):
-		return Bearing(float(self.request('a')))
-		
-	@angle.setter
-	def angle(self, value):
-		self.request('r', float(value))
 
-	def startOffsetCalibration(self):
-		self.request('o')
-	
-	def stopOffsetCalibration(self):
-		self.request('o')
-
-	def startScaleCalibration(self):
-		self.request('s')
-
-	def stopScaleCalibration(self, angleRotatedThrough):
-		self.request('s', angleRotatedThrough)
+	def calibrate(self):
+		self.request('c')
 
 def main():
 	gyro = Gyro()
-	gyro.startOffsetCalibration()
-	time.sleep(5)
-	gyro.stopOffsetCalibration()
+	gyro.calibrate()
 
-	gyro.startScaleCalibration()
-	print 'rotate the gyro 90 degrees'
-	time.sleep(5)
-	gyro.stopScaleCalibration(90)
-	gyro.angle = 0
-	
-	while True:
-		print 'angular velocity: %f' % gyro.angularVelocity
-		print 'angle: %f' % gyro.angle
-		time.sleep(0.5)
+	while 1:
+		print "Angular Velocity:", gyro.angularVelocity
+		time.sleep(0.1)
