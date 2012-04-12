@@ -43,17 +43,18 @@ class SingleThreadAccess(object):
 		"""
 		return self.owner == threading.current_thread() or threading.current_thread().daemon
 
-class Robot(CompassRobot, KillableRobot, SingleThreadAccess):
+class Robot(CompassRobot, KillableRobot):#, SingleThreadAccess):
 	'''A class derived from the base 'Robot' class provided by soton'''	 
 	def __init__(self):
 		#Get the motors set up
 		CompassRobot.__init__(self)
-		SingleThreadAccess.__init__(self)
 		logs.roundStarted()
 
 		with open('config.json') as configFile:
 			KillableRobot.__init__(self, killCode = json.load(configFile).get('killCode') or 228)
 		
+		#SingleThreadAccess.__init__(self)
+
 		# Camera orientation - numbers need checking
 		self.cameraMatrix = (
 			Matrix4.new_translate(0, 0.48, 0) *      #0.5m up from the center of the robot
