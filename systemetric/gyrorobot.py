@@ -1,88 +1,84 @@
-#Critical p value 2.575
-#Oscilations per minute = 86
-#Oscilation period = 0.698s
-
-import time
-from twowheeledrobot import TwoWheeledRobot
+from compassrobot import TwoWheeledRobot
 from gyro import Gyro
+from compass import Compass
 from pid import PID
+from arm import Arm
+import time
+import logs
 
-class GyroRobot(TwoWheeledRobot):
-    def __init__(self):
-        TwoWheeledRobot.__init__(self)
-        self.gyro = Gyro()
+class GyroAndCompassRobot(TwoWheeledRobot):
+	def __init__(self):
+		super(GyroAndCompassRobot, self).__init__()
 
-        self.regulator = PID(
-            getInput = lambda: self.gyro.angle,
-            setOutput = lambda x: TwoWheeledRobot.drive(self, speed = self.speed, steer = x),
-            outputRange = (-100, 100),
-            iLimit = 0.25
-        )
-        #self.regulator.tuneFromZieglerNichols(2.575, 0.698)
+		self.gyro = Gyro()
+		self.compass = Compass()
 
-        #PID settings
-        self.regulator.kp = 0.375   # FIRST this number started at 0 and was raised until it started to oscillate
-        self.regulator.ki = 0.075   # THIRD we changed until it stopped dead on.
-        self.regulator.kd = 0.017   # SECOND we changed kd until the amount it overshot by was reduced
+		self.compassRegulator = PID(
+			getInput = lambda: self.compass.heading,
+			setOutput = lambda x: TwoWheeledRobot.drive(self, speed = 0, steer = x),
+			outputRange = (-100, 100),
+			iLimit = 0.25
+		)
+		self.gyroRegulator = PID(
+			getInput = lambda: self.gyro.angularVelocity,
+			setOutput = lambda x: TwoWheeledRobot.drive(self, speed = self.speed, steer = x),
+			outputRange = (-100, 100),
+			iLimit = 0.25
+		)
+		#self.regulator.tuneFromZieglerNichols(2.575, 0.698)
 
-        self.regulator.start()
+		#PID settings
+		self.compassRegulator.kp = 1.500 # FIRST this number started at 0 and was raised until it started to oscillate
+		self.compassRegulator.ki = 0.175 # THIRD we changed until it stopped dead on.
+		self.compassRegulator.kd = 0.080 # SECOND we changed kd until the amount it overshot by was reduced
 
-        self.speed = 0
-        
-    @property
-    def regulate(self):
-        """Shorthand for enabling and disabling the PID controller"""
-        return self.regulator.enabled
-        
-    @regulate.setter
-    def regulate(self, value):
-        self.regulator.enabled = value
-         
-    def rotateTo(self, heading, tolerance = 2.5):
-        """
-        Rotate the robot to face the specified heading. Return when within
-        tolerance degrees of the target. Note that this does not stop the motors
-        upon returning
-        """
-        self.regulate = True;
-        self.speed = 0
-        self.regulator.target = heading
-        
-        while not self.regulator.onTarget(tolerance=tolerance):
-            time.sleep(0.05)
-        
-    def rotateBy(self, angle, fromTarget = False):
-        """
-        Rotate the robot a certain angle from the direction it is currently
-        facing. Optionally rotate from the last target, preventing errors
-        accumulating
-        """
-        self.regulate = True
-        self.speed = 0
-        self.rotateTo((self.regulator.target if fromTarget else self.gyro.angle) + angle)
-        
-    def setSpeed(self, speed):
-        print "deprecated - use drive instead"
-        self.drive(speed, regulate = True)
+		#PID settings
+		self.gyroRegulator.kp = 0.0   # FIRST this number started at 0 and was raised until it started to oscillate
+		self.gyroRegulator.ki = 0.0   # THIRD we changed until it stopped dead on.
+		self.gyroRegulator.kd = 0.0   # SECOND we changed kd until the amount it overshot by was reduced
+		self.gyroRegulator.target = 0
 
-    def drive(self, speed, steer = 0, regulate = True):
-        """
-        Drive the robot at a certain speed, by default using the compass to
-        regulate the robot's heading.
+		self.compassRegulator.start()
+		self.gyroRegulator.start()
 
-        TODO: Tune PID controller for straight movement.
-        """
-        self.regulate = regulate
-        if regulate:
-            self.speed = speed
-        else:
-            GyroRobot.drive(self, speed, steer)
-            
-        
-    def stop(self):
-        """
-        Stop the robot, by setting the speed to 0, and disabling regulation
-        """
-        self.speed = 0
-        self.regulate = False
-        TwoWheeledRobot.stop(self)
+		self.speed = 0
+
+	@logs.to(logs.movement)
+	def driveStraight(self, speed):
+		self.compassRegulator.enabled = False
+
+		self.speed = speed
+
+		self.gyroRegulator.enabled = True
+		
+	def rotateTo(self, angle):
+		self.gyroRegulator.enabled = False
+
+		self.compassRegulator.target = angle
+		self.speed = 0
+
+		self.compassRegulator.enabled = True
+		
+	def stop(self):
+		"""
+		Stop the robot, by setting the speed to 0, and disabling regulation
+		"""
+		self.speed = 0
+		self.gyroRegulator.enabled = False
+		self.compassRegulator.enabled = False
+		super(GyroAndCompassRobot, self).stop()
+
+def main():
+	R = GyroAndCompassRobot()
+	A = Arm()
+	while True:
+		while not A.atTop:
+			pass
+		while A.atTop:
+			pass
+
+		R.driveStraight(50)
+		time.sleep(5)
+		R.stop()
+
+CompassAndGyroRobot = GyroAndCompassRobot
