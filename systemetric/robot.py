@@ -9,8 +9,41 @@ from vision import VisionResult
 from bearing import Bearing
 from lifter import Lifter
 from arm import Arm
+import logs
+import threading
 
-class Robot(CompassRobot, KillableRobot):
+class AccessRevoked(Exception):
+	"""Thrown when a thread attempts to control the robot after its access has been revoked"""
+	pass
+
+class SingleThreadAccess(object):
+	"""
+	Allow only one thread access to the resource at a time. At any time a
+	thread can grab control, causing attribute access in other threads to throw
+	an exception, revoking control from the others. Base class members can
+	still be accessed through super.
+	"""
+	def __init__(self):
+		self.owner = threading.current_thread()
+
+	def __getattribute__(self, attr):
+		if attr not in ('owner', 'takeControl', 'hasControl') and not self.hasControl:
+			raise AccessRevoked
+		return super(SingleThreadAccess, self).__getattribute__(attr)
+
+	def takeControl(self):
+		"""Take control of the object, revoking access to all other threads"""
+		self.owner = threading.current_thread()
+
+	@property
+	def hasControl(self):
+		"""
+		Check if the current thread has control - not required in user code.
+		Daemon threads, such as the PID, always have access
+		"""
+		return self.owner == threading.current_thread() or threading.current_thread().daemon
+
+class Robot(CompassRobot, KillableRobot, SingleThreadAccess):
 	'''A class derived from the base 'Robot' class provided by soton'''	 
 	def __init__(self):
 		#Get the motors set up
@@ -46,6 +79,7 @@ class Robot(CompassRobot, KillableRobot):
 		else:
 			return VisionResult(res, worldTransform = self.worldTransform)
 
+	@logs.to(logs.movement)
 	def driveDistance(self, distInMetres):
 		"""
 		Drive a certain distance forward in metres, using timing only. Negative
@@ -59,6 +93,7 @@ class Robot(CompassRobot, KillableRobot):
 		self.stop()
 		print "\t\tHeading after:", self.compass.heading
 
+	@logs.to(logs.movement)
 	def turnToFace(self, relativePosition):
 		print "\tRobot.turnToFace(%s)" % relativePosition
 		bearing = Bearing.toPoint(relativePosition)
@@ -66,6 +101,7 @@ class Robot(CompassRobot, KillableRobot):
 		self.rotateBy(bearing)
 		self.stop()
 	
+	@logs.to(logs.movement)
 	def driveTo(self, relativePosition, gap = 0):
 		bearing = Bearing.toPoint(relativePosition)
 		dist = abs(relativePosition) - gap
