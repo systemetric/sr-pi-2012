@@ -1,4 +1,4 @@
-import os, time, sys, functools, inspect, time, collections, threading, contextlib
+import os, time, sys, functools, inspect, time, collections, threading, contextlib, itertools
 
 _robotStarted = time.time()
 _roundStarted = None
@@ -100,10 +100,12 @@ class IndentingLogger(StreamWrapper):
 
 _timestamp = time.strftime("%Y-%m-%d %H.%M.%S", time.gmtime())
 logsdir = os.path.join('/mnt/user/', 'custom-logs', _timestamp)
+
 try:
 	os.makedirs(logsdir)
 except:
 	pass
+
 sys.stdout = IndentingLogger(TimestampedLogger(sys.stdout))
 movement = IndentingLogger(MirroringStream(TimestampedLogger(open(os.path.join(logsdir, 'movement.txt'), 'w')), name='movement', to=sys.stdout))
 events   = IndentingLogger(MirroringStream(TimestampedLogger(open(os.path.join(logsdir, 'events.txt'  ), 'w')), name='event',    to=sys.stdout))
@@ -115,80 +117,46 @@ def roundStarted():
 	global _roundStarted
 	_roundStarted = time.time()
 
+_makeArgList = lambda args, kargs: (
+	', '.join(itertools.chain(
+		(repr(arg) for arg in args),
+		('%s=%s' % (k, repr(v)) for k, v in kargs.iteritems())
+	))
+)
+
+@contextlib.contextmanager
+def redirectedOutput(o):
+	"""Redirects stdout to point to another stream, within the scope of a with - NOT THREAD SAFE!"""
+	old = sys.stdout
+	if not old.wraps(o):
+		sys.stdout = o
+	yield
+	sys.stdout = old
+
 def to(log):
 	def decorator(f):
-		"""Redirects stdout to point to a log file, within the scope of a function - NOT THREAD SAFE!"""
-		@functools.wraps(f)
-		def wrapped(*args, **kargs):
-			old = sys.stdout
-			if not old.wraps(log):
-				sys.stdout = log
+		"""Redirects prints, and logs the function invocation"""
+		
+		if 'self' in inspect.getargspec(f).args:
+ 			def wrapped(self, *args, **kargs):
+				with redirectedOutput(log):
+					print '%s.%s(%s)' % (self.__class__.__name__, f.__name__, _makeArgList(args, kargs))
+					with sys.stdout.indented:
+						result = f(self, *args, **kargs)
+						if result: print "returned", result
 
-			print f.__name__ + ' {'
+				return result
+ 		else:
+			def wrapped(*args, **kargs):
+				with redirectedOutput(log):
+					print '%s(%s)' % (f.__name__, _makeArgList(args, kargs))
+					with sys.stdout.indented:
+						result = f(*args, **kargs)
+						if result: print "returned", result
 
-			with sys.stdout.indented:
-				result = f(*args, **kargs)
-
-			print '}'
-
-			sys.stdout = old
-			return result
-		return wrapped
+				return result
+		return functools.wraps(f)(wrapped)
 	return decorator
-
-# HERE BE DRAGONS
-
-# def to(log):
-# 	"""Create a decorator that makes a function log it's argument to a file"""
-# 	def decorator(f):
-# 		"""Decorator for functions"""
-# 		method = 'self' in inspect.getargspec(f).args
-# 		name = f.__name__
-
-# 		def logit(args, kargs, self = None):
-# 			arglist = ', '.join(str(arg) for arg in args)
-# 			if kargs: 
-# 				arglist += ', '
-# 				arglist += ', '.join('%s=%s' % (k, v) for k, v in kargs.iteritems())
-
-# 			msg = '%s(%s):'% (name, arglist)
-# 			if self:
-# 				msg = self.__class__.__name__ + '.' + msg
-# 			#if result:
-# 			#	msg += '->' + str(result)
-# 			print msg
-
-# 		if method:
-# 			def wrapped(self, *args, **kargs):
-# 				oldStream = sys.stdout
-
-# 				if not oldStream.wraps(log): sys.stdout = log
-				
-# 				logit(args, kargs, self)
-				
-# 				sys.stdout= IndentingLogger(sys.stdout, 1)
-				
-# 				result = f(self, *args, **kargs)
-# 				if result: print 'returned %s' % str(result)
-
-# 				sys.stdout = oldStream
-# 				return result
-# 		else:
-# 			def wrapped(*args, **kargs):
-# 				oldStream = sys.stdout
-# 				if not oldStream.wraps(log):
-# 					sys.stdout.stream = log
-
-# 				logit(args, kargs)
-				
-# 				sys.stdout = IndentingLogger(sys.stdout, 1)
-
-# 				result = f(*args, **kargs)
-# 				if result: print 'returned %s' % str(result)
-# 				sys.stdout = oldStream
-# 				return result
-# 		return functools.wraps(f)(wrapped)
-# 	return decorator
 
 
 def main():
@@ -203,15 +171,21 @@ def main():
 	print >> movement, "World"
 
 	
-	class test():
+	class test(object):
 		@to(movement)
 		def it(self, p, q):
 			print "Bar"
 			return 5
+
 		@property
 		@to(movement)
 		def that(self):
-			return 3
+			pass
+
+		@that.setter
+		@to(movement)
+		def that(self, value):
+			print 10+value
 
 	t = test()
 
@@ -229,8 +203,9 @@ def main():
 	move(1, 2)
 	time.sleep(1)
 	roundStarted()
-	t.it(3, 4)
+	t.it(3, "4")
 	time.sleep(1)
 	print t.that
-
-main()
+	time.sleep(1)
+	t.that = 7
+	print t.that
