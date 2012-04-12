@@ -21,9 +21,9 @@ class CompassRobot(TwoWheeledRobot):
         #self.regulator.tuneFromZieglerNichols(2.575, 0.698)
 
         #PID settings
-        self.regulator.kp = 1.500 # FIRST this number started at 0 and was raised until it started to oscillate
-        self.regulator.ki = 0.175 # THIRD we changed until it stopped dead on.
-        self.regulator.kd = 0.080 # SECOND we changed kd until the amount it overshot by was reduced
+        self.regulator.kp = 2.75 #3.2 #1.500 # FIRST this number started at 0 and was raised until it started to oscillate
+        self.regulator.ki = 1.5 #0.175 # THIRD we changed until it stopped dead on.
+        self.regulator.kd = 0.2 #0.194 #0.080 # SECOND we changed kd until the amount it overshot by was reduced
 
         self.regulator.start()
 
