@@ -22,15 +22,21 @@ def main():
 	regulator.ki = 0
 	regulator.kd = 0
 	regulator.target = 0
+
+	speed = [0]
 	
 	def keypressed(self, event):
-		if event.keyval == gtk.keysyms.Page_Up and R.speed < 100:
-			R.speed += 10
-		elif event.keyval == gtk.keysyms.Page_Down and R.speed > -100:
-			R.speed -= 10
+		if event.keyval == gtk.keysyms.Page_Up and speed[0] < 100:
+			speed[0] += 10
+		elif event.keyval == gtk.keysyms.Page_Down and speed[0] > -100:
+			speed[0] -= 10
 	
+
 	window = PIDWindow(regulator, max = (50, 50, 50))
 	window.connect("key_press_event", keypressed)
 	window.runInBackground()
 
 	regulator.enabled = True
+
+	while True:
+		R.speed = speed[0]
