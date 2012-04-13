@@ -7,6 +7,8 @@ import systemetric
 config = json.load(open('config.json'))
 moduleName = config["execute"]
 
+print "Running %s" % moduleName
+
 #Import the module
 __import__(moduleName)
 
