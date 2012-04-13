@@ -5,6 +5,8 @@ import threading
 
 def _motorSpeedTransform(signedSpeed):
     speed = abs(signedSpeed)
+    if speed == 100:
+        return signedSpeed
     #From excel:
     #          normalized = 36.351ln(power) - 47.136
     # normalized + 47.136 = 36.351ln(power)
