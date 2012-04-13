@@ -28,9 +28,9 @@ class GyroAndCompassRobot(TwoWheeledRobot):
 		#self.regulator.tuneFromZieglerNichols(2.575, 0.698)
 
 		#Compass PID settings
-		self.compassRegulator.kp = 1.500 # FIRST this number started at 0 and was raised until it started to oscillate
-		self.compassRegulator.ki = 0.175 # THIRD we changed until it stopped dead on.
-		self.compassRegulator.kd = 0.080 # SECOND we changed kd until the amount it overshot by was reduced
+		self.compassRegulator.kp =  2.75 # FIRST this number started at 0 and was raised until it started to oscillate
+		self.compassRegulator.ki =  1.5  # THIRD we changed until it stopped dead on.
+		self.compassRegulator.kd =  0.2  # SECOND we changed kd until the amount it overshot by was reduced
 
 		#Gyro PID settings
 		self.gyroRegulator.kp = 3   # FIRST this number started at 0 and was raised until it started to oscillate
