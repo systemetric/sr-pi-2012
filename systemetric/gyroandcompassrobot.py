@@ -27,16 +27,17 @@ class GyroAndCompassRobot(TwoWheeledRobot):
 		)
 		#self.regulator.tuneFromZieglerNichols(2.575, 0.698)
 
-		#PID settings
+		#Compass PID settings
 		self.compassRegulator.kp = 1.500 # FIRST this number started at 0 and was raised until it started to oscillate
 		self.compassRegulator.ki = 0.175 # THIRD we changed until it stopped dead on.
 		self.compassRegulator.kd = 0.080 # SECOND we changed kd until the amount it overshot by was reduced
 
-		#PID settings
-		self.gyroRegulator.kp = 0.0   # FIRST this number started at 0 and was raised until it started to oscillate
-		self.gyroRegulator.ki = 0.0   # THIRD we changed until it stopped dead on.
-		self.gyroRegulator.kd = 0.0   # SECOND we changed kd until the amount it overshot by was reduced
+		#Gyro PID settings
+		self.gyroRegulator.kp = 3   # FIRST this number started at 0 and was raised until it started to oscillate
+		self.gyroRegulator.ki = 7.5 # THIRD we changed until it stopped dead on.
+		self.gyroRegulator.kd = 0   # SECOND we changed kd until the amount it overshot by was reduced
 		self.gyroRegulator.target = 0
+
 
 		self.compassRegulator.start()
 		self.gyroRegulator.start()
@@ -44,20 +45,43 @@ class GyroAndCompassRobot(TwoWheeledRobot):
 		self.speed = 0
 
 	@logs.to(logs.movement)
-	def driveStraight(self, speed):
-		self.compassRegulator.enabled = False
+	def drive(self, speed, steer = 0, regulate = True):
+		"""
+		Drive the robot at a certain speed, by default using the compass to
+		regulate the robot's heading.
 
-		self.speed = speed
+		TODO: Tune PID controller for straight movement.
+		"""
+		if regulate:
+			self.compassRegulator.enabled = False
 
-		self.gyroRegulator.enabled = True
-		
-	def rotateTo(self, angle):
+			self.speed = speed
+			self.gyro.calibrate()
+			self.gyroRegulator.target = steer
+			self.gyroRegulator.enabled = True
+		else:
+			TwoWheeledRobot.drive(self, speed, steer)
+
+	@logs.to(logs.movement)	
+	def rotateTo(self, angle, tolerance = 5):
 		self.gyroRegulator.enabled = False
-
 		self.compassRegulator.target = angle
+		print "started"
 		self.speed = 0
 
 		self.compassRegulator.enabled = True
+		print "started"
+		while not self.compassRegulator.onTarget(tolerance=tolerance):
+			time.sleep(0.05)
+		print "stopped"
+
+	def rotateBy(self, angle, fromTarget = False):
+		"""
+		Rotate the robot a certain angle from the direction it is currently
+		facing. Optionally rotate from the last target, preventing errors
+		accumulating
+		"""
+		self.rotateTo((self.compassRegulator.target if fromTarget else self.compass.heading) + angle)
 		
 	def stop(self):
 		"""
@@ -77,8 +101,22 @@ def main():
 		while A.atTop:
 			pass
 
-		R.driveStraight(50)
+		R.drive(100)
 		time.sleep(5)
 		R.stop()
+
+		time.sleep(0.5)
+
+		R.rotateBy(180)
+		R.stop()
+		time.sleep(0.5)
+
+
+		R.drive(50)
+		time.sleep(5)
+		R.stop()
+
+		time.sleep(0.5)
+
 
 CompassAndGyroRobot = GyroAndCompassRobot

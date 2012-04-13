@@ -57,8 +57,6 @@ class CompassRobot(TwoWheeledRobot):
         facing. Optionally rotate from the last target, preventing errors
         accumulating
         """
-        self.regulate = True
-        self.speed = 0
         self.rotateTo((self.regulator.target if fromTarget else self.compass.heading) + angle)
         
     def setSpeed(self, speed):

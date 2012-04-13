@@ -3,7 +3,7 @@ import time
 import json
 
 from libs.pyeuclid import Matrix4
-from compassrobot import CompassRobot
+from gyroandcompassrobot import GyroAndCompassRobot
 from killablerobot import KillableRobot
 from vision import VisionResult
 from bearing import Bearing
@@ -12,11 +12,11 @@ from arm import Arm
 from ultrasonic import Ultrasonic
 import logs
 
-class Robot(CompassRobot, KillableRobot):
+class Robot(GyroAndCompassRobot, KillableRobot):
 	'''A class derived from the base 'Robot' class provided by soton'''	 
 	def __init__(self):
 		#Get the motors set up
-		CompassRobot.__init__(self)
+		GyroAndCompassRobot.__init__(self)
 		logs.roundStarted()
 
 		with open('config.json') as configFile:
@@ -57,19 +57,16 @@ class Robot(CompassRobot, KillableRobot):
 		Drive a certain distance forward in metres, using timing only. Negative
 		distance goes backwards
 		"""
-		print "\tRobot.driveDistance(%.2f)" % distInMetres
-		print "\t\tHeading before:", self.compass.heading
+		print "Heading before:", self.compass.heading
 		SPEED = .6	# we measured 3m in 5s
 		self.drive(speed = math.copysign(100, distInMetres))
 		time.sleep(abs(distInMetres) / SPEED)
 		self.stop()
-		print "\t\tHeading after:", self.compass.heading
+		print "Heading after:", self.compass.heading
 
 	@logs.to(logs.movement)
 	def turnToFace(self, relativePosition):
-		print "\tRobot.turnToFace(%s)" % relativePosition
 		bearing = Bearing.toPoint(relativePosition)
-		print "\t\tTurning:", bearing
 		self.rotateBy(bearing)
 		self.stop()
 	
@@ -77,10 +74,9 @@ class Robot(CompassRobot, KillableRobot):
 	def driveTo(self, relativePosition, gap = 0):
 		bearing = Bearing.toPoint(relativePosition)
 		dist = abs(relativePosition) - gap
-		print "Robot.driveTo:"
-		print "\tTurning:", bearing
+		print "Turning:", bearing
 		self.rotateBy(bearing)
 		self.stop()
 		time.sleep(0.25)
-		print "\tDriving:", dist
+		print "Driving:", dist
 		self.driveDistance(dist)
