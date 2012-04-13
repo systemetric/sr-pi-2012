@@ -1,8 +1,7 @@
 import time
 import systemetric
 
-def main():
-    R = systemetric.Robot()
+def main(R):
     while True:
         print "Reading markers"
         #Get only the tokens
