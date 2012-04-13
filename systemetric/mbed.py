@@ -27,6 +27,7 @@ class Mbed(object):
 
     def sendCommand(self, c):
         with self._lock:
+            self.port.flushInput()
             self.port.write(c)
             return self.port.readline()
 
