@@ -129,23 +129,26 @@ class MapRenderer(Screen):
 				
 		cr.restore()
 
+	def startInNewWindow():
+		self.show()
+
+		window = gtk.Window()
+		window.connect("delete-event", gtk.main_quit)
+		window.set_title("Map")
+		window.add(self)
+		window.present()
+
+		gtk.gdk.threads_init()
+		t = threading.Thread(target=gtk.main)
+		t.start()
+
 import systemetric
 
 def main():
 	R = systemetric.Robot()
-	m = Map(arena=S007ArenaMap())
+	m = Map(arena=CompetitionArenaMap())
 	mr = MapRenderer(m)
-	mr.show()
-
-	window = gtk.Window()
-	window.connect("delete-event", gtk.main_quit)
-	window.set_title("Map")
-	window.add(mr)
-	window.present()
-
-	gtk.gdk.threads_init()
-	t = threading.Thread(target=gtk.main)
-	t.start()
+	mr.startInNewWindow()
 
 	while True:
 		with Timer("Profiling") as t:
