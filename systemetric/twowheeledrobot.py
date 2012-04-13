@@ -63,8 +63,8 @@ class TwoWheeledRobot(Robot, SingleThreadAccess):
         self._leftSpeed = 0
         self._rightSpeed = 0
         
-    def takeControl(self):
-        super(TwoWheeledRobot, self).takeControl()
+    def takeControl(self, *args, **kargs):
+        super(TwoWheeledRobot, self).takeControl(*args, **kargs)
         self.stop()
         
     #Getters and setters for left motor. Allows you to write R.left = 100 for full speed forward

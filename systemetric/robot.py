@@ -4,6 +4,7 @@ import json
 
 from libs.pyeuclid import Matrix4
 from compassrobot import CompassRobot
+from twowheeledrobot import AccessRevoked
 from killablerobot import KillableRobot
 from vision import VisionResult
 from bearing import Bearing
@@ -87,7 +88,13 @@ class Robot(CompassRobot, KillableRobot):
 		self.driveDistance(dist)
 
 	def executeUntilStart(self, f):
-		t = threading.Thread(target=lambda: (self.takeControl(kick=False), f(self)))
+		def run():
+			try:
+				self.takeControl(kick=False)
+				f(self)
+			except AccessRevoked:
+				print 'thread stopped'
+		t = threading.Thread(target=run)
 		t.start()
 		self.waitForStart()
 		self.takeControl()
