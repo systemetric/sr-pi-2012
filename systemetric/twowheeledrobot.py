@@ -27,16 +27,19 @@ class SingleThreadAccess(object):
     still be accessed through super.
     """
     def __init__(self):
-        self.owner = threading.current_thread()
+        self.owners = [threading.current_thread()]
 
     def __getattribute__(self, attr):
-        if attr not in ('owner', 'takeControl', 'hasControl') and not self.hasControl:
+        if attr not in ('owners', 'takeControl', 'hasControl') and not self.hasControl:
             raise AccessRevoked
         return super(SingleThreadAccess, self).__getattribute__(attr)
 
-    def takeControl(self):
+    def takeControl(self, kick=True):
         """Take control of the object, revoking access to all other threads"""
-        self.owner = threading.current_thread()
+        if kick:
+            self.owners = [threading.current_thread()]
+        else:
+            self.owners.append(threading.current_thread())
 
     @property
     def hasControl(self):
@@ -44,13 +47,13 @@ class SingleThreadAccess(object):
         Check if the current thread has control - not required in user code.
         Daemon threads, such as the PID, always have access
         """
-        return self.owner == threading.current_thread() or threading.current_thread().daemon
+        return threading.current_thread() in self.owners or threading.current_thread().daemon
 
 class TwoWheeledRobot(Robot, SingleThreadAccess):
     def __init__(self):
         SingleThreadAccess.__init__(self)
         #Make sure the soton class is initiated, so we can connect to motors
-        Robot.__init__(self)
+        Robot.__init__(self, wait_start = False)
         atexit.register(self.stop)
         
         #Name the motors, for easy access
@@ -101,3 +104,6 @@ class TwoWheeledRobot(Robot, SingleThreadAccess):
         '''Rotate the robot at a certain speed. Positive is clockwise'''
         self.right = speed
         self.left = -speed
+
+    def waitForStart(self):
+        self._wait_start()

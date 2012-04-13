@@ -11,6 +11,7 @@ from lifter import Lifter
 from arm import Arm
 from ultrasonic import Ultrasonic
 import logs
+import threading
 
 class Robot(CompassRobot, KillableRobot):
 	'''A class derived from the base 'Robot' class provided by soton'''	 
@@ -25,7 +26,7 @@ class Robot(CompassRobot, KillableRobot):
 
 		# Camera orientation - numbers need checking
 		self.cameraMatrix = (
-			Matrix4.new_translate(0, 0.48, 0) *      #0.5m up from the center of the robot
+			Matrix4.new_translate(0, 0.48, 0) *     #0.5m up from the center of the robot
 			Matrix4.new_rotatex(math.radians(18))   #Tilted forward by 18 degrees
 		)
 
@@ -84,3 +85,9 @@ class Robot(CompassRobot, KillableRobot):
 		time.sleep(0.25)
 		print "\tDriving:", dist
 		self.driveDistance(dist)
+
+	def executeUntilStart(self, f):
+		t = threading.Thread(target=lambda: (self.takeControl(kick=False), f(self)))
+		t.start()
+		self.waitForStart()
+		self.takeControl()
