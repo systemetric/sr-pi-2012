@@ -12,7 +12,7 @@ from arm import Arm
 from ultrasonic import Ultrasonic
 import logs
 
-MAGIC_TURN_NUMBER = 1.15
+MAGIC_TURN_NUMBER = 1.2
 
 class Robot(GyroAndCompassRobot, KillableRobot):
 	'''A class derived from the base 'Robot' class provided by soton'''	 
@@ -68,13 +68,13 @@ class Robot(GyroAndCompassRobot, KillableRobot):
 
 	@logs.to(logs.movement)
 	def turnToFace(self, relativePosition):
-		bearing = Bearing.toPoint(relativePosition) * MAGIC_TURN_NUMBER
+		bearing = float(Bearing.toPoint(relativePosition)) * MAGIC_TURN_NUMBER
 		self.rotateBy(bearing)
 		self.stop()
 	
 	@logs.to(logs.movement)
 	def driveTo(self, relativePosition, gap = 0):
-		bearing = Bearing.toPoint(relativePosition) * MAGIC_TURN_NUMBER
+		bearing = float(Bearing.toPoint(relativePosition)) * MAGIC_TURN_NUMBER
 		dist = abs(relativePosition) - gap
 		print "Turning:", bearing
 		self.rotateBy(bearing)
