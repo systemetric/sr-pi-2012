@@ -84,23 +84,29 @@ class CompetitionRobot():
 
 	def driveBackToZone(self):
 		self.R.rotateTo(180)
-		inZone = False
-		while not inZone:
-			vision = self.R.see(res=(1280, 1024)).processed()
-			walls = vision.arena
+
+		self.R.us.ping()
+		self.R.driveDistance(self.R.us.front - 0.25)
+
+		# inZone = False
+		# while not inZone:
+		# 	vision = self.R.see(res=(1280, 1024)).processed()
+		# 	walls = vision.arena
 			
-			for wall in walls:
-				if wall.id / 7 == self.R.zone:
-					self.R.driveTo(wall.left, gap=0.3)
-					inZone = True
-					break
+		# 	for wall in walls:
+		# 		if wall.id / 7 == self.R.zone:
+		# 			self.R.driveTo(wall.left, gap=0.3)
+		# 			inZone = True
+		# 			break
 
 def main(R):
 	m = Map(arena=CompetitionArenaMap())
 	robot = CompetitionRobot(R, m)
-	found = robot.findCubesForXSeconds(120)
+	found = robot.findCubesForXSeconds(30)
 	robot.driveBackToZone()
-	R.lifter.up()
-	time.sleep(1)
-	R.lifter.down()
-	R.stop()
+	if not findBucketForXSeconds(30):
+		robot.driveBackToZone()
+		R.lifter.up()
+		time.sleep(1)
+		R.lifter.down()
+		R.stop()
