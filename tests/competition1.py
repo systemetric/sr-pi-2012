@@ -25,7 +25,7 @@ class CompetitionRobot():
 				target = tokens[0]
 				if abs(target.center) > 1:
 					print "Too far from target cube, driving closer"
-					self.R.driveTo(target.center, gap=0.25)
+					self.R.driveTo(target.center, gap=0.5)
 				else:
 					print "Homing in on target cube"
 					self.R.driveTo(target.center, gap=0.2)
@@ -34,7 +34,8 @@ class CompetitionRobot():
 						foundCubes.add(target.id)
 					print "Found cube #%d" % target.id
 					self.R.arm.grabCube(wait=True)
-					time.sleep(1)
+					self.R.arm.grabCube(wait=True)
+					time.sleep(0.5)
 					self.R.driveDistance(-0.5)
 			else:
 				if self.rotations >= 12:
