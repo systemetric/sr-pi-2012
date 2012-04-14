@@ -82,7 +82,7 @@ class CompetitionRobot():
 
 	def driveBackToZone(self):
 		while not self.map.robot:
-			self.map.updateEntities(self.R.see().processed())
+			self.map.updateEntities(self.R.see(res=(1280,1024)).processed())
 		pos = self.map.robot.location
 		targetPos = Point2(4.0 + math.cos(self.R.zone * math.pi / 2) * 3.5, 4.0 + math.sin(self.R.zone * math.pi / 2) * 3.5)
 
@@ -92,6 +92,6 @@ class CompetitionRobot():
 def main(R):
 	m = Map(arena=CompetitionArenaMap())
 	robot = CompetitionRobot(R, m)
-	found = robot.findCubesForXSeconds(30)
+	#found = robot.findCubesForXSeconds(0)
 	robot.driveBackToZone()
-	robot.findBucketForXSeconds(30)
+	#xxrobot.findBucketForXSeconds(30)
