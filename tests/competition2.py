@@ -77,18 +77,22 @@ class CompetitionRobot():
 					return True
 			else:
 				print "Found no buckets"
-				self.R.rotateBy(30, fromTarget=True)
+				self.R.rotateBy(-30, fromTarget=True)
 				self.R.stop()
 		return False
 
 	def driveBackToZone(self):
-		self.R.rotateTo(180 - self.R.compass.absoluteHeading)
-
-		vision = self.R.see(res=(1280, 1024)).processed()
-		walls = vision.arena
-		for wall in walls:
-			if wall.id / 7 == self.R.zone:
-				self.R.driveTo(wall.left, gap=0.5)
+		self.R.rotateTo(180)
+		inZone = False
+		while not inZone:
+			vision = self.R.see(res=(1280, 1024)).processed()
+			walls = vision.arena
+			
+			for wall in walls:
+				if wall.id / 7 == self.R.zone:
+					self.R.driveTo(wall.left, gap=0.75)
+					inZone = True
+					break
 
 		# pos = self.map.robot.location
 		# targetPos = Point2(4.0 + math.cos(self.R.zone * math.pi / 2) * 3.5, 4.0 + math.sin(self.R.zone * math.pi / 2) * 3.5)
@@ -99,6 +103,9 @@ class CompetitionRobot():
 def main(R):
 	m = Map(arena=CompetitionArenaMap())
 	robot = CompetitionRobot(R, m)
-	found = robot.findCubesForXSeconds(10)
+	found = robot.findCubesForXSeconds(120)
 	robot.driveBackToZone()
-	#robot.findBucketForXSeconds(30)
+	self.R.lifter.up()
+	time.sleep(1)
+	self.R.lifter.down()
+	self.R.stop()
