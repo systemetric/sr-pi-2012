@@ -76,6 +76,21 @@ class CompetitionRobot():
 					time.sleep(1)
 					self.R.lifter.down()
 					return True
+				else:
+					if abs(drivingTo) > 1:
+						#Too far from target - limit movement
+						drivingTo = STEPDIST * drivingTo.normalize()
+
+					#One more movement
+					R.driveTo(drivingTo)
+					time.sleep(0.1)
+
+					#Turn to face where we think the bucket should be, so we can see it next loop
+					targetFacing = b.center - drivingTo
+					angleDifference = Bearing.ofVector(targetFacing) - Bearing.ofVector(drivingTo)
+					print "Turning to face bucket again"
+					R.rotateBy(angleDifference)
+					R.stop()
 			else:
 				print "Found no buckets"
 				self.R.rotateBy(-30, fromTarget=True)
@@ -88,12 +103,14 @@ class CompetitionRobot():
 		startTime = time.time()
 		inZone = False
 		while not inZone and time.time() - startTime < 10:
+			self.R.driveDistance(0.5)
 			vision = self.R.see(res=(1280, 1024)).processed()
 			walls = vision.arena
-			
+
 			for wall in walls:
 				if wall.id / 7 == self.R.zone:
-					self.R.driveTo(wall.left, gap=0.3)
+					self.R.driveTo(wall.left, gap=0.1)
+					self.R.driveDistance(-0.25)
 					inZone = True
 					break
 
