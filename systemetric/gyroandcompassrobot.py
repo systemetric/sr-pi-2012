@@ -75,13 +75,13 @@ class GyroAndCompassRobot(TwoWheeledRobot):
 			time.sleep(0.05)
 		print "stopped"
 
-	def rotateBy(self, angle, fromTarget = False):
+	def rotateBy(self, angle, fromTarget = False, tolerance = 5):
 		"""
 		Rotate the robot a certain angle from the direction it is currently
 		facing. Optionally rotate from the last target, preventing errors
 		accumulating
 		"""
-		self.rotateTo((self.compassRegulator.target if fromTarget else self.compass.heading) + angle)
+		self.rotateTo((self.compassRegulator.target if fromTarget else self.compass.heading) + angle, tolerance = tolerance)
 		
 	def stop(self):
 		"""

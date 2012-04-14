@@ -59,11 +59,11 @@ class CompetitionRobot():
 			if buckets:
 				target = buckets[0]
 				drivingTo = min(target.desirableRobotTargets, key=abs)
-				if abs(drivingTo) < 0.2:
+				if abs(drivingTo) < 1:
 					print "Nearly at a bucket"
 					angle = Bearing.ofVector(target.center)
 
-					if abs(angle) > 5:
+					if abs(angle) > 10:
 						print "Off by %s" % angle
 						self.R.rotateBy(angle)
 
@@ -77,10 +77,6 @@ class CompetitionRobot():
 					self.R.lifter.down()
 					return True
 				else:
-					if abs(drivingTo) > 1:
-						#Too far from target - limit movement
-						drivingTo = 1 * drivingTo.normalize()
-
 					#One more movement
 					self.R.driveTo(drivingTo)
 					time.sleep(0.1)
@@ -100,10 +96,8 @@ class CompetitionRobot():
 	def driveBackToZone(self):
 		self.R.rotateTo(180)
 
-		startTime = time.time()
 		inZone = False
-		while not inZone and time.time() - startTime < 10:
-			self.R.driveDistance(0.5)
+		while not inZone:
 			vision = self.R.see(res=(1280, 1024)).processed()
 			walls = vision.arena
 
@@ -113,19 +107,18 @@ class CompetitionRobot():
 					self.R.driveDistance(-0.25)
 					inZone = True
 					break
-
-		if not inZone:
-			self.R.us.ping()
-			self.R.driveDistance(self.R.us.front - 0.25)
+			if not inZone:
+				self.R.rotateTo(180)
+				self.R.driveDistance(1.5)
 
 def main(R):
 	m = Map(arena=CompetitionArenaMap())
 	robot = CompetitionRobot(R, m)
-	found = robot.findCubesForXSeconds(5)
+	robot.findCubesForXSeconds(120)
 	robot.driveBackToZone()
-	if not robot.findBucketForXSeconds(30):
-		robot.driveBackToZone()
-		R.lifter.up()
-		time.sleep(1)
-		R.lifter.down()
-		R.stop()
+	robot.findBucketForXSeconds(30)
+	robot.driveBackToZone()
+	R.lifter.up()
+	time.sleep(1)
+	R.lifter.down()
+	R.stop()
