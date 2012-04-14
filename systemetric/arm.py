@@ -14,7 +14,7 @@ class Arm(MbedDevice):
 	def grabCube(self, wait = True):
 		self.request('g') #grab
 		startTime = time.time()
-		while wait and not self.atBottom and time.time() - startTime < 10:
+		while wait and not self.atBottom and time.time() - startTime < 5:
 			time.sleep(0.1)
 
 	@property

@@ -35,6 +35,7 @@ class CompetitionRobot():
 						foundCubes.add(target.id)
 					print "Found cube #%d" % target.id
 					self.R.arm.grabCube(wait=True)
+					self.R.driveDistance(-0.1)
 					self.R.arm.grabCube(wait=True)
 					time.sleep(0.5)
 					self.R.driveDistance(-0.5)
@@ -90,22 +91,16 @@ class CompetitionRobot():
 			
 			for wall in walls:
 				if wall.id / 7 == self.R.zone:
-					self.R.driveTo(wall.left, gap=0.75)
+					self.R.driveTo(wall.left, gap=0.3)
 					inZone = True
 					break
-
-		# pos = self.map.robot.location
-		# targetPos = Point2(4.0 + math.cos(self.R.zone * math.pi / 2) * 3.5, 4.0 + math.sin(self.R.zone * math.pi / 2) * 3.5)
-
-		# self.R.rotateBy(math.atan2(targetPos.y - pos.y, targetPos.x - pos.x))
-		# self.R.driveDistance(((pos.x - targetPos.x)**2 + (pos.y - targetPos.y)**2)**0.5)
 
 def main(R):
 	m = Map(arena=CompetitionArenaMap())
 	robot = CompetitionRobot(R, m)
 	found = robot.findCubesForXSeconds(120)
 	robot.driveBackToZone()
-	self.R.lifter.up()
+	R.lifter.up()
 	time.sleep(1)
-	self.R.lifter.down()
-	self.R.stop()
+	R.lifter.down()
+	R.stop()
