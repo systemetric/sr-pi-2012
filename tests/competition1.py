@@ -9,6 +9,7 @@ class CompetitionRobot():
 	def __init__(self, R, m):
 		self.R = R
 		self.map = m
+		self.rotations = 0
 
 	def findCubesForXSeconds(self, x):
 		startTime = time.time()
@@ -19,6 +20,7 @@ class CompetitionRobot():
 			tokens = markers.tokens
 
 			if tokens:
+				self.rotations = 0
 				target = tokens[0]
 				if abs(target.center) > 1:
 					self.R.driveTo(target.center, gap=0.75)
@@ -31,9 +33,14 @@ class CompetitionRobot():
 					time.sleep(1)
 					self.R.driveDistance(-0.5)
 			else:
-				print "Found no tokens"
-				self.R.rotateBy(30, fromTarget=True)
-				self.R.stop()
+				if self.rotations >= 12:
+					self.R.driveDistance(1)
+					self.rotations = 0
+				else:
+					print "Found no tokens"
+					self.R.rotateBy(30, fromTarget=True)
+					self.R.stop()
+					self.rotations += 1
 		return foundCubes
 
 	def findBucketForXSeconds(self, x):
