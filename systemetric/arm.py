@@ -1,4 +1,5 @@
 from mbed import MbedDevice
+import systemetric
 import time
 
 class Arm(MbedDevice):
@@ -28,6 +29,7 @@ class Arm(MbedDevice):
 
 def main():
 	A = Arm()
+	R = systemetric.Robot()
 	
 	while True:
 		time.sleep(3)

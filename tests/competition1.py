@@ -19,12 +19,16 @@ class CompetitionRobot():
 			tokens = markers.tokens
 
 			if tokens:
+				print "Found %d tokens, going for token #%d" % len(tokens), tokens[0].id
 				target = tokens[0]
 				if abs(target.center) > 1:
-					self.R.driveTo(target.center, gap=0.75)
+					print "Too far from target cube, driving closer"
+					self.R.driveTo(target.center, gap=0.25)
 				else:
+					print "Homing in on target cube"
 					self.R.driveTo(target.center, gap=0.2)
 					if target.id not in foundCubes:
+						print "Definitely a new cube"
 						foundCubes.add(target.id)
 					print "Found cube #%d" % target.id
 					self.R.arm.grabCube(wait=True)
