@@ -82,10 +82,9 @@ class CompetitionRobot():
 					time.sleep(0.1)
 
 					#Turn to face where we think the bucket should be, so we can see it next loop
-					targetFacing = target.center - drivingTo
-					angleDifference = Bearing.ofVector(targetFacing) - Bearing.ofVector(drivingTo)
+					angle = Bearing.ofVector(target.center)
 					print "Turning to face bucket again"
-					self.R.rotateBy(angleDifference)
+					self.R.rotateBy(angle - math.copysign(2, angle))
 					self.R.stop()
 			else:
 				print "Found no buckets"
@@ -94,7 +93,7 @@ class CompetitionRobot():
 		return False
 
 	def driveBackToZone(self):
-		self.R.rotateTo(180)
+		self.R.rotateTo(math.copysign(180, self.R.compass.heading))
 
 		inZone = False
 		while not inZone:
@@ -108,8 +107,9 @@ class CompetitionRobot():
 					inZone = True
 					break
 			if not inZone:
-				self.R.rotateTo(180)
+				self.R.rotateTo(math.copysign(180, self.R.compass.heading))
 				self.R.driveDistance(1.5)
+
 
 def main(R):
 	m = Map(arena=CompetitionArenaMap())
@@ -119,6 +119,7 @@ def main(R):
 	robot.findBucketForXSeconds(30)
 	robot.driveBackToZone()
 	R.lifter.up()
+	robot.R.driveDistance(-0.25)
 	time.sleep(1)
 	R.lifter.down()
 	R.stop()
