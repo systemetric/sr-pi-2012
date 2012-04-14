@@ -20,7 +20,7 @@ class CompetitionRobot():
 			tokens = markers.tokens
 
 			if tokens:
-				print "Found %d tokens, going for token #%d" % len(tokens), tokens[0].id
+				print "Found %d tokens, going for token #%d" % (len(tokens), tokens[0].id)
 				self.rotations = 0
 				target = tokens[0]
 				if abs(target.center) > 1:
