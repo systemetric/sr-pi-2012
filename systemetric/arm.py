@@ -30,5 +30,5 @@ def main():
 	A = Arm()
 	
 	while True:
-		time.sleep(1)
-		print A.atBottom
+		time.sleep(3)
+		A.grabCube(wait=True)
