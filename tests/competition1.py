@@ -1,15 +1,16 @@
 import time
 import math
-from systemetric import Map
 from systemetric import Bearing
 from libs.pyeuclid import Point2
+from systemetric.mapping.arenamaps import CompetitionArenaMap
+from systemetric.map import Map
 
-class CompetitionRobot(GyroA):
-	def __init__(R, m):
+class CompetitionRobot():
+	def __init__(self, R, m):
 		self.R = R
 		self.map = m
 
-	def findCubesForXSeconds(x):
+	def findCubesForXSeconds(self, x):
 		startTime = time.time()
 		foundCubes = set()
 		while time.time() - startTime < x:
@@ -22,25 +23,25 @@ class CompetitionRobot(GyroA):
 				if abs(target.center) > 1:
 					self.R.driveTo(target.center, gap=0.75)
 				else:
-					self.R.driveTo(target.center, gap=0.2
+					self.R.driveTo(target.center, gap=0.2)
 					if target.id not in foundCubes:
 						foundCubes.add(target.id)
 					print "Found cube #%d" % target.id
 					self.R.arm.grabCube(wait=True)
 					time.sleep(1)
-					self.R.driveDistance(-0.25)
+					self.R.driveDistance(-0.5)
 			else:
 				print "Found no tokens"
 				self.R.rotateBy(30, fromTarget=True)
 				self.R.stop()
 		return foundCubes
 
-	def findBucketForXSeconds(x):
+	def findBucketForXSeconds(self, x):
 		startTime = time.time()
 		while time.time() - startTime < x:
 			print "Reading buckets"
 			markers = self.R.see(res=(1280,1024)).processed()
-			buckets = buckets.tokens
+			buckets = markers.buckets
 			if buckets:
 				target = buckets[0]
 				drivingTo = min(target.desirableRobotTargets, key=abs)
@@ -67,11 +68,11 @@ class CompetitionRobot(GyroA):
 				self.R.stop()
 		return False
 
-	def driveBackToZone():
+	def driveBackToZone(self):
 		pos = self.map.robot.location
-		targetPos = Point2(4.0 + Math.cos(self. * Math.pi / 2) * 3.5, 4.0 + Math.sin(num * Math.pi / 2) * 3.5)
+		targetPos = Point2(4.0 + math.cos(self.R.zone * math.pi / 2) * 3.5, 4.0 + math.sin(self.R.zone * math.pi / 2) * 3.5)
 
-		self.R.rotateBy(Math.atan2(targetPos.y - pos.y, targetPos.x - pos.x))
+		self.R.rotateBy(math.atan2(targetPos.y - pos.y, targetPos.x - pos.x))
 		self.R.driveDistance(((pos.x - targetPos.x)**2 + (pos.y - targetPos.y)**2)**0.5)
 
 def main(R):
