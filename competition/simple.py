@@ -14,7 +14,7 @@ class CompetitionRobot():
 		foundCubes = set()
 		lastTokenId = None
 
-		while len(foundCubes) <= 5 or time.time() - startTime < x:
+		while len(foundCubes) <= 5 and time.time() - startTime < x:
 			print "Reading tokens"
 			markers = self.R.see(res=(1280,1024)).processed()
 			tokens = markers.tokens
