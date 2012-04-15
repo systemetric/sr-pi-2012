@@ -31,7 +31,10 @@ class CompetitionRobot():
 						print "Definitely a new cube"
 						foundCubes.add(target.id)
 					print "Found cube #%d" % target.id
-					self.R.arm.grabCube(wait=True)
+					self.R.arm.grabCube()
+					self.R.drive(50)
+					while not self.R.arm.atBottom:
+						time.sleep(0.01)
 					time.sleep(1)
 					self.R.driveDistance(-0.1)
 					self.R.arm.grabCube(wait=True)
