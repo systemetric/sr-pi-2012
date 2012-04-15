@@ -125,6 +125,7 @@ class CompetitionRobot():
 
 def main(R):
 	robot = CompetitionRobot(R)
+	R.waitForStart()
 	robot.findCubesForXSeconds(120)
 	robot.driveBackToZone()
 	robot.findBucketForXSeconds(30)
