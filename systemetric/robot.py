@@ -21,7 +21,6 @@ class Robot(GyroAndCompassRobot, KillableRobot):
 	def __init__(self):
 		#Get the motors set up
 		GyroAndCompassRobot.__init__(self)
-		logs.roundStarted()
 
 		with open('config.json') as configFile:
 			KillableRobot.__init__(self, killCode = json.load(configFile).get('killCode') or 228)

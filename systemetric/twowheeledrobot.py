@@ -2,6 +2,7 @@ from sr import Robot
 import math
 import atexit
 import threading
+import logs
 
 def _motorSpeedTransform(signedSpeed):
     speed = abs(signedSpeed)
@@ -109,3 +110,4 @@ class TwoWheeledRobot(Robot, SingleThreadAccess):
 
     def waitForStart(self):
         self._wait_start()
+        logs.roundStarted()
