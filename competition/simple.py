@@ -1,14 +1,11 @@
 import time
 import math
 from systemetric import Bearing
-from systemetric.mapping.arenamaps import CompetitionArenaMap
-from systemetric.map import Map
 
 class CompetitionRobot():
 	'''second comp program. Uses the compass to find the zone and bucket'''
-	def __init__(self, R, m):
+	def __init__(self, R):
 		self.R = R
-		self.map = m
 		self.rotations = 0
 		self.R.lifter.down()
 
@@ -117,8 +114,7 @@ class CompetitionRobot():
 
 
 def main(R):
-	m = Map(arena=CompetitionArenaMap())
-	robot = CompetitionRobot(R, m)
+	robot = CompetitionRobot(R)
 	robot.findCubesForXSeconds(120)
 	robot.driveBackToZone()
 	robot.findBucketForXSeconds(30)
