@@ -24,7 +24,6 @@ class Arm(MbedDevice):
 		return self.atBottom
 
 	@property
-	@logs.to(logs.events)
 	def atBottom(self):
 		"""Bottom limit switches pressed?"""
 		return 'True' in self.request('b') #atBottom

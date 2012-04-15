@@ -1,4 +1,5 @@
 from mbed import MbedDevice
+import logs
 import time
 
 class Lifter(MbedDevice):
@@ -7,12 +8,14 @@ class Lifter(MbedDevice):
 	def __init__(self, mbed = None):
 		super(Lifter, self).__init__('L', mbed)
 
+	@logs.to(logs.events)
 	def up(self, wait=True):
 		self.request('u')
 
 		if wait:
 			time.sleep(Lifter.LIFT_WAIT)
 
+	@logs.to(logs.events)
 	def down(self, wait=True):
 		self.request('d')
 

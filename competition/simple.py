@@ -20,8 +20,8 @@ class CompetitionRobot():
 			tokens = markers.tokens
 
 
-			if lastTokenPicked and abs(lastTokenPicked.center) > 0.2 and any(lastTokenPicked.id ==  t.id for t in tokens):
-				foundCubes.remove(lastTokenPicked)
+			if lastTokenPicked and lastTokenPicked.id in foundCubes and any(lastTokenPicked.id ==  t.id for t in tokens):# and abs(lastTokenPicked.center) > 0.2 and any(lastTokenPicked.id ==  t.id for t in tokens):
+				foundCubes.remove(lastTokenPicked.id)
 
 			if tokens:
 				print "Found %d tokens, going for token #%d" % (len(tokens), tokens[0].id)
@@ -39,12 +39,7 @@ class CompetitionRobot():
 						foundCubes.add(lastTokenPicked.id)
 					print "Found cube #%d" % target.id
 
-					self.R.arm.grabCube(wait=False)
-					self.R.drive(50)
-					startTime = time.time()
-					while not self.R.arm.atBottom and time.time() - startTime < 5:
-						time.sleep(0.1)
-					self.R.stop()
+					self.R.arm.grabCube(wait=True)
 
 					if not self.R.arm.atBottom:
 						self.R.driveDistance(-0.25)
@@ -85,12 +80,7 @@ class CompetitionRobot():
 
 					print "Found cube #%d" % target.id
 
-					self.R.arm.grabCube(wait=False)
-					self.R.drive(50)
-					startTime = time.time()
-					while not self.R.arm.atBottom and time.time() - startTime < 5:
-						time.sleep(0.1)
-					self.R.stop()
+					self.R.arm.grabCube(wait=True)
 
 					if not self.R.arm.atBottom:
 						self.R.driveDistance(-0.25)
@@ -175,7 +165,8 @@ class CompetitionRobot():
 
 def main(R):
 	robot = CompetitionRobot(R)
-	robot.findNCubesForXSeconds(6, 110)
+	R.waitForStart()
+	robot.findNCubesForXSeconds(3, 110)
 	#robot.findCubesForXSeconds(110)
 	robot.driveBackToZone()
 	robot.findBucketForXSeconds(20)
