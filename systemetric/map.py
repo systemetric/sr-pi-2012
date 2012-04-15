@@ -2,6 +2,7 @@ from libs.pyeuclid import *
 from copy import copy
 from time import time
 from event import Event
+import logs
 
 class Map(object):
 	"""Stores a map of the arena"""
@@ -63,10 +64,11 @@ class Map(object):
 		locInfo = self.arena.getLocationInfoFrom(vision)
 		if locInfo:
 			self.robot = locInfo
+			print >> logs.vision, "Got location"
 			
 			for token in vision.tokens:
 				if token.captured:
-					print "token %s captured" % token.id
+					print >> logs.vision, "token %s captured" % token.id
 					self.tokens[token.id].invalidate()
 				else:
 					self.tokens[token.id].position  = locInfo.transform * token.center
