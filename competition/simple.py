@@ -118,10 +118,10 @@ class CompetitionRobot():
 						self.R.rotateBy(angle)
 
 					print "Found bucket"
-					self.R.driveTo(target.center)
+					self.R.driveTo(target.center, speed=50)
 					time.sleep(1)
 					self.R.lifter.up()
-					self.R.drive(100)
+					self.R.drive(30)
 					time.sleep(1.5)
 					self.R.stop()
 					self.R.lifter.down()
