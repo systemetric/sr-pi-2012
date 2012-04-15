@@ -66,14 +66,11 @@ class GyroAndCompassRobot(TwoWheeledRobot):
 	def rotateTo(self, angle, tolerance = 5):
 		self.gyroRegulator.enabled = False
 		self.compassRegulator.target = angle
-		print "started"
 		self.speed = 0
 
 		self.compassRegulator.enabled = True
-		print "started"
 		while not self.compassRegulator.onTarget(tolerance=tolerance):
 			time.sleep(0.05)
-		print "stopped"
 
 	def rotateBy(self, angle, fromTarget = False, tolerance = 5):
 		"""
