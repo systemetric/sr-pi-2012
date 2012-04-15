@@ -31,12 +31,18 @@ class CompetitionRobot():
 						print "Definitely a new cube"
 						foundCubes.add(target.id)
 					print "Found cube #%d" % target.id
-					self.R.arm.grabCube()
+
+					self.R.arm.grabCube(wait=False)
 					self.R.drive(50)
-					while not self.R.arm.atBottom:
-						time.sleep(0.01)
+					startTime = time.time()
+					while not self.R.arm.atBottom and time.time() - startTime < 5:
+						time.sleep(0.1)
+					self.R.stop()
+
+					if not self.R.arm.atBottom:
+						self.R.driveDistance(-0.25)
+						
 					time.sleep(1)
-					self.R.driveDistance(-0.1)
 					self.R.arm.grabCube(wait=True)
 					time.sleep(0.5)
 					self.R.driveDistance(-0.5)
@@ -69,11 +75,11 @@ class CompetitionRobot():
 						self.R.rotateBy(angle)
 
 					print "Found bucket"
-					self.R.driveDistance(1)
+					self.R.driveTo(target.center)
 					time.sleep(1)
 					self.R.lifter.up()
-					self.R.drive(50)
-					time.sleep(1)
+					self.R.drive(100)
+					time.sleep(1.5)
 					self.R.stop()
 					self.R.lifter.down()
 					time.sleep(1)
@@ -93,7 +99,7 @@ class CompetitionRobot():
 					self.R.stop()
 			else:
 				print "Found no buckets"
-				self.R.rotateBy(-60, fromTarget=True)
+				self.R.rotateBy(60, fromTarget=True)
 				self.R.stop()
 		return False
 
@@ -115,12 +121,11 @@ class CompetitionRobot():
 				self.R.rotateTo(math.copysign(180, self.R.compass.heading))
 				self.R.driveDistance(1.5)
 
-
 def main(R):
 	robot = CompetitionRobot(R)
-	robot.findCubesForXSeconds(120)
+	robot.findCubesForXSeconds(110)
 	robot.driveBackToZone()
-	robot.findBucketForXSeconds(30)
+	robot.findBucketForXSeconds(20)
 	robot.driveBackToZone()
 	R.lifter.up()
 	robot.R.driveDistance(-0.25)

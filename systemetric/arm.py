@@ -1,6 +1,7 @@
 from mbed import MbedDevice
 import systemetric
 import time
+import logs
 
 class Arm(MbedDevice):
 	"""
@@ -11,13 +12,19 @@ class Arm(MbedDevice):
 	def __init__(self, mbed = None):
 		super(Arm, self).__init__('A', mbed)
 
+	@logs.to(logs.events)
 	def grabCube(self, wait = True):
 		self.request('g') #grab
+
 		startTime = time.time()
 		while wait and not self.atBottom and time.time() - startTime < 5:
 			time.sleep(0.1)
+		if wait:
+			print "Waited: " + str(time.time() - startTime)
+		return self.atBottom
 
 	@property
+	@logs.to(logs.events)
 	def atBottom(self):
 		"""Bottom limit switches pressed?"""
 		return 'True' in self.request('b') #atBottom
@@ -28,9 +35,8 @@ class Arm(MbedDevice):
 		return 'True' in self.request('t') #atBottom
 
 def main():
-	A = Arm()
 	R = systemetric.Robot()
 	
 	while True:
 		time.sleep(3)
-		A.grabCube(wait=True)
+		print "Got cube? " + str(R.arm.grabCube(wait=True))
