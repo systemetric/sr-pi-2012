@@ -9,12 +9,12 @@ class CompetitionRobot():
 		self.rotations = 0
 		self.R.lifter.down()
 
-	def findCubesForXSeconds(self, x):
+	def findNCubesForXSeconds(self, n, x):
 		startTime = time.time()
 		foundCubes = set()
 		lastTokenPicked = None
 
-		while len(foundCubes) <=5 or time.time() - startTime < x:
+		while len(foundCubes) < n or time.time() - startTime < x:
 			print "Reading tokens"
 			markers = self.R.see(res=(1280,1024)).processed()
 			tokens = markers.tokens
@@ -63,6 +63,51 @@ class CompetitionRobot():
 					self.R.stop()
 					self.rotations += 1
 		return foundCubes
+
+	def findCubesForXSeconds(self, x):
+		startTime = time.time()
+
+		while time.time() - startTime < x:
+			print "Reading tokens"
+			markers = self.R.see(res=(1280,1024)).processed()
+			tokens = markers.tokens
+
+			if tokens:
+				print "Found %d tokens, going for token #%d" % (len(tokens), tokens[0].id)
+				self.rotations = 0
+				target = tokens[0]
+				if abs(target.center) > 1:
+					print "Too far from target cube, driving closer"
+					self.R.driveTo(target.center, gap=0.5)
+				else:
+					print "Homing in on target cube"
+					self.R.driveTo(target.center, gap=0.2)
+
+					print "Found cube #%d" % target.id
+
+					self.R.arm.grabCube(wait=False)
+					self.R.drive(50)
+					startTime = time.time()
+					while not self.R.arm.atBottom and time.time() - startTime < 5:
+						time.sleep(0.1)
+					self.R.stop()
+
+					if not self.R.arm.atBottom:
+						self.R.driveDistance(-0.25)
+						
+					time.sleep(1)
+					self.R.arm.grabCube(wait=True)
+					time.sleep(0.5)
+					self.R.driveDistance(-0.5)
+			else:
+				if self.rotations >= 12:
+					self.R.driveDistance(1)
+					self.rotations = 0
+				else:
+					print "Found no tokens"
+					self.R.rotateBy(30, fromTarget=True)
+					self.R.stop()
+					self.rotations += 1
 
 	def findBucketForXSeconds(self, x):
 		startTime = time.time()
@@ -130,7 +175,8 @@ class CompetitionRobot():
 
 def main(R):
 	robot = CompetitionRobot(R)
-	robot.findCubesForXSeconds(110)
+	robot.findNCubesForXSeconds(6, 110)
+	#robot.findCubesForXSeconds(110)
 	robot.driveBackToZone()
 	robot.findBucketForXSeconds(20)
 	robot.driveBackToZone()

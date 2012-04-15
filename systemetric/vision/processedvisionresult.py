@@ -153,7 +153,7 @@ class ProcessedVisionResult(object):
 			self.buckets += [ self.Bucket(self, code, markers)]
 
 		for code, markers in robotmarkers.iteritems():
-			self.robots += [ self.Robot(self, code, markers)]
+			self.robots += [ self.Robot(self, markers)]
 
 		self.tokens.sort(key=lambda m: abs(m.center))
 	
