@@ -107,6 +107,7 @@ class CompetitionRobot():
 def main(R):
 	m = Map(arena=CompetitionArenaMap())
 	robot = CompetitionRobot(R, m)
+	R.waitForStart()
 	#found = robot.findCubesForXSeconds(0)
 	robot.driveBackToZone()
 	#xxrobot.findBucketForXSeconds(30)

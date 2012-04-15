@@ -88,9 +88,10 @@ class ProcessedVisionResult(object):
 			return "<Token #%d at %s>" % (self.id, repr(self.center))
 
 	class Robot(object):
+		SIZE = 0.5
 		def __init__(self, visionResult, markers):
 			self.markers = markers
-			center = sum(m.center - m.normal * 0.5 / 2 for m in markers) / len(markers)
+			center = sum(m.center - m.normal * self.SIZE / 2 for m in markers) / len(markers)
 			self.center = visionResult.planarLocationOf(center)
 
 	class Bucket(object):
@@ -168,7 +169,7 @@ class ProcessedVisionResult(object):
 			self.buckets += [ self.Bucket(self, code, markers)]
 
 		for code, markers in robotmarkers.iteritems():
-			self.robots += [ self.Robot(self, code, markers)]
+			self.robots += [ self.Robot(self, markers)]
 
 		self.tokens.sort(key=lambda m: abs(m.center))
 	

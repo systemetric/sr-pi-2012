@@ -19,6 +19,7 @@ import json
 
 from libs.pyeuclid import Matrix4
 from gyroandcompassrobot import GyroAndCompassRobot
+from twowheeledrobot import AccessRevoked
 from killablerobot import KillableRobot
 from vision import VisionResult
 from bearing import Bearing
@@ -26,6 +27,7 @@ from lifter import Lifter
 from arm import Arm
 from ultrasonic import Ultrasonic
 import logs
+import threading
 
 MAGIC_TURN_NUMBER = 1.2
 
@@ -34,7 +36,6 @@ class Robot(GyroAndCompassRobot, KillableRobot):
 	def __init__(self):
 		#Get the motors set up
 		GyroAndCompassRobot.__init__(self)
-		logs.roundStarted()
 
 		with open('config.json') as configFile:
 			KillableRobot.__init__(self, killCode = json.load(configFile).get('killCode') or 228)
@@ -42,7 +43,7 @@ class Robot(GyroAndCompassRobot, KillableRobot):
 
 		# Camera orientation - numbers need checking
 		self.cameraMatrix = (
-			Matrix4.new_translate(0, 0.48, 0) *      #0.5m up from the center of the robot
+			Matrix4.new_translate(0, 0.48, 0) *     #0.5m up from the center of the robot
 			Matrix4.new_rotatex(math.radians(18))   #Tilted forward by 18 degrees
 		)
 
@@ -69,15 +70,16 @@ class Robot(GyroAndCompassRobot, KillableRobot):
 			return VisionResult(res, worldTransform = self.worldTransform)
 
 	@logs.to(logs.movement)
-	def driveDistance(self, distInMetres):
+	def driveDistance(self, distInMetres, speed = 100):
 		"""
 		Drive a certain distance forward in metres, using timing only. Negative
 		distance goes backwards
 		"""
+		speed = abs(speed)
 		print "Heading before:", self.compass.heading
-		SPEED = .6	# we measured 3m in 5s
-		self.drive(speed = math.copysign(100, distInMetres))
-		time.sleep(abs(distInMetres) / SPEED)
+		SPEED_AT_100 = .6	# we measured 3m in 5s
+		self.drive(speed = math.copysign(speed, distInMetres))
+		time.sleep(abs(distInMetres) / (SPEED_AT_100 * (speed / 100)))
 		self.stop()
 		print "Heading after:", self.compass.heading
 
@@ -88,7 +90,7 @@ class Robot(GyroAndCompassRobot, KillableRobot):
 		self.stop()
 	
 	@logs.to(logs.movement)
-	def driveTo(self, relativePosition, gap = 0):
+	def driveTo(self, relativePosition, gap = 0, speed = 100):
 		bearing = float(Bearing.toPoint(relativePosition)) * MAGIC_TURN_NUMBER
 		dist = abs(relativePosition) - gap
 		print "Turning:", bearing
@@ -96,4 +98,16 @@ class Robot(GyroAndCompassRobot, KillableRobot):
 		self.stop()
 		time.sleep(0.25)
 		print "Driving:", dist
-		self.driveDistance(dist)
+		self.driveDistance(dist, speed = speed)
+
+	def executeUntilStart(self, f):
+		def run():
+			try:
+				self.takeControl(kick=False)
+				f(self)
+			except AccessRevoked:
+				print 'thread stopped'
+		t = threading.Thread(target=run)
+		t.start()
+		self.waitForStart()
+		self.takeControl()
