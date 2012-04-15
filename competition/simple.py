@@ -12,15 +12,16 @@ class CompetitionRobot():
 	def findCubesForXSeconds(self, x):
 		startTime = time.time()
 		foundCubes = set()
-		lastTokenPicked = -1
+		lastTokenPicked = None
 
 		while len(foundCubes) <=5 or time.time() - startTime < x:
 			print "Reading tokens"
 			markers = self.R.see(res=(1280,1024)).processed()
 			tokens = markers.tokens
 
-			if self.lastTokenPicked in tokens:
-					foundCubes.remove(lastTokenPicked)
+
+			if lastTokenPicked and abs(lastTokenPicked.center) > 0.2 and any(lastTokenPicked.id ==  t.id for t in tokens):
+				foundCubes.remove(lastTokenPicked)
 
 			if tokens:
 				print "Found %d tokens, going for token #%d" % (len(tokens), tokens[0].id)
@@ -34,8 +35,8 @@ class CompetitionRobot():
 					self.R.driveTo(target.center, gap=0.2)
 					if target.id not in foundCubes:
 						print "Definitely a new cube"
-						self.lastTokenPicked = target.id
-						foundCubes.add(lastTokenPicked)
+						lastTokenPicked = target
+						foundCubes.add(lastTokenPicked.id)
 					print "Found cube #%d" % target.id
 					self.R.arm.grabCube()
 					self.R.drive(50)
