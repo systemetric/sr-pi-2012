@@ -1,7 +1,6 @@
 import time
 import math
 from systemetric import Bearing
-from libs.pyeuclid import Point2
 from systemetric.mapping.arenamaps import CompetitionArenaMap
 from systemetric.map import Map
 
@@ -11,6 +10,7 @@ class CompetitionRobot():
 		self.R = R
 		self.map = m
 		self.rotations = 0
+		self.R.lifter.down()
 
 	def findCubesForXSeconds(self, x):
 		startTime = time.time()
@@ -35,6 +35,7 @@ class CompetitionRobot():
 						foundCubes.add(target.id)
 					print "Found cube #%d" % target.id
 					self.R.arm.grabCube(wait=True)
+					time.sleep(1)
 					self.R.driveDistance(-0.1)
 					self.R.arm.grabCube(wait=True)
 					time.sleep(0.5)
@@ -68,10 +69,14 @@ class CompetitionRobot():
 						self.R.rotateBy(angle)
 
 					print "Found bucket"
-					self.R.driveDistance(0.75)
-					self.R.drive(15)
+					self.R.driveDistance(1)
+					time.sleep(1)
+					self.R.lifter.up()
+					self.R.drive(50)
 					time.sleep(1)
 					self.R.stop()
+					self.R.lifter.down()
+					time.sleep(1)
 					self.R.lifter.up()
 					time.sleep(1)
 					self.R.lifter.down()
@@ -88,7 +93,7 @@ class CompetitionRobot():
 					self.R.stop()
 			else:
 				print "Found no buckets"
-				self.R.rotateBy(-30, fromTarget=True)
+				self.R.rotateBy(-60, fromTarget=True)
 				self.R.stop()
 		return False
 

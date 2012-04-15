@@ -74,7 +74,9 @@ class ProcessedVisionResult(object):
 
 	class Robot(object):
 		def __init__(self, visionResult, markers):
-			pass
+			self.markers = markers
+			center = sum(m.center - m.normal * 0.5 / 2 for m in markers) / len(markers)
+			self.center = visionResult.planarLocationOf(center)
 
 	class Bucket(object):
 		"""
@@ -129,9 +131,11 @@ class ProcessedVisionResult(object):
 		self.arena     = [self.ArenaMarker(self, m) for m in visionResult.arena]
 		self.tokens    = []
 		self.buckets   = []
+		self.robots    = []
 
 		tokenmarkers   = defaultdict(list)
 		bucketmarkers  = defaultdict(list)
+		robotmarkers   = defaultdict(list)
 
 		for m in visionResult.tokens:
 			tokenmarkers[m.code] += [m]
@@ -139,11 +143,17 @@ class ProcessedVisionResult(object):
 		for m in visionResult.bucketEnds + visionResult.bucketSides:
 			bucketmarkers[m.code] += [m]
 
+		for m in visionResult.robots:
+			robotmarkers[m.code] += [m]
+
 		for code, markers in tokenmarkers.iteritems():
 			self.tokens += [ self.Token(self, code, markers) ]
 
 		for code, markers in bucketmarkers.iteritems():
 			self.buckets += [ self.Bucket(self, code, markers)]
+
+		for code, markers in robotmarkers.iteritems():
+			self.robots += [ self.Robot(self, code, markers)]
 
 		self.tokens.sort(key=lambda m: abs(m.center))
 	
