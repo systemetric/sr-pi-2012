@@ -4,6 +4,7 @@ import json
 
 from libs.pyeuclid import Matrix4
 from gyroandcompassrobot import GyroAndCompassRobot
+from twowheeledrobot import AccessRevoked
 from killablerobot import KillableRobot
 from vision import VisionResult
 from bearing import Bearing
@@ -11,6 +12,7 @@ from lifter import Lifter
 from arm import Arm
 from ultrasonic import Ultrasonic
 import logs
+import threading
 
 MAGIC_TURN_NUMBER = 1.2
 
@@ -27,7 +29,7 @@ class Robot(GyroAndCompassRobot, KillableRobot):
 
 		# Camera orientation - numbers need checking
 		self.cameraMatrix = (
-			Matrix4.new_translate(0, 0.48, 0) *      #0.5m up from the center of the robot
+			Matrix4.new_translate(0, 0.48, 0) *     #0.5m up from the center of the robot
 			Matrix4.new_rotatex(math.radians(18))   #Tilted forward by 18 degrees
 		)
 
@@ -82,3 +84,15 @@ class Robot(GyroAndCompassRobot, KillableRobot):
 		time.sleep(0.25)
 		print "Driving:", dist
 		self.driveDistance(dist)
+
+	def executeUntilStart(self, f):
+		def run():
+			try:
+				self.takeControl(kick=False)
+				f(self)
+			except AccessRevoked:
+				print 'thread stopped'
+		t = threading.Thread(target=run)
+		t.start()
+		self.waitForStart()
+		self.takeControl()
