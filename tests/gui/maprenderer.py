@@ -129,7 +129,7 @@ class MapRenderer(Screen):
 				
 		cr.restore()
 
-	def startInNewWindow():
+	def startInNewWindow(self):
 		self.show()
 
 		window = gtk.Window()
