@@ -21,6 +21,7 @@ if 'main' in dir(module):
 		#If the module requests a specific type of robot, use it, else use the main one
 		R = module.robot() if hasattr(module, 'robot') else systemetric.Robot()
 		print 'Battery Voltage: %.2f' % R.power.battery.voltage
+		print 'Competition mode: %s' % R.mode
 		module.main(R)
 	else:
 		module.main()
