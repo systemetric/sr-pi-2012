@@ -15,8 +15,10 @@
 
 import time
 import sys
-class Timer(object):
-	def __init__(self, name = "Timer", parent = None):
+class Profiler(object):
+	"""A class for profiling, to be used as a context manager"""
+	def __init__(self, name = "Profiler", parent = None):
+		"""Create a new profiler, with an optional name"""
 		self.parent = parent
 		self.name = name
 		self.reset()
@@ -33,25 +35,30 @@ class Timer(object):
 		if self.parent:
 			self.parent.times += [self]
 		else:
-			self.toTimeTree()
+			self.printTimeTree()
 		return False
 
 	def event(self, name):
-		return Timer(name, self, printTo=self.printTo)
+		"""Create a subprofiler, which will time operations within a larger piece of code"""
+		return Profiler(name, self)
 
 	def reset(self):
+		"""Clear the profiler, so that it can be used again"""
 		self.times = []
 
-	def toTimeTree(self, indent = 0):
+	def printTimeTree(self, indent = 0):
+		"""Print out a tree of timings for events and subevents. Runs when the context is exited"""
 		print >> self.printTo, '\t' * indent + '%s: %f' % (self.name, self.time)
 		for child in self.times:
-			child.toTimeTree(indent+1)
+			child.printTimeTree(indent+1)
 
-	def rshift(self, to):
+	def __rshift__(self, to):
+		"""Redirect output to another stream"""
 		self.printTo = to
+		return self
 
 def main():
-	with Timer("profiling") >> open('test.txt', 'w') as t:
+	with Profiler("testing") >> sys.stdout as t:
 		with t.event("a") as a:
 			time.sleep(1)
 
