@@ -19,7 +19,7 @@
 
 import time
 from twowheeledrobot import TwoWheeledRobot
-from compass import Compass
+from devices import Compass
 from pid import PID
 
 class CompassRobot(TwoWheeledRobot):

@@ -23,9 +23,7 @@ from twowheeledrobot import AccessRevoked
 from killablerobot import KillableRobot
 from vision import VisionResult
 from bearing import Bearing
-from lifter import Lifter
-from arm import Arm
-from ultrasonic import Ultrasonic
+from devices import Arm, Lifter, Ultrasonic
 import logs
 import threading
 
@@ -53,9 +51,13 @@ class Robot(GyroAndCompassRobot, KillableRobot):
 		#Set compass zero offset
 		self.compass.heading = 0
 
-		self.arm = Arm()
+		#get hardware
+		self.arm    = Arm()
 		self.lifter = Lifter()
-		self.us = Ultrasonic()
+		self.us     = Ultrasonic()
+
+	def waitForStart(self):
+		
 
 	def see(self, stats = False, *args, **kargs):
 		"""

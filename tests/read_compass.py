@@ -15,7 +15,7 @@
 
 import systemetric
 import time
-from systemetric.compass import Compass
+from systemetric.devices import Compass
 
 def main():
 	compass = Compass()

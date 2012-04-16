@@ -14,10 +14,8 @@
 # along with systemetric-student-robotics.  If not, see <http://www.gnu.org/licenses/>.
 
 from compassrobot import TwoWheeledRobot
-from gyro import Gyro
-from compass import Compass
+from devices import Gyro, Compass, Arm
 from pid import PID
-from arm import Arm
 import time
 import logs
 

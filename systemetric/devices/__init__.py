@@ -13,36 +13,13 @@
 # You should have received a copy of the GNU General Public License
 # along with systemetric-student-robotics.  If not, see <http://www.gnu.org/licenses/>.
 
-from mbed import MbedDevice
-import logs
-import time
+"""All the non-sr devices that are or can be plugged into the robot"""
 
-class Lifter(MbedDevice):
-	LIFT_WAIT = 2
+from arm import Arm
+from compass import Compass
+from gyro import Gyro
+from lifter import Lifter
+from ultrasonic import Ultrasonic
+from laser import Laser
 
-	def __init__(self, mbed = None):
-		super(Lifter, self).__init__('L', mbed)
-
-	@logs.to(logs.events)
-	def up(self, wait=True):
-		self.request('u')
-
-		if wait:
-			time.sleep(Lifter.LIFT_WAIT)
-
-	@logs.to(logs.events)
-	def down(self, wait=True):
-		self.request('d')
-
-		if wait:
-			time.sleep(Lifter.LIFT_WAIT)
-
-	def wobble(self):
-		self.up()
-		self.down(wait=False)
-
-def main():
-	l = Lifter
-
-	l.up()
-	l.down()
+from mbed import Mbed
