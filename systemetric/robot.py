@@ -56,9 +56,6 @@ class Robot(GyroAndCompassRobot, KillableRobot):
 		self.lifter = Lifter()
 		self.us     = Ultrasonic()
 
-	def waitForStart(self):
-		
-
 	def see(self, stats = False, *args, **kargs):
 		"""
 		Call the native see method, but return a VisionResult (a list with some
