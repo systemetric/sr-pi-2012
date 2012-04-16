@@ -16,12 +16,12 @@
 import time
 import sys
 class Timer(object):
-	def __init__(self, name = "Timer", parent = None, printTo = sys.stdout):
+	def __init__(self, name = "Timer", parent = None):
 		self.parent = parent
 		self.name = name
 		self.reset()
 		self.time = 0
-		self.printTo = printTo
+		self.printTo = sys.stdout
 
 	def __enter__(self):
 		self.start = time.time()
@@ -47,8 +47,11 @@ class Timer(object):
 		for child in self.times:
 			child.toTimeTree(indent+1)
 
+	def rshift(self, to):
+		self.printTo = to
+
 def main():
-	with Timer("profiling", printTo = open(r'test.txt', 'w')) as t:
+	with Timer("profiling") >> open('test.txt', 'w') as t:
 		with t.event("a") as a:
 			time.sleep(1)
 
