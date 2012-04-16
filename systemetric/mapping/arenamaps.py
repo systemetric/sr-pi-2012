@@ -75,17 +75,17 @@ class S007ArenaMap(ArenaMap):
 	"""A class representing the layout of the S007 arena. The width is 3.5m, length is 2.75m
 	^ Y
 	|
-    +---0---1---2---3---4---5---+--> X
-    |                           |
-    27                          6
-    |                           |
-    26                          7
-    |                           |
-    25                          8
-    |                           |
-    24                          9
-    |                           |
-    23 (origin)                 10
+	+---0---1---2---3---4---5---+--> X
+	|                           |
+	27                          6
+	|                           |
+	26                          7
+	|                           |
+	25                          8
+	|                           |
+	24                          9
+	|                           |
+	23 (origin)                 10
 
 
 

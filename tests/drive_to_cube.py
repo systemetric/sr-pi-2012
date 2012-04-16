@@ -19,27 +19,27 @@ import math
 import systemetric
 
 def main():
-    R = systemetric.Robot()
-    
-    speed = 50
-    
-    while True:
-        #Get only the tokens
-        markers = [marker for marker in R.see() if marker.info.marker_type == MARKER_TOKEN]
-        
-        if len(markers) != 0:
-            print "Saw the marker"
-            angle = markers[0].centre.polar.rot_y
-            if math.fabs(angle) < 10:
-                R.drive(speed)
-            else:
-                R.turn(angle)
-                time.sleep(0.25)
-                R.stop()
-            
-            print(angle)
-        else:
-            print "No marker"
-            R.turn(5)
-            time.sleep(0.25)
-            R.stop()
+	R = systemetric.Robot()
+	
+	speed = 50
+	
+	while True:
+		#Get only the tokens
+		markers = [marker for marker in R.see() if marker.info.marker_type == MARKER_TOKEN]
+		
+		if len(markers) != 0:
+			print "Saw the marker"
+			angle = markers[0].centre.polar.rot_y
+			if math.fabs(angle) < 10:
+				R.drive(speed)
+			else:
+				R.turn(angle)
+				time.sleep(0.25)
+				R.stop()
+			
+			print(angle)
+		else:
+			print "No marker"
+			R.turn(5)
+			time.sleep(0.25)
+			R.stop()

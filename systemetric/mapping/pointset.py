@@ -63,7 +63,7 @@ class PointSet(list):
 		"""
 		Use a super-optimal method, since error as a function of rotation was found to be of the form
 
-		    f(theta) = offset - amplitude * cos(theta - optimalTheta)
+			f(theta) = offset - amplitude * cos(theta - optimalTheta)
 		
 		through testing, and them some logical thought
 		"""
@@ -90,8 +90,8 @@ class PointSet(list):
 		optimalTheta = math.atan2(-e90, -e0)
 
 		transform = Matrix3.new_translate(*other.center.xy) \
-		          * Matrix3.new_rotate(optimalTheta)        \
-		          * Matrix3.new_translate(*self.center.xy).inverse()
+				  * Matrix3.new_rotate(optimalTheta)        \
+				  * Matrix3.new_translate(*self.center.xy).inverse()
 		#angle, matrix, error
 		return (optimalTheta, transform, offset - amplitude)
 
