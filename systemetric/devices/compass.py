@@ -23,18 +23,26 @@ class Compass(MbedDevice):
 
 	@property
 	def absoluteHeading(self):
-		'''Get the compass heading from the mbed, measured from due north'''
+		'''
+		Get the compass heading from the mbed, measured from due north. Returns
+		NaN upon error
+		'''
 		heading = 'n/a'
 		try:
 			heading = self.request('h')
-			return Bearing(int(heading) / 10.0) #convert the int we get from the mbed into a float.
+			#convert the int we get from the mbed into a float
+			return Bearing(int(heading) / 10.0) 
 		except:
 			print 'got [' + heading + '] from the compass. Not correct!'
-			return Bearing(float('nan')) #return NaN, because we don't know the heading
+			#return NaN, because we don't know the headin
+			return Bearing(float('nan'))
 
 	@property
 	def heading(self):
-		'''Get the compass heading from the mbed, relative to the offset'''
+		'''
+		Get the compass heading from the mbed, relative to the offset. Returns
+		NaN upon error
+		'''
 		return self.absoluteHeading - self.zeroOffset
 
 	@heading.setter
@@ -43,9 +51,15 @@ class Compass(MbedDevice):
 		self.zeroOffset = self.absoluteHeading - value
 
 	def startCalibration(self):
+		'''
+		Start calibrating the compass. While this is happenning, the compass
+		should be spun around slowly for two revolutions, taking about 20
+		seconds
+		'''
 		self.request('c')
 		
 	def stopCalibration(self):
+		'''Exit calibration mode'''
 		self.request('c')
 
 def main():
