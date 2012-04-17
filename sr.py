@@ -58,7 +58,7 @@ def Or(*args):
 # Robot
 
 class Robot:
-	def __init__(self):
+	def __init__(self, wait_start = False):
 		self.usbkey = None
 		self.startfifo = None
 		self.mode = None
