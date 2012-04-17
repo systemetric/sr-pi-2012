@@ -15,6 +15,7 @@
 
 
 import os, time, sys, functools, inspect, contextlib, itertools
+from libs.decorator import decorator
 
 _robotStarted = time.time()
 _roundStarted = None
@@ -136,29 +137,27 @@ def redirectedOutput(o):
 	sys.stdout = old
 
 def to(log):
-	def decorator(f):
+	def redirector(f, *args, **kargs):
 		"""Redirects prints, and logs the function invocation"""
 		
 		if 'self' in inspect.getargspec(f).args:
- 			def wrapped(self, *args, **kargs):
-				with redirectedOutput(log):
-					print '%s.%s(%s)' % (self.__class__.__name__, f.__name__, _makeArgList(args, kargs))
-					with sys.stdout.indented:
-						result = f(self, *args, **kargs)
-						if result: print "returned", result
+			self, args = args[0], args[1:]
+			with redirectedOutput(log):
+				print '%s.%s(%s):' % (self.__class__.__name__, f.__name__, _makeArgList(args, kargs))
+				with sys.stdout.indented:
+					result = f(self, *args, **kargs)
+					if result: print "returned", result
 
-				return result
+			return result
  		else:
-			def wrapped(*args, **kargs):
-				with redirectedOutput(log):
-					print '%s(%s)' % (f.__name__, _makeArgList(args, kargs))
-					with sys.stdout.indented:
-						result = f(*args, **kargs)
-						if result: print "returned", result
+			with redirectedOutput(log):
+				print '%s(%s):' % (f.__name__, _makeArgList(args, kargs))
+				with sys.stdout.indented:
+					result = f(*args, **kargs)
+					if result: print "returned", result
 
-				return result
-		return functools.wraps(f)(wrapped)
-	return decorator
+			return result
+	return decorator(redirector)
 
 
 def main():
