@@ -21,13 +21,13 @@ class Bearing(object):
 	that an angle can never fall outside of these bounds
 
 	>>> Bearing(90)
-	90.0°
+	90.0\u00B0
 	>>> Bearing(90) - Bearing(30)
-	60.0°
+	60.0\u00B0
 	>>> Bearing(-120) - Bearing(120)
-	120.0°
+	120.0\u00B0
 	>>> Bearing(60) - Bearing(180)
-	-120.0°
+	-120.0\u00B0
 
 	'''
 	def __init__(self, degrees = None, radians = None):
