@@ -18,13 +18,16 @@ import systemetric.logs as logs
 import time
 
 class Lifter(MbedDevice):
+	"""A class to control the tilting platform on which the cubes are stored"""
 	LIFT_WAIT = 2
+	"""A rough estimate of the time taken for the platform to rise"""
 
 	def __init__(self, mbed = None):
 		super(Lifter, self).__init__('L', mbed)
 
 	@logs.to(logs.events)
 	def up(self, wait=True):
+		"""Lift the platform up, tipping off cubes"""
 		self.request('u')
 
 		if wait:
@@ -32,13 +35,20 @@ class Lifter(MbedDevice):
 
 	@logs.to(logs.events)
 	def down(self, wait=True):
+		"""Bring the platform back down, so that more can be picked up"""
 		self.request('d')
 
 		if wait:
 			time.sleep(Lifter.LIFT_WAIT)
 
 	def wobble(self):
+		"""Bring the platform up and down, to try and dislodge cubes"""
 		self.up()
+		time.sleep(1)
+		self.down(wait=False)
+		time.sleep(1)
+		self.up(wait=False)
+		time.sleep(1)
 		self.down(wait=False)
 
 def main():

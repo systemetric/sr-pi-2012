@@ -21,7 +21,7 @@ class MbedDevice(object):
 	A device attached to an mbed. The protocol is to send a single character
 	representing the device ID, then another (if necessary) to specify what
 	information should be retrieved. Arguments can be given in a function-
-	like syntax. For example:
+	like syntax. For example:::
 
 		MbedDevice('G').request('r', 10) -> Gr(10)
 		MbedDevice('C').request('h')      -> Ch

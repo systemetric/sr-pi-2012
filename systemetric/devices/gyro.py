@@ -17,14 +17,25 @@ from mbed import MbedDevice
 import time
 
 class Gyro(MbedDevice):
+	'''A class to communicate with the gyro via the mbed'''
 	def __init__(self, mbed = None):
 		super(Gyro, self).__init__('G', mbed)
 
 	@property
 	def angularVelocity(self):
+		"""
+		Get the angular velocity measured by the gyro. Approximately calibrated
+		to degrees per second
+		"""
 		return float(self.request('v'))
 
 	def calibrate(self):
+		"""
+		Calibrate the zero offset of the compass, by sampling and averaging a
+		lot of readings. This should be called frequently, as the voltage
+		supplied to the mbed appears to change, changing the response of the
+		sensor.
+		"""
 		self.request('c')
 
 def main():

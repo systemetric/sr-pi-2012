@@ -28,25 +28,28 @@ class Arm(MbedDevice):
 		super(Arm, self).__init__('A', mbed)
 
 	@logs.to(logs.events)
-	def grabCube(self, wait = True):
+	def grabCube(self, wait = True, timeout = 5):
+		"""
+		Grabs a cube, optionally waiting for the grabber to return to its
+		starting position.
+		"""
 		self.request('g') #grab
 
 		startTime = time.time()
-		while wait and not self.atBottom and time.time() - startTime < 5:
+		while wait and not self.atBottom and time.time() - startTime < timeout:
 			time.sleep(0.1)
 		if wait:
-			print "Waited: " + str(time.time() - startTime)
-		return self.atBottom
+			print "Waited: %.2f" % (time.time() - startTime)
 
 	@property
 	def atBottom(self):
-		"""Bottom limit switches pressed?"""
-		return 'True' in self.request('b') #atBottom
+		"""Determines if either bottom limit switch is pressed"""
+		return 'True' in self.request('b')
 
 	@property
 	def atTop(self):
-		"""Bottom limit switches pressed?"""
-		return 'True' in self.request('t') #atBottom
+		"""Determines if either top limit switch is pressed"""
+		return 'True' in self.request('t')
 
 def main():
 	R = systemetric.Robot()

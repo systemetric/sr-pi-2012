@@ -17,6 +17,7 @@ from systemetric.bearing import Bearing
 from mbed import MbedDevice
 
 class Compass(MbedDevice):
+	'''A class to communicate with the compass via the mbed'''
 	def __init__(self, mbed = None):
 		super(Compass, self).__init__('C', mbed)
 		self.zeroOffset = Bearing(0)
@@ -41,7 +42,10 @@ class Compass(MbedDevice):
 	def heading(self):
 		'''
 		Get the compass heading from the mbed, relative to the offset. Returns
-		NaN upon error
+		NaN upon error.
+
+		When set, adjusts the zero calibration of the compass such that an
+		immediate read of `heading` gives the same value as it was set to
 		'''
 		return self.absoluteHeading - self.zeroOffset
 

@@ -27,6 +27,5 @@ class LaserGate(MbedDevice):
 
 	@property
 	def blocked(self):
-		return bool(self.request())
-		#TODO: Maybe have the mbed return a float so that this code can decide
-		#      what the definition of "blocked" is
+		"""Determine if the light gate is obstructed"""
+		return 'True' in self.request()
