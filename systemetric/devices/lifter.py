@@ -14,7 +14,7 @@
 # along with systemetric-student-robotics.  If not, see <http://www.gnu.org/licenses/>.
 
 from mbed import MbedDevice
-import logs
+import systemetric.logs as logs
 import time
 
 class Lifter(MbedDevice):

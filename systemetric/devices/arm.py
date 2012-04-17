@@ -16,7 +16,7 @@
 from mbed import MbedDevice
 import systemetric
 import time
-import logs
+import systemetric.logs as logs
 
 class Arm(MbedDevice):
 	"""

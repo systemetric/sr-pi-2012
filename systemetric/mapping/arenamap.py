@@ -17,7 +17,8 @@ from libs.pyeuclid import *
 from systemetric.bearing import Bearing
 from pointset import PointSet
 import time
-from systemetric.timer import Timer
+from systemetric.profiler import Profiler
+import systemetric.logs as logs
 
 class ArenaMap(dict):
 	class Marker(object):
@@ -55,7 +56,7 @@ class ArenaMap(dict):
 		return PointSet(positions), codes
 
 	def getLocationInfoFrom(self, visionResult):
-		t = Timer()
+		t = Profiler() >> logs.vision
 		times = {}
 
 		if visionResult.arena:

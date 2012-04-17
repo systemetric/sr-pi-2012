@@ -20,6 +20,6 @@ from compass import Compass
 from gyro import Gyro
 from lifter import Lifter
 from ultrasonic import Ultrasonic
-from laser import Laser
+from laser import LaserGate
 
-from mbed import Mbed
+from mbed import Mbed, MbedDevice
