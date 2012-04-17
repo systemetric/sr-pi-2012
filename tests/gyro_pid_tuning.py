@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with systemetric-student-robotics.  If not, see <http://www.gnu.org/licenses/>.
 
-from systemetric.gyrorobot import *
+from systemetric.gyroandcompassrobot import *
 import time
 from tests.gui.slider import * 
 

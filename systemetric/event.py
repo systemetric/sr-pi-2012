@@ -14,14 +14,28 @@
 # along with systemetric-student-robotics.  If not, see <http://www.gnu.org/licenses/>.
 
 class Event:
+	"""
+	A simple event system.
+
+	.. code-block:: python
+
+		e = Event()
+		def onFired(x)
+			print "Fired with", x
+		e += onFired
+		e('go') #prints "Fired with go"
+	"""
+
 	def __init__(self):
 		self.handlers = set()
 
 	def handle(self, handler):
+		"""Attach a hander to the event. Equivalent to ``e += handler``"""
 		self.handlers.add(handler)
 		return self
 
 	def unhandle(self, handler):
+		"""Remove a hander from the event. Equivalent to ``e -= handler``"""
 		try:
 			self.handlers.remove(handler)
 		except:
@@ -29,6 +43,10 @@ class Event:
 		return self
 
 	def fire(self, *args, **kargs):
+		"""
+		Fire the event, triggering all handlers synchronously. Equivalent to
+		``e(*args, **kargs)``
+		"""
 		for handler in self.handlers:
 			handler(*args, **kargs)
 
