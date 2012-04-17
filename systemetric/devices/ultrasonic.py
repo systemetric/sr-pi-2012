@@ -16,27 +16,39 @@
 from mbed import MbedDevice
 
 class Ultrasonic(MbedDevice):
+	"""
+	A class for the four ultrasound sensors which were going to be attached
+	to the mbed. Only one was attached, and it was not used in the competition
+	"""
 	def __init__(self, mbed = None):
 		super(Ultrasonic, self).__init__('U', mbed)
 		self.distances = [float("nan")] * 4  
 
 	def ping(self):
+		"""
+		Ping the sensors, updating the :attr:`front`, :attr:`back`,
+		:attr:`right`, and :attr:`left` properties
+		"""
 		self.distances = map(float, self.request().split())
 
 	@property
 	def front(self):
+		"""The distance in meters to an obstacle in front"""
 		return self.distances[0]
 	
 	@property
 	def back(self):
+		"""The distance in meters to an obstacle behind"""
 		return self.distances[1]
 	
 	@property
 	def left(self):
+		"""The distance in meters to an obstacle to the left"""
 		return self.distances[2]
 	
 	@property
 	def right(self):
+		"""The distance in meters to an obstacle to the right"""
 		return self.distances[3]
 
 def main():

@@ -16,7 +16,20 @@
 import math
 
 class Bearing(object):
-	'''Stores an angle between -180 and 180 degrees'''
+	u'''
+	Stores an angle between -180 and 180 degrees. Wraps numbers around such
+	that an angle can never fall outside of these bounds
+
+	>>> Bearing(90)
+	90.0°
+	>>> Bearing(90) - Bearing(30)
+	60.0°
+	>>> Bearing(-120) - Bearing(120)
+	120.0°
+	>>> Bearing(60) - Bearing(180)
+	-120.0°
+
+	'''
 	def __init__(self, degrees = None, radians = None):
 		if radians is not None and degrees is not None:
 			raise ValueError("degrees and radians cannot both be set")

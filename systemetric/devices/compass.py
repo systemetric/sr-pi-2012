@@ -27,6 +27,8 @@ class Compass(MbedDevice):
 		'''
 		Get the compass heading from the mbed, measured from due north. Returns
 		NaN upon error
+
+		:type: :class:`~.Bearing`
 		'''
 		heading = 'n/a'
 		try:
@@ -45,7 +47,9 @@ class Compass(MbedDevice):
 		NaN upon error.
 
 		When set, adjusts the zero calibration of the compass such that an
-		immediate read of `heading` gives the same value as it was set to
+		immediate read of `heading` gives the same value as it was set to.
+
+		:type: :class:`~.Bearing`
 		'''
 		return self.absoluteHeading - self.zeroOffset
 
