@@ -22,11 +22,51 @@ import sr
 class ProcessedVisionResult(object):
 	"""
 	2d representation of what can be seen
+
+	.. attribute:: timestamp
+
+		The time that the vision was captured
+
+	.. attribute:: arena
+
+		:type: list(:class:`~.ProcessedVisionResult.ArenaMarker`)
+		The arenamarkers which can be seen
+
+	.. attribute:: tokens
+
+		:type: list(:class:`~.ProcessedVisionResult.Token`)
+		The tokens which can be seen
+
+	.. attribute:: buckets
+
+		:type: list(:class:`~.ProcessedVisionResult.Bucket`)
+		The buckets which can be seen
+
+	.. attribute:: robots
+	
+		:type: list(:class:`~.ProcessedVisionResult.Robot`)
+		The buckets which can be seen
+
 	"""
 	class ArenaMarker(object):
 		"""
-		A marker around the walls of the arena. Extracts information about the
-		left and right edge of the marker
+		A marker around the walls of the arena. The marker is projected down
+		from a square to a line.
+
+		.. attribute:: id
+
+			the numeric id of the marker - from 0 to 27
+
+		.. attribute:: left
+
+			:type: :class:`pyeuclid.Point2`
+			The leftmost edge of the marker, when viewed from the front
+
+		.. attribute:: right
+
+			:type: :class:`pyeuclid.Point2`
+			The rightmost edge of the marker, when viewed from the front
+
 		"""
 		def __init__(self, visionResult, marker):
 			self.id = marker.code
@@ -71,7 +111,26 @@ class ProcessedVisionResult(object):
 		"""
 		A cardboard cube. Groups all the markers of the same id into a single
 		object, and calculates where the center of the cube should be, by
-		pushing the normal vector of each surface back inside the cube
+		pushing the normal vector of each surface back inside the cube.
+
+		.. attribute:: id
+
+			the numeric id of the marker - from 0 to 19
+
+		.. attribute:: center
+
+			:type: :class:`pyeuclid.Point3`
+
+		.. attribute:: markers
+
+			:type: list of :class:`Marker`
+			The markers seen which correspond to this token
+
+		.. attribute:: captured
+
+			Guesses whether the cube is captured, by checking if it is more than
+			0.5 meters off the ground
+
 		"""
 		SIZE = 0.1
 		def __init__(self, visionResult, id, markers):
@@ -137,9 +196,17 @@ class ProcessedVisionResult(object):
 			
 
 	def planarLocationOf(self, point):
+		"""
+		:rtype: :class:`pyeuclid.Point2`
+		Project a :class:`pyeuclid.Point3` onto the plane of the arena
+		"""
 		return Point2(point.x, point.z)
 
 	def planarDirectionOf(self, vector):
+		"""
+		:rtype: :class:`pyeuclid.Vector2`
+		Project a :class:`pyeuclid.Vector3` onto the plane of the arena
+		"""
 		return Vector2(vector.x, vector.z)
 
 	def __init__(self, visionResult):
