@@ -99,6 +99,40 @@ left and right edge of the marker</p>
 <em class="property">class </em><tt class="descclassname">systemetric.vision.processedvisionresult.</tt><tt class="descname">ProcessedVisionResult</tt><big>(</big><em>visionResult</em><big>)</big><a class="headerlink" href="#systemetric.vision.processedvisionresult.ProcessedVisionResult" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>2d representation of what can be seen</p>
+<dl class="attribute">
+<dt id="systemetric.vision.processedvisionresult.ProcessedVisionResult.timestamp">
+<tt class="descname">timestamp</tt><a class="headerlink" href="#systemetric.vision.processedvisionresult.ProcessedVisionResult.timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time that the vision was captured</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.vision.processedvisionresult.ProcessedVisionResult.arena">
+<tt class="descname">arena</tt><a class="headerlink" href="#systemetric.vision.processedvisionresult.ProcessedVisionResult.arena" title="Permalink to this definition">¶</a></dt>
+<dd><p>The arenamarkers which can be seen
+:type: list(<a class="reference internal" href="#systemetric.vision.processedvisionresult.ProcessedVisionResult.ArenaMarker" title="systemetric.vision.processedvisionresult.ProcessedVisionResult.ArenaMarker"><tt class="xref py py-class docutils literal"><span class="pre">ArenaMarker</span></tt></a>)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.vision.processedvisionresult.ProcessedVisionResult.tokens">
+<tt class="descname">tokens</tt><a class="headerlink" href="#systemetric.vision.processedvisionresult.ProcessedVisionResult.tokens" title="Permalink to this definition">¶</a></dt>
+<dd><p>The tokens which can be seen
+:type: list(<a class="reference internal" href="#systemetric.vision.processedvisionresult.ProcessedVisionResult.Token" title="systemetric.vision.processedvisionresult.ProcessedVisionResult.Token"><tt class="xref py py-class docutils literal"><span class="pre">Token</span></tt></a>)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.vision.processedvisionresult.ProcessedVisionResult.buckets">
+<tt class="descname">buckets</tt><a class="headerlink" href="#systemetric.vision.processedvisionresult.ProcessedVisionResult.buckets" title="Permalink to this definition">¶</a></dt>
+<dd><p>The buckets which can be seen
+:type: list(<a class="reference internal" href="#systemetric.vision.processedvisionresult.ProcessedVisionResult.Bucket" title="systemetric.vision.processedvisionresult.ProcessedVisionResult.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">Bucket</span></tt></a>)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.vision.processedvisionresult.ProcessedVisionResult.robots">
+<tt class="descname">robots</tt><a class="headerlink" href="#systemetric.vision.processedvisionresult.ProcessedVisionResult.robots" title="Permalink to this definition">¶</a></dt>
+<dd><p>The buckets which can be seen
+:type: list(<a class="reference internal" href="#systemetric.vision.processedvisionresult.ProcessedVisionResult.Robot" title="systemetric.vision.processedvisionresult.ProcessedVisionResult.Robot"><tt class="xref py py-class docutils literal"><span class="pre">Robot</span></tt></a>)</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="systemetric.vision.processedvisionresult.ProcessedVisionResult.ArenaMarker">
 <em class="property">class </em><tt class="descname">ArenaMarker</tt><big>(</big><em>visionResult</em>, <em>marker</em><big>)</big><a class="headerlink" href="#systemetric.vision.processedvisionresult.ProcessedVisionResult.ArenaMarker" title="Permalink to this definition">¶</a></dt>
