@@ -260,6 +260,13 @@ pushing the normal vector of each surface back inside the cube</p>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>A generic marker class that converts important information from the
 sr geometry types to pyeuclid types</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd>vertices: A list of <tt class="xref py py-class docutils literal"><span class="pre">Point3</span></tt> at the center of the marker
+code: The offset of the marker - 0 for first bucket, token, robot, etc
+type: The type of marker: <tt class="docutils literal"><span class="pre">MARKER_TOKEN</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_ARENA</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_ROBOT</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_BUCKET_END</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_BUCKET_SIDE</span></tt>
+normal: The normal vector pointing out of the surace of the marker, a <tt class="xref py py-class docutils literal"><span class="pre">Vector3</span></tt></dd>
+</dl>
 </dd></dl>
 
 <dl class="class">
@@ -282,6 +289,13 @@ simple list     like the one returned by <cite>sr.Robot.see</cite></p>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>A generic marker class that converts important information from the
 sr geometry types to pyeuclid types</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd>vertices: A list of <tt class="xref py py-class docutils literal"><span class="pre">Point3</span></tt> at the center of the marker
+code: The offset of the marker - 0 for first bucket, token, robot, etc
+type: The type of marker: <tt class="docutils literal"><span class="pre">MARKER_TOKEN</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_ARENA</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_ROBOT</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_BUCKET_END</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_BUCKET_SIDE</span></tt>
+normal: The normal vector pointing out of the surace of the marker, a <tt class="xref py py-class docutils literal"><span class="pre">Vector3</span></tt></dd>
+</dl>
 </dd></dl>
 
 <dl class="method">

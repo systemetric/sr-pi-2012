@@ -63,6 +63,5 @@ devices Package
 
 .. autoclass:: systemetric.devices.Ultrasonic
     :members:
-    :undoc-members:
     :show-inheritance:
 
