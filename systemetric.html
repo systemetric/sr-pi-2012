@@ -1,0 +1,684 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>systemetric Package &mdash; systemetric-student-robotics 2012 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '2012',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="systemetric-student-robotics 2012 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">systemetric-student-robotics 2012 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="systemetric-package">
+<h1>systemetric Package<a class="headerlink" href="#systemetric-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">systemetric</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-systemetric.__init__"></span></div>
+<div class="section" id="module-systemetric.bearing">
+<span id="bearing-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">bearing</span></tt> Module<a class="headerlink" href="#module-systemetric.bearing" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="systemetric.bearing.Bearing">
+<em class="property">class </em><tt class="descclassname">systemetric.bearing.</tt><tt class="descname">Bearing</tt><big>(</big><em>degrees=None</em>, <em>radians=None</em><big>)</big><a class="headerlink" href="#systemetric.bearing.Bearing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Stores an angle between -180 and 180 degrees. Wraps numbers around such
+that an angle can never fall outside of these bounds</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Bearing</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+<span class="go">90.0°</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Bearing</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span> <span class="o">-</span> <span class="n">Bearing</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="go">60.0°</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Bearing</span><span class="p">(</span><span class="o">-</span><span class="mi">120</span><span class="p">)</span> <span class="o">-</span> <span class="n">Bearing</span><span class="p">(</span><span class="mi">120</span><span class="p">)</span>
+<span class="go">120.0°</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Bearing</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span> <span class="o">-</span> <span class="n">Bearing</span><span class="p">(</span><span class="mi">180</span><span class="p">)</span>
+<span class="go">-120.0°</span>
+</pre></div>
+</div>
+<dl class="classmethod">
+<dt id="systemetric.bearing.Bearing.ofVector">
+<em class="property">classmethod </em><tt class="descname">ofVector</tt><big>(</big><em>p</em><big>)</big><a class="headerlink" href="#systemetric.bearing.Bearing.ofVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the bearing from the origin to a given point</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.bearing.Bearing.radians">
+<tt class="descname">radians</tt><a class="headerlink" href="#systemetric.bearing.Bearing.radians" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the angle in radians</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="systemetric.bearing.Bearing.toPoint">
+<em class="property">classmethod </em><tt class="descname">toPoint</tt><big>(</big><em>p</em><big>)</big><a class="headerlink" href="#systemetric.bearing.Bearing.toPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the bearing from the origin to a given point</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-systemetric.compassrobot">
+<span id="compassrobot-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">compassrobot</span></tt> Module<a class="headerlink" href="#module-systemetric.compassrobot" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="systemetric.compassrobot.CompassRobot">
+<em class="property">class </em><tt class="descclassname">systemetric.compassrobot.</tt><tt class="descname">CompassRobot</tt><a class="headerlink" href="#systemetric.compassrobot.CompassRobot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#systemetric.twowheeledrobot.TwoWheeledRobot" title="systemetric.twowheeledrobot.TwoWheeledRobot"><tt class="xref py py-class docutils literal"><span class="pre">systemetric.twowheeledrobot.TwoWheeledRobot</span></tt></a></p>
+<dl class="method">
+<dt id="systemetric.compassrobot.CompassRobot.drive">
+<tt class="descname">drive</tt><big>(</big><em>speed</em>, <em>steer=0</em>, <em>regulate=True</em><big>)</big><a class="headerlink" href="#systemetric.compassrobot.CompassRobot.drive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drive the robot at a certain speed, by default using the compass to
+regulate the robot&#8217;s heading.</p>
+<p>TODO: Tune PID controller for straight movement.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.compassrobot.CompassRobot.regulate">
+<tt class="descname">regulate</tt><a class="headerlink" href="#systemetric.compassrobot.CompassRobot.regulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shorthand for enabling and disabling the PID controller</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.compassrobot.CompassRobot.rotateBy">
+<tt class="descname">rotateBy</tt><big>(</big><em>angle</em>, <em>fromTarget=False</em><big>)</big><a class="headerlink" href="#systemetric.compassrobot.CompassRobot.rotateBy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate the robot a certain angle from the direction it is currently
+facing. Optionally rotate from the last target, preventing errors
+accumulating</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.compassrobot.CompassRobot.rotateTo">
+<tt class="descname">rotateTo</tt><big>(</big><em>heading</em>, <em>tolerance=2.5</em><big>)</big><a class="headerlink" href="#systemetric.compassrobot.CompassRobot.rotateTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate the robot to face the specified heading. Return when within
+tolerance degrees of the target. Note that this does not stop the motors
+upon returning</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.compassrobot.CompassRobot.setSpeed">
+<tt class="descname">setSpeed</tt><big>(</big><em>speed</em><big>)</big><a class="headerlink" href="#systemetric.compassrobot.CompassRobot.setSpeed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="systemetric.compassrobot.CompassRobot.stop">
+<tt class="descname">stop</tt><big>(</big><big>)</big><a class="headerlink" href="#systemetric.compassrobot.CompassRobot.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop the robot, by setting the speed to 0, and disabling regulation</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-systemetric.event">
+<span id="event-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">event</span></tt> Module<a class="headerlink" href="#module-systemetric.event" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="systemetric.event.Event">
+<em class="property">class </em><tt class="descclassname">systemetric.event.</tt><tt class="descname">Event</tt><a class="headerlink" href="#systemetric.event.Event" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple event system.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">e</span> <span class="o">=</span> <span class="n">Event</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">onFired</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s">&quot;Fired with&quot;</span><span class="p">,</span> <span class="n">x</span>
+<span class="n">e</span> <span class="o">+=</span> <span class="n">onFired</span>
+<span class="n">e</span><span class="p">(</span><span class="s">&#39;go&#39;</span><span class="p">)</span> <span class="c">#prints &quot;Fired with go&quot;</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="systemetric.event.Event.fire">
+<tt class="descname">fire</tt><big>(</big><em>*args</em>, <em>**kargs</em><big>)</big><a class="headerlink" href="#systemetric.event.Event.fire" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fire the event, triggering all handlers synchronously. Equivalent to
+<tt class="docutils literal"><span class="pre">e(*args,</span> <span class="pre">**kargs)</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.event.Event.handle">
+<tt class="descname">handle</tt><big>(</big><em>handler</em><big>)</big><a class="headerlink" href="#systemetric.event.Event.handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attach a hander to the event. Equivalent to <tt class="docutils literal"><span class="pre">e</span> <span class="pre">+=</span> <span class="pre">handler</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.event.Event.handlerCount">
+<tt class="descname">handlerCount</tt><a class="headerlink" href="#systemetric.event.Event.handlerCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="systemetric.event.Event.unhandle">
+<tt class="descname">unhandle</tt><big>(</big><em>handler</em><big>)</big><a class="headerlink" href="#systemetric.event.Event.unhandle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a hander from the event. Equivalent to <tt class="docutils literal"><span class="pre">e</span> <span class="pre">-=</span> <span class="pre">handler</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-systemetric.gyroandcompassrobot">
+<span id="gyroandcompassrobot-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">gyroandcompassrobot</span></tt> Module<a class="headerlink" href="#module-systemetric.gyroandcompassrobot" title="Permalink to this headline">¶</a></h2>
+<dl class="attribute">
+<dt id="systemetric.gyroandcompassrobot.CompassAndGyroRobot">
+<tt class="descclassname">systemetric.gyroandcompassrobot.</tt><tt class="descname">CompassAndGyroRobot</tt><a class="headerlink" href="#systemetric.gyroandcompassrobot.CompassAndGyroRobot" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#systemetric.gyroandcompassrobot.GyroAndCompassRobot" title="systemetric.gyroandcompassrobot.GyroAndCompassRobot"><tt class="xref py py-class docutils literal"><span class="pre">GyroAndCompassRobot</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="systemetric.gyroandcompassrobot.GyroAndCompassRobot">
+<em class="property">class </em><tt class="descclassname">systemetric.gyroandcompassrobot.</tt><tt class="descname">GyroAndCompassRobot</tt><a class="headerlink" href="#systemetric.gyroandcompassrobot.GyroAndCompassRobot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#systemetric.twowheeledrobot.TwoWheeledRobot" title="systemetric.twowheeledrobot.TwoWheeledRobot"><tt class="xref py py-class docutils literal"><span class="pre">systemetric.twowheeledrobot.TwoWheeledRobot</span></tt></a></p>
+<dl class="method">
+<dt id="systemetric.gyroandcompassrobot.GyroAndCompassRobot.drive">
+<tt class="descname">drive</tt><big>(</big><em>speed</em>, <em>steer=0</em>, <em>regulate=True</em><big>)</big><a class="headerlink" href="#systemetric.gyroandcompassrobot.GyroAndCompassRobot.drive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drive the robot at a certain speed, by default using the compass to
+regulate the robot&#8217;s heading.</p>
+<p>TODO: Tune PID controller for straight movement.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.gyroandcompassrobot.GyroAndCompassRobot.rotateBy">
+<tt class="descname">rotateBy</tt><big>(</big><em>angle</em>, <em>fromTarget=False</em>, <em>tolerance=5</em><big>)</big><a class="headerlink" href="#systemetric.gyroandcompassrobot.GyroAndCompassRobot.rotateBy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate the robot a certain angle from the direction it is currently
+facing. Optionally rotate from the last target, preventing errors
+accumulating</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.gyroandcompassrobot.GyroAndCompassRobot.rotateTo">
+<tt class="descname">rotateTo</tt><big>(</big><em>angle</em>, <em>tolerance=5</em><big>)</big><a class="headerlink" href="#systemetric.gyroandcompassrobot.GyroAndCompassRobot.rotateTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="systemetric.gyroandcompassrobot.GyroAndCompassRobot.stop">
+<tt class="descname">stop</tt><big>(</big><big>)</big><a class="headerlink" href="#systemetric.gyroandcompassrobot.GyroAndCompassRobot.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop the robot, by setting the speed to 0, and disabling regulation</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="systemetric.gyroandcompassrobot.main">
+<tt class="descclassname">systemetric.gyroandcompassrobot.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="headerlink" href="#systemetric.gyroandcompassrobot.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-systemetric.killablerobot">
+<span id="killablerobot-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">killablerobot</span></tt> Module<a class="headerlink" href="#module-systemetric.killablerobot" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="systemetric.killablerobot.KillableRobot">
+<em class="property">class </em><tt class="descclassname">systemetric.killablerobot.</tt><tt class="descname">KillableRobot</tt><big>(</big><em>killCode</em><big>)</big><a class="headerlink" href="#systemetric.killablerobot.KillableRobot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">sr.Robot</span></tt></p>
+<p>An abstraction that allows a robot to be killed when a certain marker is seen</p>
+<dl class="method">
+<dt id="systemetric.killablerobot.KillableRobot.end">
+<tt class="descname">end</tt><big>(</big><em>message='robot stopped'</em>, <em>error=True</em>, <em>shutdown=False</em><big>)</big><a class="headerlink" href="#systemetric.killablerobot.KillableRobot.end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kill the robot in the nicest way possible</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.killablerobot.KillableRobot.see">
+<tt class="descname">see</tt><big>(</big><em>stats=False</em>, <em>*args</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#systemetric.killablerobot.KillableRobot.see" title="Permalink to this definition">¶</a></dt>
+<dd><p>Intercept Robot.see, and kill the robot if the killCode is seen</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-systemetric.logs">
+<span id="logs-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">logs</span></tt> Module<a class="headerlink" href="#module-systemetric.logs" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="systemetric.logs.IndentingLogger">
+<em class="property">class </em><tt class="descclassname">systemetric.logs.</tt><tt class="descname">IndentingLogger</tt><big>(</big><em>stream</em>, <em>indent=0</em><big>)</big><a class="headerlink" href="#systemetric.logs.IndentingLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#systemetric.logs.StreamWrapper" title="systemetric.logs.StreamWrapper"><tt class="xref py py-class docutils literal"><span class="pre">systemetric.logs.StreamWrapper</span></tt></a></p>
+<p>Indents each line by a certain number of tabs</p>
+<dl class="attribute">
+<dt id="systemetric.logs.IndentingLogger.indented">
+<tt class="descname">indented</tt><a class="headerlink" href="#systemetric.logs.IndentingLogger.indented" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="systemetric.logs.IndentingLogger.writeLine">
+<tt class="descname">writeLine</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#systemetric.logs.IndentingLogger.writeLine" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="systemetric.logs.MirroringStream">
+<em class="property">class </em><tt class="descclassname">systemetric.logs.</tt><tt class="descname">MirroringStream</tt><big>(</big><em>stream</em>, <em>name</em>, <em>to</em><big>)</big><a class="headerlink" href="#systemetric.logs.MirroringStream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#systemetric.logs.StreamWrapper" title="systemetric.logs.StreamWrapper"><tt class="xref py py-class docutils literal"><span class="pre">systemetric.logs.StreamWrapper</span></tt></a></p>
+<p>Mirrors the output of one stream to another, adding a prefix to the second
+with the name of the first</p>
+<dl class="method">
+<dt id="systemetric.logs.MirroringStream.writeLine">
+<tt class="descname">writeLine</tt><big>(</big><em>line</em><big>)</big><a class="headerlink" href="#systemetric.logs.MirroringStream.writeLine" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="systemetric.logs.StreamWrapper">
+<em class="property">class </em><tt class="descclassname">systemetric.logs.</tt><tt class="descname">StreamWrapper</tt><big>(</big><em>stream</em><big>)</big><a class="headerlink" href="#systemetric.logs.StreamWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Wraps a stream, and buffers it line at a time, to allow messages to be
+appended or prepended to</p>
+<dl class="method">
+<dt id="systemetric.logs.StreamWrapper.wraps">
+<tt class="descname">wraps</tt><big>(</big><em>stream</em><big>)</big><a class="headerlink" href="#systemetric.logs.StreamWrapper.wraps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if this stream wraps another stream</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.logs.StreamWrapper.write">
+<tt class="descname">write</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#systemetric.logs.StreamWrapper.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when print is used</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.logs.StreamWrapper.writeLine">
+<tt class="descname">writeLine</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#systemetric.logs.StreamWrapper.writeLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write one line to the stream. Called by write(). Override in derived classes</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="systemetric.logs.TimestampedLogger">
+<em class="property">class </em><tt class="descclassname">systemetric.logs.</tt><tt class="descname">TimestampedLogger</tt><big>(</big><em>stream</em><big>)</big><a class="headerlink" href="#systemetric.logs.TimestampedLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#systemetric.logs.StreamWrapper" title="systemetric.logs.StreamWrapper"><tt class="xref py py-class docutils literal"><span class="pre">systemetric.logs.StreamWrapper</span></tt></a></p>
+<p>Adds the round time in seconds to the start of every line</p>
+<dl class="method">
+<dt id="systemetric.logs.TimestampedLogger.writeLine">
+<tt class="descname">writeLine</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#systemetric.logs.TimestampedLogger.writeLine" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="systemetric.logs.main">
+<tt class="descclassname">systemetric.logs.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="headerlink" href="#systemetric.logs.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="systemetric.logs.redirectedOutput">
+<tt class="descclassname">systemetric.logs.</tt><tt class="descname">redirectedOutput</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#systemetric.logs.redirectedOutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Redirects stdout to point to another stream, within the scope of a with - NOT THREAD SAFE!</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="systemetric.logs.roundStarted">
+<tt class="descclassname">systemetric.logs.</tt><tt class="descname">roundStarted</tt><big>(</big><big>)</big><a class="headerlink" href="#systemetric.logs.roundStarted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the round timer</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="systemetric.logs.to">
+<tt class="descclassname">systemetric.logs.</tt><tt class="descname">to</tt><big>(</big><em>log</em><big>)</big><a class="headerlink" href="#systemetric.logs.to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log the function invocation, and redirect prints to the log</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-systemetric.map">
+<span id="map-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">map</span></tt> Module<a class="headerlink" href="#module-systemetric.map" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="systemetric.map.Map">
+<em class="property">class </em><tt class="descclassname">systemetric.map.</tt><tt class="descname">Map</tt><big>(</big><em>arena</em><big>)</big><a class="headerlink" href="#systemetric.map.Map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Stores a map of the arena</p>
+<dl class="class">
+<dt id="systemetric.map.Map.Entity">
+<em class="property">class </em><tt class="descname">Entity</tt><big>(</big><em>map</em>, <em>type</em>, <em>id</em>, <em>position=None</em>, <em>timestamp=0</em><big>)</big><a class="headerlink" href="#systemetric.map.Map.Entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="method">
+<dt id="systemetric.map.Map.Entity.desirability">
+<tt class="descname">desirability</tt><big>(</big><em>robotpos</em><big>)</big><a class="headerlink" href="#systemetric.map.Map.Entity.desirability" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.map.Map.Entity.exists">
+<tt class="descname">exists</tt><a class="headerlink" href="#systemetric.map.Map.Entity.exists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="systemetric.map.Map.Entity.invalidate">
+<tt class="descname">invalidate</tt><big>(</big><big>)</big><a class="headerlink" href="#systemetric.map.Map.Entity.invalidate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.map.Map.Entity.reliability">
+<tt class="descname">reliability</tt><a class="headerlink" href="#systemetric.map.Map.Entity.reliability" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.map.Map.fakeUpdateEntities">
+<tt class="descclassname">Map.</tt><tt class="descname">fakeUpdateEntities</tt><big>(</big><em>transform</em>, <em>tokens</em><big>)</big><a class="headerlink" href="#systemetric.map.Map.fakeUpdateEntities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used for vision-less testing</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.map.Map.invalidateRobotPosition">
+<tt class="descclassname">Map.</tt><tt class="descname">invalidateRobotPosition</tt><big>(</big><big>)</big><a class="headerlink" href="#systemetric.map.Map.invalidateRobotPosition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="systemetric.map.Map.updateEntities">
+<tt class="descclassname">Map.</tt><tt class="descname">updateEntities</tt><big>(</big><em>vision</em><big>)</big><a class="headerlink" href="#systemetric.map.Map.updateEntities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the map with the new set of vision information</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-systemetric.pid">
+<span id="pid-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">pid</span></tt> Module<a class="headerlink" href="#module-systemetric.pid" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="systemetric.pid.PID">
+<em class="property">class </em><tt class="descclassname">systemetric.pid.</tt><tt class="descname">PID</tt><big>(</big><em>getInput</em>, <em>setOutput</em>, <em>outputRange=(-inf</em>, <em>inf)</em>, <em>iLimit=1</em><big>)</big><a class="headerlink" href="#systemetric.pid.PID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">threading.Thread</span></tt></p>
+<dl class="attribute">
+<dt id="systemetric.pid.PID.enabled">
+<tt class="descname">enabled</tt><a class="headerlink" href="#systemetric.pid.PID.enabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="systemetric.pid.PID.onTarget">
+<tt class="descname">onTarget</tt><big>(</big><em>tolerance=5</em><big>)</big><a class="headerlink" href="#systemetric.pid.PID.onTarget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="systemetric.pid.PID.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="headerlink" href="#systemetric.pid.PID.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.pid.PID.target">
+<tt class="descname">target</tt><a class="headerlink" href="#systemetric.pid.PID.target" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="systemetric.pid.PID.tuneFromZieglerNichols">
+<tt class="descname">tuneFromZieglerNichols</tt><big>(</big><em>ku</em>, <em>pu</em><big>)</big><a class="headerlink" href="#systemetric.pid.PID.tuneFromZieglerNichols" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-systemetric.profiler">
+<span id="profiler-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">profiler</span></tt> Module<a class="headerlink" href="#module-systemetric.profiler" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="systemetric.profiler.Profiler">
+<em class="property">class </em><tt class="descclassname">systemetric.profiler.</tt><tt class="descname">Profiler</tt><big>(</big><em>name='Profiler'</em>, <em>parent=None</em><big>)</big><a class="headerlink" href="#systemetric.profiler.Profiler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>A class for profiling, to be used as a context manager</p>
+<dl class="method">
+<dt id="systemetric.profiler.Profiler.event">
+<tt class="descname">event</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#systemetric.profiler.Profiler.event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a subprofiler, which will time operations within a larger piece of code</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.profiler.Profiler.printTimeTree">
+<tt class="descname">printTimeTree</tt><big>(</big><em>indent=0</em><big>)</big><a class="headerlink" href="#systemetric.profiler.Profiler.printTimeTree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out a tree of timings for events and subevents. Runs when the context is exited</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.profiler.Profiler.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#systemetric.profiler.Profiler.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear the profiler, so that it can be used again</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="systemetric.profiler.main">
+<tt class="descclassname">systemetric.profiler.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="headerlink" href="#systemetric.profiler.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-systemetric.robot">
+<span id="robot-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">robot</span></tt> Module<a class="headerlink" href="#module-systemetric.robot" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="systemetric.robot.Robot">
+<em class="property">class </em><tt class="descclassname">systemetric.robot.</tt><tt class="descname">Robot</tt><a class="headerlink" href="#systemetric.robot.Robot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#systemetric.gyroandcompassrobot.GyroAndCompassRobot" title="systemetric.gyroandcompassrobot.GyroAndCompassRobot"><tt class="xref py py-class docutils literal"><span class="pre">systemetric.gyroandcompassrobot.GyroAndCompassRobot</span></tt></a>, <a class="reference internal" href="#systemetric.killablerobot.KillableRobot" title="systemetric.killablerobot.KillableRobot"><tt class="xref py py-class docutils literal"><span class="pre">systemetric.killablerobot.KillableRobot</span></tt></a></p>
+<p>A class derived from the base &#8216;Robot&#8217; class provided by soton</p>
+<dl class="method">
+<dt id="systemetric.robot.Robot.driveDistance">
+<tt class="descname">driveDistance</tt><big>(</big><em>distInMetres</em>, <em>speed=100</em><big>)</big><a class="headerlink" href="#systemetric.robot.Robot.driveDistance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drive a certain distance forward in metres, using timing only. Negative
+distance goes backwards</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.robot.Robot.driveTo">
+<tt class="descname">driveTo</tt><big>(</big><em>relativePosition</em>, <em>gap=0</em>, <em>speed=100</em><big>)</big><a class="headerlink" href="#systemetric.robot.Robot.driveTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="systemetric.robot.Robot.executeUntilStart">
+<tt class="descname">executeUntilStart</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#systemetric.robot.Robot.executeUntilStart" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="systemetric.robot.Robot.see">
+<tt class="descname">see</tt><big>(</big><em>stats=False</em>, <em>*args</em>, <em>**kargs</em><big>)</big><a class="headerlink" href="#systemetric.robot.Robot.see" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call the native see method, but return a VisionResult (a list with some
+extra members tacked on)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.robot.Robot.turnToFace">
+<tt class="descname">turnToFace</tt><big>(</big><em>relativePosition</em><big>)</big><a class="headerlink" href="#systemetric.robot.Robot.turnToFace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-systemetric.twowheeledrobot">
+<span id="twowheeledrobot-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">twowheeledrobot</span></tt> Module<a class="headerlink" href="#module-systemetric.twowheeledrobot" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="systemetric.twowheeledrobot.AccessRevoked">
+<em class="property">exception </em><tt class="descclassname">systemetric.twowheeledrobot.</tt><tt class="descname">AccessRevoked</tt><a class="headerlink" href="#systemetric.twowheeledrobot.AccessRevoked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>Thrown when a thread attempts to control the robot after its access has been revoked</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="systemetric.twowheeledrobot.SingleThreadAccess">
+<em class="property">class </em><tt class="descclassname">systemetric.twowheeledrobot.</tt><tt class="descname">SingleThreadAccess</tt><a class="headerlink" href="#systemetric.twowheeledrobot.SingleThreadAccess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Allow only one thread access to the resource at a time. At any time a
+thread can grab control, causing attribute access in other threads to throw
+an exception, revoking control from the others. Base class members can
+still be accessed through super.</p>
+<dl class="attribute">
+<dt id="systemetric.twowheeledrobot.SingleThreadAccess.hasControl">
+<tt class="descname">hasControl</tt><a class="headerlink" href="#systemetric.twowheeledrobot.SingleThreadAccess.hasControl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the current thread has control - not required in user code.
+Daemon threads, such as the PID, always have access</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.twowheeledrobot.SingleThreadAccess.takeControl">
+<tt class="descname">takeControl</tt><big>(</big><em>kick=True</em><big>)</big><a class="headerlink" href="#systemetric.twowheeledrobot.SingleThreadAccess.takeControl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take control of the object, revoking access to all other threads</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="systemetric.twowheeledrobot.TwoWheeledRobot">
+<em class="property">class </em><tt class="descclassname">systemetric.twowheeledrobot.</tt><tt class="descname">TwoWheeledRobot</tt><a class="headerlink" href="#systemetric.twowheeledrobot.TwoWheeledRobot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">sr.Robot</span></tt>, <a class="reference internal" href="#systemetric.twowheeledrobot.SingleThreadAccess" title="systemetric.twowheeledrobot.SingleThreadAccess"><tt class="xref py py-class docutils literal"><span class="pre">systemetric.twowheeledrobot.SingleThreadAccess</span></tt></a></p>
+<dl class="method">
+<dt id="systemetric.twowheeledrobot.TwoWheeledRobot.drive">
+<tt class="descname">drive</tt><big>(</big><em>speed=50</em>, <em>steer=0</em><big>)</big><a class="headerlink" href="#systemetric.twowheeledrobot.TwoWheeledRobot.drive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drive the robot forwards or backwards at a certain speed, with an optional steer</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.twowheeledrobot.TwoWheeledRobot.left">
+<tt class="descname">left</tt><a class="headerlink" href="#systemetric.twowheeledrobot.TwoWheeledRobot.left" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to control the speed of the left motor, without the hassle of <cite>.target</cite></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.twowheeledrobot.TwoWheeledRobot.right">
+<tt class="descname">right</tt><a class="headerlink" href="#systemetric.twowheeledrobot.TwoWheeledRobot.right" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to control the speed of the right motor, without the hassle of <cite>.target</cite></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.twowheeledrobot.TwoWheeledRobot.stop">
+<tt class="descname">stop</tt><big>(</big><big>)</big><a class="headerlink" href="#systemetric.twowheeledrobot.TwoWheeledRobot.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop the robot, by setting the speed of both motors to 0</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.twowheeledrobot.TwoWheeledRobot.takeControl">
+<tt class="descname">takeControl</tt><big>(</big><em>*args</em>, <em>**kargs</em><big>)</big><a class="headerlink" href="#systemetric.twowheeledrobot.TwoWheeledRobot.takeControl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="systemetric.twowheeledrobot.TwoWheeledRobot.turn">
+<tt class="descname">turn</tt><big>(</big><em>speed</em><big>)</big><a class="headerlink" href="#systemetric.twowheeledrobot.TwoWheeledRobot.turn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate the robot at a certain speed. Positive is clockwise</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.twowheeledrobot.TwoWheeledRobot.waitForStart">
+<tt class="descname">waitForStart</tt><big>(</big><big>)</big><a class="headerlink" href="#systemetric.twowheeledrobot.TwoWheeledRobot.waitForStart" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="systemetric.devices.html">devices Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="systemetric.devices.html#mbed-class"><tt class="docutils literal"><span class="pre">Mbed</span></tt> Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="systemetric.devices.html#mbeddevice-class"><tt class="docutils literal"><span class="pre">MbedDevice</span></tt> Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="systemetric.devices.html#arm-class"><tt class="docutils literal"><span class="pre">Arm</span></tt> Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="systemetric.devices.html#compass-class"><tt class="docutils literal"><span class="pre">Compass</span></tt> Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="systemetric.devices.html#gyro-class"><tt class="docutils literal"><span class="pre">Gyro</span></tt> Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="systemetric.devices.html#lasergate-class"><tt class="docutils literal"><span class="pre">LaserGate</span></tt> Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="systemetric.devices.html#lifter-class"><tt class="docutils literal"><span class="pre">Lifter</span></tt> Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="systemetric.devices.html#ultrasonic-class"><tt class="docutils literal"><span class="pre">Ultrasonic</span></tt> Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="systemetric.mapping.html">mapping Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="systemetric.mapping.html#id1"><tt class="docutils literal"><span class="pre">mapping</span></tt> Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="systemetric.mapping.html#module-systemetric.mapping.arenamap"><tt class="docutils literal"><span class="pre">arenamap</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="systemetric.mapping.html#module-systemetric.mapping.arenamaps"><tt class="docutils literal"><span class="pre">arenamaps</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="systemetric.mapping.html#module-systemetric.mapping.pointset"><tt class="docutils literal"><span class="pre">pointset</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="systemetric.vision.html">vision Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="systemetric.vision.html#id1"><tt class="docutils literal"><span class="pre">vision</span></tt> Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="systemetric.vision.html#module-systemetric.vision.processedvisionresult"><tt class="docutils literal"><span class="pre">processedvisionresult</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="systemetric.vision.html#module-systemetric.vision.visionresult"><tt class="docutils literal"><span class="pre">visionresult</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">systemetric Package</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">systemetric</span></tt> Package</a></li>
+<li><a class="reference internal" href="#module-systemetric.bearing"><tt class="docutils literal"><span class="pre">bearing</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-systemetric.compassrobot"><tt class="docutils literal"><span class="pre">compassrobot</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-systemetric.event"><tt class="docutils literal"><span class="pre">event</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-systemetric.gyroandcompassrobot"><tt class="docutils literal"><span class="pre">gyroandcompassrobot</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-systemetric.killablerobot"><tt class="docutils literal"><span class="pre">killablerobot</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-systemetric.logs"><tt class="docutils literal"><span class="pre">logs</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-systemetric.map"><tt class="docutils literal"><span class="pre">map</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-systemetric.pid"><tt class="docutils literal"><span class="pre">pid</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-systemetric.profiler"><tt class="docutils literal"><span class="pre">profiler</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-systemetric.robot"><tt class="docutils literal"><span class="pre">robot</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-systemetric.twowheeledrobot"><tt class="docutils literal"><span class="pre">twowheeledrobot</span></tt> Module</a></li>
+<li><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/systemetric.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">systemetric-student-robotics 2012 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Nic Dart, Alex Gilday, Jonathan Laver, Louis Taylor, and Eric Wieser.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

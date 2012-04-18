@@ -1,0 +1,27 @@
+vision Package
+==============
+
+:mod:`vision` Package
+---------------------
+
+.. automodule:: systemetric.vision
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`processedvisionresult` Module
+-----------------------------------
+
+.. automodule:: systemetric.vision.processedvisionresult
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`visionresult` Module
+--------------------------
+
+.. automodule:: systemetric.vision.visionresult
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

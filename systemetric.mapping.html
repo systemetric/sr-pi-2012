@@ -1,0 +1,246 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mapping Package &mdash; systemetric-student-robotics 2012 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '2012',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="systemetric-student-robotics 2012 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">systemetric-student-robotics 2012 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="mapping-package">
+<h1>mapping Package<a class="headerlink" href="#mapping-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">mapping</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-systemetric.mapping"></span></div>
+<div class="section" id="module-systemetric.mapping.arenamap">
+<span id="arenamap-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">arenamap</span></tt> Module<a class="headerlink" href="#module-systemetric.mapping.arenamap" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="systemetric.mapping.arenamap.ArenaMap">
+<em class="property">class </em><tt class="descclassname">systemetric.mapping.arenamap.</tt><tt class="descname">ArenaMap</tt><big>(</big><em>size</em>, <em>arenaMarkers</em><big>)</big><a class="headerlink" href="#systemetric.mapping.arenamap.ArenaMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt></p>
+<dl class="class">
+<dt id="systemetric.mapping.arenamap.ArenaMap.Marker">
+<em class="property">class </em><tt class="descname">Marker</tt><big>(</big><em>center</em>, <em>zone</em><big>)</big><a class="headerlink" href="#systemetric.mapping.arenamap.ArenaMap.Marker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="attribute">
+<dt id="systemetric.mapping.arenamap.ArenaMap.Marker.WIDTH">
+<tt class="descname">WIDTH</tt><em class="property"> = 0.20833333333333334</em><a class="headerlink" href="#systemetric.mapping.arenamap.ArenaMap.Marker.WIDTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.mapping.arenamap.ArenaMap.estimateTransformFrom">
+<tt class="descclassname">ArenaMap.</tt><tt class="descname">estimateTransformFrom</tt><big>(</big><em>visionResult</em><big>)</big><a class="headerlink" href="#systemetric.mapping.arenamap.ArenaMap.estimateTransformFrom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="systemetric.mapping.arenamap.ArenaMap.getLocationInfoFrom">
+<tt class="descclassname">ArenaMap.</tt><tt class="descname">getLocationInfoFrom</tt><big>(</big><em>visionResult</em><big>)</big><a class="headerlink" href="#systemetric.mapping.arenamap.ArenaMap.getLocationInfoFrom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="systemetric.mapping.arenamap.ArenaMap.nearestMarkerTo">
+<tt class="descclassname">ArenaMap.</tt><tt class="descname">nearestMarkerTo</tt><big>(</big><em>point</em><big>)</big><a class="headerlink" href="#systemetric.mapping.arenamap.ArenaMap.nearestMarkerTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the marker with the minimum distance to the given point, and return its id</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.mapping.arenamap.ArenaMap.positionsFromCodes">
+<tt class="descclassname">ArenaMap.</tt><tt class="descname">positionsFromCodes</tt><big>(</big><em>visionResult</em><big>)</big><a class="headerlink" href="#systemetric.mapping.arenamap.ArenaMap.positionsFromCodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-systemetric.mapping.arenamaps">
+<span id="arenamaps-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">arenamaps</span></tt> Module<a class="headerlink" href="#module-systemetric.mapping.arenamaps" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="systemetric.mapping.arenamaps.CompetitionArenaMap">
+<em class="property">class </em><tt class="descclassname">systemetric.mapping.arenamaps.</tt><tt class="descname">CompetitionArenaMap</tt><a class="headerlink" href="#systemetric.mapping.arenamaps.CompetitionArenaMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#systemetric.mapping.arenamap.ArenaMap" title="systemetric.mapping.arenamap.ArenaMap"><tt class="xref py py-class docutils literal"><span class="pre">systemetric.mapping.arenamap.ArenaMap</span></tt></a></p>
+<p>A class representing the layout of the actual competition arena</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="systemetric.mapping.arenamaps.S007ArenaMap">
+<em class="property">class </em><tt class="descclassname">systemetric.mapping.arenamaps.</tt><tt class="descname">S007ArenaMap</tt><a class="headerlink" href="#systemetric.mapping.arenamaps.S007ArenaMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#systemetric.mapping.arenamap.ArenaMap" title="systemetric.mapping.arenamap.ArenaMap"><tt class="xref py py-class docutils literal"><span class="pre">systemetric.mapping.arenamap.ArenaMap</span></tt></a></p>
+<p>A class representing the layout of the S007 arena. The width is 3.5m, length is 2.75m
+^ Y
+|
++&#8212;0&#8212;1&#8212;2&#8212;3&#8212;4&#8212;5&#8212;+&#8211;&gt; X
+|                           |
+27                          6
+|                           |
+26                          7
+|                           |
+25                          8
+|                           |
+24                          9
+|                           |
+23 (origin)                 10</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="systemetric.mapping.arenamaps.S007ArenaMapLargeWall">
+<em class="property">class </em><tt class="descclassname">systemetric.mapping.arenamaps.</tt><tt class="descname">S007ArenaMapLargeWall</tt><a class="headerlink" href="#systemetric.mapping.arenamaps.S007ArenaMapLargeWall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#systemetric.mapping.arenamap.ArenaMap" title="systemetric.mapping.arenamap.ArenaMap"><tt class="xref py py-class docutils literal"><span class="pre">systemetric.mapping.arenamap.ArenaMap</span></tt></a></p>
+<p>A class representing the layout of the S007 arena</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="systemetric.mapping.arenamaps.S007ArenaMapSmallWall">
+<em class="property">class </em><tt class="descclassname">systemetric.mapping.arenamaps.</tt><tt class="descname">S007ArenaMapSmallWall</tt><a class="headerlink" href="#systemetric.mapping.arenamaps.S007ArenaMapSmallWall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#systemetric.mapping.arenamap.ArenaMap" title="systemetric.mapping.arenamap.ArenaMap"><tt class="xref py py-class docutils literal"><span class="pre">systemetric.mapping.arenamap.ArenaMap</span></tt></a></p>
+<p>A class representing the layout of the S007 arena</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-systemetric.mapping.pointset">
+<span id="pointset-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">pointset</span></tt> Module<a class="headerlink" href="#module-systemetric.mapping.pointset" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="systemetric.mapping.pointset.PointSet">
+<em class="property">class </em><tt class="descclassname">systemetric.mapping.pointset.</tt><tt class="descname">PointSet</tt><big>(</big><em>points</em><big>)</big><a class="headerlink" href="#systemetric.mapping.pointset.PointSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">list</span></tt></p>
+<p>A class to store a set of Point2s, adding useful methods. The array should
+_not_ be modified, as information is cached</p>
+<dl class="method">
+<dt id="systemetric.mapping.pointset.PointSet.bestTransformTo">
+<tt class="descname">bestTransformTo</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#systemetric.mapping.pointset.PointSet.bestTransformTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use a super-optimal method, since error as a function of rotation was found to be of the form</p>
+<blockquote>
+<div>f(theta) = offset - amplitude * cos(theta - optimalTheta)</div></blockquote>
+<p>through testing, and them some logical thought</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.mapping.pointset.PointSet.center">
+<tt class="descname">center</tt><a class="headerlink" href="#systemetric.mapping.pointset.PointSet.center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the geometric center of the points</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.mapping.pointset.PointSet.centered">
+<tt class="descname">centered</tt><a class="headerlink" href="#systemetric.mapping.pointset.PointSet.centered" title="Permalink to this definition">¶</a></dt>
+<dd><p>Center all the points around the origin</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.mapping.pointset.PointSet.errorTo">
+<tt class="descname">errorTo</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#systemetric.mapping.pointset.PointSet.errorTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the sum of the squares of the error between two list of points</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="systemetric.mapping.pointset.PointSet.transformedBy">
+<tt class="descname">transformedBy</tt><big>(</big><em>matrix</em><big>)</big><a class="headerlink" href="#systemetric.mapping.pointset.PointSet.transformedBy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform every point in this set by a matrix</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="systemetric.mapping.pointset.main">
+<tt class="descclassname">systemetric.mapping.pointset.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="headerlink" href="#systemetric.mapping.pointset.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">mapping Package</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">mapping</span></tt> Package</a></li>
+<li><a class="reference internal" href="#module-systemetric.mapping.arenamap"><tt class="docutils literal"><span class="pre">arenamap</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-systemetric.mapping.arenamaps"><tt class="docutils literal"><span class="pre">arenamaps</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-systemetric.mapping.pointset"><tt class="docutils literal"><span class="pre">pointset</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/systemetric.mapping.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">systemetric-student-robotics 2012 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Nic Dart, Alex Gilday, Jonathan Laver, Louis Taylor, and Eric Wieser.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
