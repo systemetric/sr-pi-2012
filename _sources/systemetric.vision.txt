@@ -1,27 +1,25 @@
 vision Package
 ==============
 
-:mod:`vision` Package
----------------------
-
 .. automodule:: systemetric.vision
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`processedvisionresult` Module
------------------------------------
-
-.. automodule:: systemetric.vision.processedvisionresult
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`visionresult` Module
+:class:`VisionResult` Class
 --------------------------
 
-.. automodule:: systemetric.vision.visionresult
+.. autoclass:: systemetric.vision.VisionResult
     :members:
     :undoc-members:
     :show-inheritance:
+
+:class:`processedvisionresult` Class
+-----------------------------------
+
+.. autoclass:: systemetric.vision.ProcessedVisionResult
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
