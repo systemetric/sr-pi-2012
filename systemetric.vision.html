@@ -280,7 +280,7 @@ sr geometry types to pyeuclid types</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Point3</span></tt> at</td>
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Point3</span></tt></td>
 </tr>
 </tbody>
 </table>
@@ -336,7 +336,34 @@ sr geometry types to pyeuclid types</p>
 <p>The class returned by <cite>systemetric.Robot.see</cite>. Splits the markers seen by
 type, into <cite>tokens</cite>, <cite>arena</cite>, <cite>robots</cite>, and <cite>buckets</cite>, since that&#8217;s how
 they&#8217;re most useful. For backwards compatibility, continues to behave as a
-simple list     like the one returned by <cite>sr.Robot.see</cite></p>
+simple list     like the one returned by <a href="#id2"><span class="problematic" id="id3">`</span></a>sr.Robot.see</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">vr</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">see</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">&lt;VisionResult.Marker (code=15, type=MARKER_ARENA, center=Point3(1.0, 0.1, 2.5))&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vr</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">&lt;VisionResult.Marker (code=0, type=MARKER_TOKEN, center=Point3(0.0, 0.0, 1.5))&gt;</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt>
+<tt class="descname">tokens, arena, bucketEnds, bucketSides</tt></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body">lists of <a class="reference internal" href="#systemetric.vision.visionresult.Marker" title="systemetric.vision.visionresult.Marker"><tt class="xref py py-class docutils literal"><span class="pre">Marker</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+<p>Markers, grouped by type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.vision.visionresult.timestamp">
+<tt class="descclassname">systemetric.vision.visionresult.</tt><tt class="descname">timestamp</tt><a class="headerlink" href="#systemetric.vision.visionresult.timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time that the vision was captured</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="systemetric.vision.visionresult.VisionResult.Marker">
 <em class="property">class </em><tt class="descclassname">VisionResult.</tt><tt class="descname">Marker</tt><big>(</big><em>visionResult</em>, <em>rawmarker</em><big>)</big><a class="headerlink" href="#systemetric.vision.visionresult.VisionResult.Marker" title="Permalink to this definition">¶</a></dt>
@@ -363,7 +390,7 @@ sr geometry types to pyeuclid types</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Point3</span></tt> at</td>
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Point3</span></tt></td>
 </tr>
 </tbody>
 </table>
@@ -417,6 +444,14 @@ sr geometry types to pyeuclid types</p>
 <tt class="descclassname">VisionResult.</tt><tt class="descname">trueLocationOf</tt><big>(</big><em>srpoint</em><big>)</big><a class="headerlink" href="#systemetric.vision.visionresult.VisionResult.trueLocationOf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Take a point of the datatype returned by sr code, convert it to a
 pyeuclid format, then correct for camera orientation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Point3</span></tt></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
