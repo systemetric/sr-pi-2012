@@ -260,13 +260,67 @@ pushing the normal vector of each surface back inside the cube</p>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>A generic marker class that converts important information from the
 sr geometry types to pyeuclid types</p>
-<dl class="docutils">
-<dt>Attributes:</dt>
-<dd>vertices: A list of <tt class="xref py py-class docutils literal"><span class="pre">Point3</span></tt> at the center of the marker
-code: The offset of the marker - 0 for first bucket, token, robot, etc
-type: The type of marker: <tt class="docutils literal"><span class="pre">MARKER_TOKEN</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_ARENA</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_ROBOT</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_BUCKET_END</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_BUCKET_SIDE</span></tt>
-normal: The normal vector pointing out of the surace of the marker, a <tt class="xref py py-class docutils literal"><span class="pre">Vector3</span></tt></dd>
-</dl>
+<dl class="attribute">
+<dt id="systemetric.vision.visionresult.Marker.vertices">
+<tt class="descname">vertices</tt><a class="headerlink" href="#systemetric.vision.visionresult.Marker.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body">list of <tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Point3</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.vision.visionresult.Marker.center">
+<tt class="descname">center</tt><a class="headerlink" href="#systemetric.vision.visionresult.Marker.center" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Point3</span></tt> at</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.vision.visionresult.Marker.code">
+<tt class="descname">code</tt><a class="headerlink" href="#systemetric.vision.visionresult.Marker.code" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+<p>The offset of the marker - 0 for first bucket, token, robot, etc</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.vision.visionresult.Marker.type">
+<tt class="descname">type</tt><a class="headerlink" href="#systemetric.vision.visionresult.Marker.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The type of marker: one of <tt class="docutils literal"><span class="pre">MARKER_TOKEN</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_ARENA</span></tt>,
+<tt class="docutils literal"><span class="pre">MARKER_ROBOT</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_BUCKET_END</span></tt>, and <tt class="docutils literal"><span class="pre">MARKER_BUCKET_SIDE</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.vision.visionresult.Marker.normal">
+<tt class="descname">normal</tt><a class="headerlink" href="#systemetric.vision.visionresult.Marker.normal" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Vector3</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>The normal vector pointing out of the surface of the marker, a <tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Vector3</span></tt></p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -289,13 +343,67 @@ simple list     like the one returned by <cite>sr.Robot.see</cite></p>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>A generic marker class that converts important information from the
 sr geometry types to pyeuclid types</p>
-<dl class="docutils">
-<dt>Attributes:</dt>
-<dd>vertices: A list of <tt class="xref py py-class docutils literal"><span class="pre">Point3</span></tt> at the center of the marker
-code: The offset of the marker - 0 for first bucket, token, robot, etc
-type: The type of marker: <tt class="docutils literal"><span class="pre">MARKER_TOKEN</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_ARENA</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_ROBOT</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_BUCKET_END</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_BUCKET_SIDE</span></tt>
-normal: The normal vector pointing out of the surace of the marker, a <tt class="xref py py-class docutils literal"><span class="pre">Vector3</span></tt></dd>
-</dl>
+<dl class="attribute">
+<dt id="systemetric.vision.visionresult.VisionResult.Marker.vertices">
+<tt class="descname">vertices</tt><a class="headerlink" href="#systemetric.vision.visionresult.VisionResult.Marker.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body">list of <tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Point3</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.vision.visionresult.VisionResult.Marker.center">
+<tt class="descname">center</tt><a class="headerlink" href="#systemetric.vision.visionresult.VisionResult.Marker.center" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Point3</span></tt> at</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.vision.visionresult.VisionResult.Marker.code">
+<tt class="descname">code</tt><a class="headerlink" href="#systemetric.vision.visionresult.VisionResult.Marker.code" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+<p>The offset of the marker - 0 for first bucket, token, robot, etc</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.vision.visionresult.VisionResult.Marker.type">
+<tt class="descname">type</tt><a class="headerlink" href="#systemetric.vision.visionresult.VisionResult.Marker.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The type of marker: one of <tt class="docutils literal"><span class="pre">MARKER_TOKEN</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_ARENA</span></tt>,
+<tt class="docutils literal"><span class="pre">MARKER_ROBOT</span></tt>, <tt class="docutils literal"><span class="pre">MARKER_BUCKET_END</span></tt>, and <tt class="docutils literal"><span class="pre">MARKER_BUCKET_SIDE</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.vision.visionresult.VisionResult.Marker.normal">
+<tt class="descname">normal</tt><a class="headerlink" href="#systemetric.vision.visionresult.VisionResult.Marker.normal" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Vector3</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>The normal vector pointing out of the surface of the marker, a <tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Vector3</span></tt></p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="method">
