@@ -18,7 +18,7 @@ from libs.pyeuclid import *
 
 class PointSet(list):
 	"""
-	A class to store a set of Point2s, adding useful methods. The array should
+	A class to store a set of :class:`Point2` s, adding useful methods. The array should
 	_not_ be modified, as information is cached
 	"""
 
@@ -33,12 +33,13 @@ class PointSet(list):
 
 	def errorTo(self, other):
 		"""
-		:arg :class:`PointSet` other: the points to compare to
+		:arg other: the points to compare to
+		:type other: :class:`PointSet`
 		Calculate the sum of the squares of the distances between two list of points
 
 		.. note::
 
-			:arg:other must be of the same length as the object
+			``other`` must be of the same length as the object
 		"""
 		return sum((a - b).magnitude_squared() for a, b in zip(self, other))
 
@@ -66,8 +67,9 @@ class PointSet(list):
 
 	def transformedBy(self, matrix):
 		"""
-		:type: :class:`PointSet`
-		A copy of the pointset with every point transformed by a matrix
+		:arg matrix: the matrix to transform by
+		:type matrix: :class:`Matrix3`
+		:returns: A copy of the pointset with every point transformed by a matrix
 		"""
 		return PointSet([matrix * p for p in self])
 
@@ -76,12 +78,26 @@ class PointSet(list):
 	__rotate180 = Matrix3.new_scale(-1, -1)
 
 	def bestTransformTo(self, other):
-		"""
-		Use a super-optimal method, since error as a function of rotation was found to be of the form
+		r"""
+		Determine the best rotation transformation that maps this set of points
+		to another.
 
-			f(theta) = offset - amplitude * cos(theta - optimalTheta)
+		:returns: rotation, transformation matrix, error
+		:rtype: tuple(float, :class:`Matrix3`, float)
+
+		This was originally done with a brute force error minimizer. However, a
+		more optimal approach was found, which stems from the fact that the value
+		of::
+
+			self.centered.transformedBy(Matrix3.new_rotate(theta)).errorTo(other.centered)
+
+		can be expressed as a function of theta
+
+		.. math::
+
+			f(\theta) = offset - amplitude \times \cos(\theta - \theta_{optimal})
 		
-		through testing, and them some logical thought
+
 		"""
 		#Error upon rotating by 0, 90, and 180 degrees
 		e0   = (self.centered).errorTo(other.centered)

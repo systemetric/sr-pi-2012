@@ -21,8 +21,35 @@ from systemetric.profiler import Profiler
 import systemetric.logs as logs
 
 class ArenaMap(dict):
+	"""
+	A class storing the arrangement of markers in a conceptual map of the arena
+
+	:arg size: The size of the arena
+	:type size: :class:`pyeuclid.Point2`
+	:arg arenaMarkers: A :class:`dict` of integer - :class:`Marker` pairs
+
+	"""
 	class Marker(object):
+		"""
+		A class to store information about a marker in a conceptual map of the
+		arena. Markers are represented as line segments between their left and
+		right edges.
+
+		.. attribute:: center
+		               left
+		               right
+		   
+		   :type: :class:`pyeuclid.Point2`
+		   The left, right, and center of the marker, when projected down to 2d on a plane
+
+		.. attribute:: zone
+		   
+		   the numeric id of the zone the marker belongs to, from 0 to 3. Used
+		   to determine the orientation
+		"""
 		WIDTH = 0.25 * 10/12
+		"""The size of the black area of the marker"""
+
 		def __init__(self, center, zone):
 			self.center = center
 			self.zone = zone
@@ -47,6 +74,7 @@ class ArenaMap(dict):
 		return min(self, key = lambda i: abs(point - self[i].center))
 
 	def positionsFromCodes(self, visionResult):
+		"""Finds corresponding marker definitions for the ones seen by the robot"""
 		codes = [marker.id for marker in visionResult.arena]
 		positions = []
 		for code in codes:
@@ -56,8 +84,38 @@ class ArenaMap(dict):
 		return PointSet(positions), codes
 
 	def getLocationInfoFrom(self, visionResult):
+		"""
+		Determine where the robot is, using a vision capture
+
+		:returns: struct
+		          
+		          .. attribute:: heading
+
+		             :type: :class:`Bearing`
+		             The orientation of the robot
+
+		          .. attribute:: transform
+
+		             :type: :class:`Matrix3`
+		             transformation matrix which maps percieved location to
+		             actual location
+
+		          .. attribute:: location
+
+		             :type: :class:`Point2`
+		             The location of the robot
+
+		          .. attribute:: accuracy
+
+		             :type: :class:`Point2`
+		             An indication of the accuracy of the calculation - the
+		             sum of the squares of the distances between actual and
+		             apparent marker locations
+
+		If no markers can bee seen, then ``None`` is returned. This function
+		call is profiled to :data:`.logs.vision`.
+		"""
 		t = Profiler() >> logs.vision
-		times = {}
 
 		if visionResult.arena:
 			with t.event("arenaMarkerEnds"):
@@ -74,8 +132,9 @@ class ArenaMap(dict):
 			info.location = transform * Point2(0, 0)
 			info.accuracy = error
 
-			print times
 			return info
 
 	def estimateTransformFrom(self, visionResult):
-		return getLocationInfoFrom(self, visionResult).transform
+		"""Shorthand for ``getLocationInfoFrom(visionResult).transform``"""
+		locInfo = self.getLocationInfoFrom(visionResult)
+		return locInfo.transform if locInfo else None

@@ -12,12 +12,12 @@
 
 # You should have received a copy of the GNU General Public License
 # along with systemetric-student-robotics.  If not, see <http://www.gnu.org/licenses/>.
-
+"""A set of definitions for various arena layouts"""
 from arenamap import ArenaMap
 from libs.pyeuclid import Point2
 
 class CompetitionArenaMap(ArenaMap):
-	"""A class representing the layout of the actual competition arena"""
+	"""The arena used in the actual competition arena"""
 	def __init__(self):
 		ArenaMap.__init__(self, Point2(8.0, 8.0), {
 			0:  ArenaMap.Marker(Point2(1, 0), 0),
@@ -54,7 +54,7 @@ class CompetitionArenaMap(ArenaMap):
 		})
 
 class S007ArenaMapLargeWall(ArenaMap):
-	"""A class representing the layout of the S007 arena"""
+	"""An arena with markers 0, 4, and 9 set up 1m apart along a wall"""
 	def __init__(self):
 		ArenaMap.__init__(self, Point2(2, 4), {
 			0: ArenaMap.Marker(Point2(0.0, 0.0), 0),
@@ -63,7 +63,7 @@ class S007ArenaMapLargeWall(ArenaMap):
 		})
 
 class S007ArenaMapSmallWall(ArenaMap):
-	"""A class representing the layout of the S007 arena"""
+	"""An arena with markers 3, 4, and 5 set up 0.5m apart along a wall"""
 	def __init__(self):
 		ArenaMap.__init__(self, Point2(1, 2), {
 			3: ArenaMap.Marker(Point2(0.0, 0.0), 2),
@@ -72,21 +72,31 @@ class S007ArenaMapSmallWall(ArenaMap):
 		})
 
 class S007ArenaMap(ArenaMap):
-	"""A class representing the layout of the S007 arena. The width is 3.5m, length is 2.75m
-	^ Y
-	|
-	+---0---1---2---3---4---5---+--> X
-	|                           |
-	27                          6
-	|                           |
-	26                          7
-	|                           |
-	25                          8
-	|                           |
-	24                          9
-	|                           |
-	23 (origin)                 10
+	"""
+	An arena set up inside the horseshoe of tables in S007. The markers are
+	spaced 0.5m apart.
 
+	The arena is set up like so::
+
+		Y   +-----------------------------------+
+		^   |               desks               |
+		|   |   +---0---1---2---3---4---5---+   |
+		|   |   |                           |   |
+		|   |   27                          6   |
+		|   |   |                           |   |
+		|   |   26                          7   |
+		|   |   |                           |   |
+		|   |   25                          8   |
+		|   |   |                           |   |
+		|   |   24                          9   |
+		|   |   |                           |   |
+		0   |   23                         10   |
+		    +---+                           +---+
+		                +-----------+
+		                |front table|
+		                +-----------+
+		
+		        0-----------------------------> X
 
 
 	"""

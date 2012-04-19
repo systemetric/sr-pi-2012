@@ -13,4 +13,5 @@
 # You should have received a copy of the GNU General Public License
 # along with systemetric-student-robotics.  If not, see <http://www.gnu.org/licenses/>.
 
+""":see also: http://eric-wieser.tk/vectors/mapping.html"""
 from pointset import PointSet
