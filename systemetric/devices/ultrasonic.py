@@ -19,6 +19,14 @@ class Ultrasonic(MbedDevice):
 	"""
 	A class for the four ultrasound sensors which were going to be attached
 	to the mbed. Only one was attached, and it was not used in the competition
+
+	.. attribute:: front
+	               back
+	               left
+	               right
+	               
+	   Get the distance in meters to an obstacle on a side of the robot
+
 	"""
 	def __init__(self, mbed = None):
 		super(Ultrasonic, self).__init__('U', mbed)
@@ -33,22 +41,18 @@ class Ultrasonic(MbedDevice):
 
 	@property
 	def front(self):
-		"""The distance in meters to an obstacle in front"""
 		return self.distances[0]
 	
 	@property
 	def back(self):
-		"""The distance in meters to an obstacle behind"""
 		return self.distances[1]
 	
 	@property
 	def left(self):
-		"""The distance in meters to an obstacle to the left"""
 		return self.distances[2]
 	
 	@property
 	def right(self):
-		"""The distance in meters to an obstacle to the right"""
 		return self.distances[3]
 
 def main():

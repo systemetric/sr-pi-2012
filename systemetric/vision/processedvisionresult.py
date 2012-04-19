@@ -101,6 +101,7 @@ class ProcessedVisionResult(object):
 				self.right = theOrigin + midpoints[0]
 
 		def transform(self, matrix):
+			"""Transform all the coordinates of this object by a matrix"""
 			self.left = matrix * self.left;
 			self.right = matrix * self.right;
 
@@ -141,6 +142,7 @@ class ProcessedVisionResult(object):
 			self.center = visionResult.planarLocationOf(center)
 
 		def transform(self, matrix):
+			"""Transform all the coordinates of this object by a matrix"""
 			self.center = matrix * self.center
 
 		def __repr__(self):
@@ -180,6 +182,7 @@ class ProcessedVisionResult(object):
 
 
 		def transform(self, matrix):
+			"""Transform all the coordinates of this object by a matrix"""
 			self.center = matrix * self.center
 			self.facing = matrix * self.facing
 
@@ -241,8 +244,10 @@ class ProcessedVisionResult(object):
 		self.tokens.sort(key=lambda m: abs(m.center))
 	
 	def arenaMarkerEnds(self):
-		# This may be useful:
-		# unzip = lambda zipped: (lambda *x: x)(*map(list,zip(*zipped)))
+		"""
+		Returns a :class:`~.PointSet` of left and right ends of the markers, for
+		internal use with the mapping classes
+		"""
 		return PointSet([
 			point
 			for marker in self.arena

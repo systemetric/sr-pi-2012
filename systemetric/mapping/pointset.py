@@ -32,12 +32,22 @@ class PointSet(list):
 		self.__center = None
 
 	def errorTo(self, other):
-		"""Calculate the sum of the squares of the error between two list of points"""
+		"""
+		:arg :class:`PointSet` other: the points to compare to
+		Calculate the sum of the squares of the distances between two list of points
+
+		.. note::
+
+			:arg:other must be of the same length as the object
+		"""
 		return sum((a - b).magnitude_squared() for a, b in zip(self, other))
 
 	@property
 	def center(self):
-		"""Calculate the geometric center of the points"""
+		"""
+		:type: :class:`Point2`
+		Calculate the geometric center of the points
+		"""
 		if not self.__center:
 			self.__center = sum(self, Vector2()) / float(len(self))
 
@@ -45,14 +55,20 @@ class PointSet(list):
 
 	@property
 	def centered(self):
-		"""Center all the points around the origin"""
+		"""
+		:type: :class:`PointSet`
+		A copy of the pointset with all the points centered around the origin
+		"""
 		if not self.__centered:
 			self.__centered = PointSet([p - self.center for p in self])
 		
 		return self.__centered
 
 	def transformedBy(self, matrix):
-		"""Transform every point in this set by a matrix"""
+		"""
+		:type: :class:`PointSet`
+		A copy of the pointset with every point transformed by a matrix
+		"""
 		return PointSet([matrix * p for p in self])
 
 	"""Some prebuilt matrices for private use"""

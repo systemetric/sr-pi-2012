@@ -137,8 +137,8 @@ def redirectedOutput(o):
 	sys.stdout = old
 
 def to(log):
+	"""Log the function invocation, and redirect prints to the log"""
 	def redirector(f, *args, **kargs):
-		"""Redirects prints, and logs the function invocation"""
 		
 		if 'self' in inspect.getargspec(f).args:
 			self, args = args[0], args[1:]
