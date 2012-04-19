@@ -1,18 +1,15 @@
 mapping Package
 ===============
 
-:mod:`mapping` Package
-----------------------
-
 .. automodule:: systemetric.mapping
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`arenamap` Module
-----------------------
+:class:`ArenaMap` Class
+-----------------------
 
-.. automodule:: systemetric.mapping.arenamap
+.. autoclass:: systemetric.mapping.arenamap.ArenaMap
     :members:
     :undoc-members:
     :show-inheritance:
@@ -25,10 +22,10 @@ mapping Package
     :undoc-members:
     :show-inheritance:
 
-:mod:`pointset` Module
-----------------------
+:class:`PointSet` Class
+-----------------------
 
-.. automodule:: systemetric.mapping.pointset
+.. autoclass:: systemetric.mapping.PointSet
     :members:
     :undoc-members:
     :show-inheritance:

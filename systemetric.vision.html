@@ -25,6 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="systemetric-student-robotics 2012 documentation" href="index.html" /> 
   </head>
   <body>
@@ -53,8 +54,7 @@
 <dl class="class">
 <dt id="systemetric.vision.VisionResult">
 <em class="property">class </em><tt class="descclassname">systemetric.vision.</tt><tt class="descname">VisionResult</tt><big>(</big><em>rawmarkers</em>, <em>worldTransform=None</em><big>)</big><a class="headerlink" href="#systemetric.vision.VisionResult" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">list</span></tt></p>
-<p>The class returned by <cite>systemetric.Robot.see</cite>. Splits the markers seen by
+<dd><p>The class returned by <cite>systemetric.Robot.see</cite>. Splits the markers seen by
 type, into <cite>tokens</cite>, <cite>arena</cite>, <cite>robots</cite>, and <cite>buckets</cite>, since that&#8217;s how
 they&#8217;re most useful. For backwards compatibility, continues to behave as a
 simple list     like the one returned by <a href="#id1"><span class="problematic" id="id2">`</span></a>sr.Robot.see</p>
@@ -94,8 +94,7 @@ simple list     like the one returned by <a href="#id1"><span class="problematic
 <dl class="class">
 <dt id="systemetric.vision.VisionResult.Marker">
 <em class="property">class </em><tt class="descname">Marker</tt><big>(</big><em>visionResult</em>, <em>rawmarker</em><big>)</big><a class="headerlink" href="#systemetric.vision.VisionResult.Marker" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>A generic marker class that converts important information from the
+<dd><p>A generic marker class that converts important information from the
 sr geometry types to pyeuclid types</p>
 <dl class="attribute">
 <dt id="systemetric.vision.VisionResult.Marker.vertices">
@@ -189,8 +188,7 @@ pyeuclid format, then correct for camera orientation</p>
 <dl class="class">
 <dt id="systemetric.vision.ProcessedVisionResult">
 <em class="property">class </em><tt class="descclassname">systemetric.vision.</tt><tt class="descname">ProcessedVisionResult</tt><big>(</big><em>visionResult</em><big>)</big><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>2d representation of what can be seen</p>
+<dd><p>2d representation of what can be seen</p>
 <dl class="attribute">
 <dt id="systemetric.vision.ProcessedVisionResult.timestamp">
 <tt class="descname">timestamp</tt><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.timestamp" title="Permalink to this definition">¶</a></dt>
@@ -256,21 +254,54 @@ pyeuclid format, then correct for camera orientation</p>
 <dl class="class">
 <dt id="systemetric.vision.ProcessedVisionResult.ArenaMarker">
 <em class="property">class </em><tt class="descname">ArenaMarker</tt><big>(</big><em>visionResult</em>, <em>marker</em><big>)</big><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.ArenaMarker" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>A marker around the walls of the arena. Extracts information about the
-left and right edge of the marker</p>
+<dd><p>A marker around the walls of the arena. The marker is projected down
+from a square to a line.</p>
+<dl class="attribute">
+<dt id="systemetric.vision.ProcessedVisionResult.ArenaMarker.id">
+<tt class="descname">id</tt><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.ArenaMarker.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>the numeric id of the marker - from 0 to 27</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.vision.ProcessedVisionResult.ArenaMarker.left">
+<tt class="descname">left</tt><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.ArenaMarker.left" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Point2</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>The leftmost edge of the marker, when viewed from the front</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.vision.ProcessedVisionResult.ArenaMarker.right">
+<tt class="descname">right</tt><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.ArenaMarker.right" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Point2</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>The rightmost edge of the marker, when viewed from the front</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="systemetric.vision.ProcessedVisionResult.ArenaMarker.transform">
 <tt class="descname">transform</tt><big>(</big><em>matrix</em><big>)</big><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.ArenaMarker.transform" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Transform all the coordinates of this object by a matrix</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="systemetric.vision.ProcessedVisionResult.Bucket">
 <em class="property">class </em><tt class="descclassname">ProcessedVisionResult.</tt><tt class="descname">Bucket</tt><big>(</big><em>visionResult</em>, <em>id</em>, <em>markers</em><big>)</big><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.Bucket" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>The bucket with wheels. Used to store tokens.</p>
+<dd><p>The bucket with wheels. Used to store tokens.</p>
 <dl class="attribute">
 <dt id="systemetric.vision.ProcessedVisionResult.Bucket.LENGTH">
 <tt class="descname">LENGTH</tt><em class="property"> = 0.372</em><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.Bucket.LENGTH" title="Permalink to this definition">¶</a></dt>
@@ -290,15 +321,15 @@ left and right edge of the marker</p>
 <dl class="method">
 <dt id="systemetric.vision.ProcessedVisionResult.Bucket.transform">
 <tt class="descname">transform</tt><big>(</big><em>matrix</em><big>)</big><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.Bucket.transform" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Transform all the coordinates of this object by a matrix</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="systemetric.vision.ProcessedVisionResult.Robot">
 <em class="property">class </em><tt class="descclassname">ProcessedVisionResult.</tt><tt class="descname">Robot</tt><big>(</big><em>visionResult</em>, <em>markers</em><big>)</big><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.Robot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<dl class="attribute">
+<dd><dl class="attribute">
 <dt id="systemetric.vision.ProcessedVisionResult.Robot.SIZE">
 <tt class="descname">SIZE</tt><em class="property"> = 0.5</em><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.Robot.SIZE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -308,10 +339,49 @@ left and right edge of the marker</p>
 <dl class="class">
 <dt id="systemetric.vision.ProcessedVisionResult.Token">
 <em class="property">class </em><tt class="descclassname">ProcessedVisionResult.</tt><tt class="descname">Token</tt><big>(</big><em>visionResult</em>, <em>id</em>, <em>markers</em><big>)</big><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.Token" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>A cardboard cube. Groups all the markers of the same id into a single
+<dd><p>A cardboard cube. Groups all the markers of the same id into a single
 object, and calculates where the center of the cube should be, by
-pushing the normal vector of each surface back inside the cube</p>
+pushing the normal vector of each surface back inside the cube.</p>
+<dl class="attribute">
+<dt id="systemetric.vision.ProcessedVisionResult.Token.id">
+<tt class="descname">id</tt><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.Token.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>the numeric id of the marker - from 0 to 19</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.vision.ProcessedVisionResult.Token.center">
+<tt class="descname">center</tt><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.Token.center" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Point3</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.vision.ProcessedVisionResult.Token.markers">
+<tt class="descname">markers</tt><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.Token.markers" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body">list of <tt class="xref py py-class docutils literal"><span class="pre">Marker</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>The markers seen which correspond to this token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.vision.ProcessedVisionResult.Token.captured">
+<tt class="descname">captured</tt><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.Token.captured" title="Permalink to this definition">¶</a></dt>
+<dd><p>Guesses whether the cube is captured, by checking if it is more than
+0.5 meters off the ground</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="systemetric.vision.ProcessedVisionResult.Token.SIZE">
 <tt class="descname">SIZE</tt><em class="property"> = 0.1</em><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.Token.SIZE" title="Permalink to this definition">¶</a></dt>
@@ -320,19 +390,31 @@ pushing the normal vector of each surface back inside the cube</p>
 <dl class="method">
 <dt id="systemetric.vision.ProcessedVisionResult.Token.transform">
 <tt class="descname">transform</tt><big>(</big><em>matrix</em><big>)</big><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.Token.transform" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Transform all the coordinates of this object by a matrix</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="method">
 <dt id="systemetric.vision.ProcessedVisionResult.arenaMarkerEnds">
 <tt class="descclassname">ProcessedVisionResult.</tt><tt class="descname">arenaMarkerEnds</tt><big>(</big><big>)</big><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.arenaMarkerEnds" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns a <a class="reference internal" href="systemetric.mapping.html#systemetric.mapping.PointSet" title="systemetric.mapping.PointSet"><tt class="xref py py-class docutils literal"><span class="pre">PointSet</span></tt></a> of left and right ends of the markers, for
+internal use with the mapping classes</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="systemetric.vision.ProcessedVisionResult.planarDirectionOf">
 <tt class="descclassname">ProcessedVisionResult.</tt><tt class="descname">planarDirectionOf</tt><big>(</big><em>vector</em><big>)</big><a class="headerlink" href="#systemetric.vision.ProcessedVisionResult.planarDirectionOf" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Vector2</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>Project a <tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Vector3</span></tt> onto the plane of the arena</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="systemetric.vision.ProcessedVisionResult.planarLocationOf">
@@ -345,7 +427,7 @@ pushing the normal vector of each surface back inside the cube</p>
 </tr>
 </tbody>
 </table>
-<p>Project a 3d point onto the plane</p>
+<p>Project a <tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Point3</span></tt> onto the plane of the arena</p>
 </dd></dl>
 
 </dd></dl>

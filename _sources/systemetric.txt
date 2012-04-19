@@ -1,26 +1,23 @@
 systemetric Package
 ===================
 
-:mod:`systemetric` Package
---------------------------
-
 .. automodule:: systemetric.__init__
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`bearing` Module
----------------------
+:class:`bearing` Class
+----------------------
 
-.. automodule:: systemetric.bearing
+.. autoclass:: systemetric.Bearing
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`compassrobot` Module
+:class:`CompassRobot` Class
 --------------------------
 
-.. automodule:: systemetric.compassrobot
+.. autoclass:: systemetric.compassrobot.CompassRobot
     :members:
     :undoc-members:
     :show-inheritance:
@@ -56,6 +53,7 @@ systemetric Package
     :members:
     :undoc-members:
     :show-inheritance:
+    .. decorator:: to(log)
 
 :mod:`map` Module
 -----------------

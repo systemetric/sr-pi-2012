@@ -25,6 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="systemetric-student-robotics 2012 documentation" href="index.html" /> 
   </head>
   <body>
@@ -46,37 +47,155 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="mapping-package">
-<h1>mapping Package<a class="headerlink" href="#mapping-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="id1">
-<h2><tt class="xref py py-mod docutils literal"><span class="pre">mapping</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-systemetric.mapping"></span></div>
-<div class="section" id="module-systemetric.mapping.arenamap">
-<span id="arenamap-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">arenamap</span></tt> Module<a class="headerlink" href="#module-systemetric.mapping.arenamap" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="module-systemetric.mapping">
+<span id="mapping-package"></span><h1>mapping Package<a class="headerlink" href="#module-systemetric.mapping" title="Permalink to this headline">¶</a></h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">see also:</th><td class="field-body"><a class="reference external" href="http://eric-wieser.tk/vectors/mapping.html">http://eric-wieser.tk/vectors/mapping.html</a></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="arenamap-class">
+<h2><tt class="xref py py-class docutils literal"><span class="pre">ArenaMap</span></tt> Class<a class="headerlink" href="#arenamap-class" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="systemetric.mapping.arenamap.ArenaMap">
 <em class="property">class </em><tt class="descclassname">systemetric.mapping.arenamap.</tt><tt class="descname">ArenaMap</tt><big>(</big><em>size</em>, <em>arenaMarkers</em><big>)</big><a class="headerlink" href="#systemetric.mapping.arenamap.ArenaMap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt></p>
+<p>A class storing the arrangement of markers in a conceptual map of the arena</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>size</strong> (<tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Point2</span></tt>) &#8211; The size of the arena</li>
+<li><strong>arenaMarkers</strong> &#8211; A <tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt> of integer - <tt class="xref py py-class docutils literal"><span class="pre">Marker</span></tt> pairs</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="class">
 <dt id="systemetric.mapping.arenamap.ArenaMap.Marker">
 <em class="property">class </em><tt class="descname">Marker</tt><big>(</big><em>center</em>, <em>zone</em><big>)</big><a class="headerlink" href="#systemetric.mapping.arenamap.ArenaMap.Marker" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>A class to store information about a marker in a conceptual map of the
+arena. Markers are represented as line segments between their left and
+right edges.</p>
+<dl class="attribute">
+<dt id="systemetric.mapping.ArenaMap.Marker.center">
+<tt class="descname">center</tt><a class="headerlink" href="#systemetric.mapping.ArenaMap.Marker.center" title="Permalink to this definition">¶</a></dt>
+<dt id="systemetric.mapping.ArenaMap.Marker.left">
+<tt class="descname">left</tt><a class="headerlink" href="#systemetric.mapping.ArenaMap.Marker.left" title="Permalink to this definition">¶</a></dt>
+<dt id="systemetric.mapping.ArenaMap.Marker.right">
+<tt class="descname">right</tt><a class="headerlink" href="#systemetric.mapping.ArenaMap.Marker.right" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">pyeuclid.Point2</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>The left, right, and center of the marker, when projected down to 2d on a plane</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.mapping.ArenaMap.Marker.zone">
+<tt class="descname">zone</tt><a class="headerlink" href="#systemetric.mapping.ArenaMap.Marker.zone" title="Permalink to this definition">¶</a></dt>
+<dd><p>the numeric id of the zone the marker belongs to, from 0 to 3. Used
+to determine the orientation</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="systemetric.mapping.arenamap.ArenaMap.Marker.WIDTH">
 <tt class="descname">WIDTH</tt><em class="property"> = 0.20833333333333334</em><a class="headerlink" href="#systemetric.mapping.arenamap.ArenaMap.Marker.WIDTH" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The size of the black area of the marker</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="method">
 <dt id="systemetric.mapping.arenamap.ArenaMap.estimateTransformFrom">
 <tt class="descclassname">ArenaMap.</tt><tt class="descname">estimateTransformFrom</tt><big>(</big><em>visionResult</em><big>)</big><a class="headerlink" href="#systemetric.mapping.arenamap.ArenaMap.estimateTransformFrom" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Shorthand for <tt class="docutils literal"><span class="pre">getLocationInfoFrom(visionResult).transform</span></tt></p>
+</dd></dl>
 
 <dl class="method">
 <dt id="systemetric.mapping.arenamap.ArenaMap.getLocationInfoFrom">
 <tt class="descclassname">ArenaMap.</tt><tt class="descname">getLocationInfoFrom</tt><big>(</big><em>visionResult</em><big>)</big><a class="headerlink" href="#systemetric.mapping.arenamap.ArenaMap.getLocationInfoFrom" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Determine where the robot is, using a vision capture</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">struct<dl class="attribute">
+<dt id="systemetric.mapping.ArenaMap.heading">
+<tt class="descname">heading</tt><a class="headerlink" href="#systemetric.mapping.ArenaMap.heading" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">Bearing</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>The orientation of the robot</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.mapping.ArenaMap.transform">
+<tt class="descname">transform</tt><a class="headerlink" href="#systemetric.mapping.ArenaMap.transform" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">Matrix3</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>transformation matrix which maps percieved location to
+actual location</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.mapping.ArenaMap.location">
+<tt class="descname">location</tt><a class="headerlink" href="#systemetric.mapping.ArenaMap.location" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">Point2</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>The location of the robot</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="systemetric.mapping.ArenaMap.accuracy">
+<tt class="descname">accuracy</tt><a class="headerlink" href="#systemetric.mapping.ArenaMap.accuracy" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">Point2</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>An indication of the accuracy of the calculation - the
+sum of the squares of the distances between actual and
+apparent marker locations</p>
+</dd></dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+<p>If no markers can bee seen, then <tt class="docutils literal"><span class="pre">None</span></tt> is returned. This function
+call is profiled to <tt class="xref py py-data docutils literal"><span class="pre">logs.vision</span></tt>.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="systemetric.mapping.arenamap.ArenaMap.nearestMarkerTo">
@@ -87,102 +206,162 @@
 <dl class="method">
 <dt id="systemetric.mapping.arenamap.ArenaMap.positionsFromCodes">
 <tt class="descclassname">ArenaMap.</tt><tt class="descname">positionsFromCodes</tt><big>(</big><em>visionResult</em><big>)</big><a class="headerlink" href="#systemetric.mapping.arenamap.ArenaMap.positionsFromCodes" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Finds corresponding marker definitions for the ones seen by the robot</p>
+</dd></dl>
 
 </dd></dl>
 
 </div>
 <div class="section" id="module-systemetric.mapping.arenamaps">
 <span id="arenamaps-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">arenamaps</span></tt> Module<a class="headerlink" href="#module-systemetric.mapping.arenamaps" title="Permalink to this headline">¶</a></h2>
+<p>A set of definitions for various arena layouts</p>
 <dl class="class">
 <dt id="systemetric.mapping.arenamaps.CompetitionArenaMap">
 <em class="property">class </em><tt class="descclassname">systemetric.mapping.arenamaps.</tt><tt class="descname">CompetitionArenaMap</tt><a class="headerlink" href="#systemetric.mapping.arenamaps.CompetitionArenaMap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#systemetric.mapping.arenamap.ArenaMap" title="systemetric.mapping.arenamap.ArenaMap"><tt class="xref py py-class docutils literal"><span class="pre">systemetric.mapping.arenamap.ArenaMap</span></tt></a></p>
-<p>A class representing the layout of the actual competition arena</p>
+<p>The arena used in the actual competition arena</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="systemetric.mapping.arenamaps.S007ArenaMap">
 <em class="property">class </em><tt class="descclassname">systemetric.mapping.arenamaps.</tt><tt class="descname">S007ArenaMap</tt><a class="headerlink" href="#systemetric.mapping.arenamaps.S007ArenaMap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#systemetric.mapping.arenamap.ArenaMap" title="systemetric.mapping.arenamap.ArenaMap"><tt class="xref py py-class docutils literal"><span class="pre">systemetric.mapping.arenamap.ArenaMap</span></tt></a></p>
-<p>A class representing the layout of the S007 arena. The width is 3.5m, length is 2.75m
-^ Y
-|
-+&#8212;0&#8212;1&#8212;2&#8212;3&#8212;4&#8212;5&#8212;+&#8211;&gt; X
-|                           |
-27                          6
-|                           |
-26                          7
-|                           |
-25                          8
-|                           |
-24                          9
-|                           |
-23 (origin)                 10</p>
+<p>An arena set up inside the horseshoe of tables in S007. The markers are
+spaced 0.5m apart.</p>
+<p>The arena is set up like so:</p>
+<div class="highlight-python"><pre>Y   +-----------------------------------+
+^   |               desks               |
+|   |   +---0---1---2---3---4---5---+   |
+|   |   |                           |   |
+|   |   27                          6   |
+|   |   |                           |   |
+|   |   26                          7   |
+|   |   |                           |   |
+|   |   25                          8   |
+|   |   |                           |   |
+|   |   24                          9   |
+|   |   |                           |   |
+0   |   23                         10   |
+    +---+                           +---+
+                +-----------+
+                |front table|
+                +-----------+
+
+        0-----------------------------&gt; X</pre>
+</div>
 </dd></dl>
 
 <dl class="class">
 <dt id="systemetric.mapping.arenamaps.S007ArenaMapLargeWall">
 <em class="property">class </em><tt class="descclassname">systemetric.mapping.arenamaps.</tt><tt class="descname">S007ArenaMapLargeWall</tt><a class="headerlink" href="#systemetric.mapping.arenamaps.S007ArenaMapLargeWall" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#systemetric.mapping.arenamap.ArenaMap" title="systemetric.mapping.arenamap.ArenaMap"><tt class="xref py py-class docutils literal"><span class="pre">systemetric.mapping.arenamap.ArenaMap</span></tt></a></p>
-<p>A class representing the layout of the S007 arena</p>
+<p>An arena with markers 0, 4, and 9 set up 1m apart along a wall</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="systemetric.mapping.arenamaps.S007ArenaMapSmallWall">
 <em class="property">class </em><tt class="descclassname">systemetric.mapping.arenamaps.</tt><tt class="descname">S007ArenaMapSmallWall</tt><a class="headerlink" href="#systemetric.mapping.arenamaps.S007ArenaMapSmallWall" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#systemetric.mapping.arenamap.ArenaMap" title="systemetric.mapping.arenamap.ArenaMap"><tt class="xref py py-class docutils literal"><span class="pre">systemetric.mapping.arenamap.ArenaMap</span></tt></a></p>
-<p>A class representing the layout of the S007 arena</p>
+<p>An arena with markers 3, 4, and 5 set up 0.5m apart along a wall</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-systemetric.mapping.pointset">
-<span id="pointset-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">pointset</span></tt> Module<a class="headerlink" href="#module-systemetric.mapping.pointset" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pointset-class">
+<h2><tt class="xref py py-class docutils literal"><span class="pre">PointSet</span></tt> Class<a class="headerlink" href="#pointset-class" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="systemetric.mapping.pointset.PointSet">
-<em class="property">class </em><tt class="descclassname">systemetric.mapping.pointset.</tt><tt class="descname">PointSet</tt><big>(</big><em>points</em><big>)</big><a class="headerlink" href="#systemetric.mapping.pointset.PointSet" title="Permalink to this definition">¶</a></dt>
+<dt id="systemetric.mapping.PointSet">
+<em class="property">class </em><tt class="descclassname">systemetric.mapping.</tt><tt class="descname">PointSet</tt><big>(</big><em>points</em><big>)</big><a class="headerlink" href="#systemetric.mapping.PointSet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">list</span></tt></p>
-<p>A class to store a set of Point2s, adding useful methods. The array should
+<p>A class to store a set of <tt class="xref py py-class docutils literal"><span class="pre">Point2</span></tt> s, adding useful methods. The array should
 _not_ be modified, as information is cached</p>
 <dl class="method">
-<dt id="systemetric.mapping.pointset.PointSet.bestTransformTo">
-<tt class="descname">bestTransformTo</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#systemetric.mapping.pointset.PointSet.bestTransformTo" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use a super-optimal method, since error as a function of rotation was found to be of the form</p>
-<blockquote>
-<div>f(theta) = offset - amplitude * cos(theta - optimalTheta)</div></blockquote>
-<p>through testing, and them some logical thought</p>
+<dt id="systemetric.mapping.PointSet.bestTransformTo">
+<tt class="descname">bestTransformTo</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#systemetric.mapping.PointSet.bestTransformTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the best rotation transformation that maps this set of points
+to another.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">rotation, transformation matrix, error</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple(float, <tt class="xref py py-class docutils literal"><span class="pre">Matrix3</span></tt>, float)</td>
+</tr>
+</tbody>
+</table>
+<p>This was originally done with a brute force error minimizer. However, a
+more optimal approach was found, which stems from the fact that the value
+of:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="bp">self</span><span class="o">.</span><span class="n">centered</span><span class="o">.</span><span class="n">transformedBy</span><span class="p">(</span><span class="n">Matrix3</span><span class="o">.</span><span class="n">new_rotate</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span><span class="o">.</span><span class="n">errorTo</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">centered</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>can be expressed as a function of theta</p>
+<div class="math">
+\[f(\theta) = offset - amplitude \times \cos(\theta - \theta_{optimal})\]</div>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="systemetric.mapping.pointset.PointSet.center">
-<tt class="descname">center</tt><a class="headerlink" href="#systemetric.mapping.pointset.PointSet.center" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the geometric center of the points</p>
+<dt id="systemetric.mapping.PointSet.center">
+<tt class="descname">center</tt><a class="headerlink" href="#systemetric.mapping.PointSet.center" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">Point2</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>Calculate the geometric center of the points</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="systemetric.mapping.pointset.PointSet.centered">
-<tt class="descname">centered</tt><a class="headerlink" href="#systemetric.mapping.pointset.PointSet.centered" title="Permalink to this definition">¶</a></dt>
-<dd><p>Center all the points around the origin</p>
+<dt id="systemetric.mapping.PointSet.centered">
+<tt class="descname">centered</tt><a class="headerlink" href="#systemetric.mapping.PointSet.centered" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">PointSet</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>A copy of the pointset with all the points centered around the origin</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="systemetric.mapping.pointset.PointSet.errorTo">
-<tt class="descname">errorTo</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#systemetric.mapping.pointset.PointSet.errorTo" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the sum of the squares of the error between two list of points</p>
+<dt id="systemetric.mapping.PointSet.errorTo">
+<tt class="descname">errorTo</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#systemetric.mapping.PointSet.errorTo" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>other</strong> (<tt class="xref py py-class docutils literal"><span class="pre">PointSet</span></tt>) &#8211; the points to compare to</td>
+</tr>
+</tbody>
+</table>
+<p>Calculate the sum of the squares of the distances between two list of points</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><tt class="docutils literal"><span class="pre">other</span></tt> must be of the same length as the object</p>
+</div>
 </dd></dl>
 
 <dl class="method">
-<dt id="systemetric.mapping.pointset.PointSet.transformedBy">
-<tt class="descname">transformedBy</tt><big>(</big><em>matrix</em><big>)</big><a class="headerlink" href="#systemetric.mapping.pointset.PointSet.transformedBy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transform every point in this set by a matrix</p>
+<dt id="systemetric.mapping.PointSet.transformedBy">
+<tt class="descname">transformedBy</tt><big>(</big><em>matrix</em><big>)</big><a class="headerlink" href="#systemetric.mapping.PointSet.transformedBy" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>matrix</strong> (<tt class="xref py py-class docutils literal"><span class="pre">Matrix3</span></tt>) &#8211; the matrix to transform by</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A copy of the pointset with every point transformed by a matrix</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
-
-<dl class="function">
-<dt id="systemetric.mapping.pointset.main">
-<tt class="descclassname">systemetric.mapping.pointset.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="headerlink" href="#systemetric.mapping.pointset.main" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </div>
 </div>
@@ -196,10 +375,9 @@ _not_ be modified, as information is cached</p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">mapping Package</a><ul>
-<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">mapping</span></tt> Package</a></li>
-<li><a class="reference internal" href="#module-systemetric.mapping.arenamap"><tt class="docutils literal"><span class="pre">arenamap</span></tt> Module</a></li>
+<li><a class="reference internal" href="#arenamap-class"><tt class="docutils literal"><span class="pre">ArenaMap</span></tt> Class</a></li>
 <li><a class="reference internal" href="#module-systemetric.mapping.arenamaps"><tt class="docutils literal"><span class="pre">arenamaps</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-systemetric.mapping.pointset"><tt class="docutils literal"><span class="pre">pointset</span></tt> Module</a></li>
+<li><a class="reference internal" href="#pointset-class"><tt class="docutils literal"><span class="pre">PointSet</span></tt> Class</a></li>
 </ul>
 </li>
 </ul>
