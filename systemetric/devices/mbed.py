@@ -38,7 +38,6 @@ class MbedDevice(object):
 		command = self.id + thing
 		if args:
 			command += '(' + ','.join(str(r) for r in args) + ')'
-		
 		return self.mbed.sendCommand(command)
 
 class Mbed(object):
@@ -47,7 +46,8 @@ class Mbed(object):
 		try:
 			self.port = serial.Serial(port)
 			# self.port.timeout = 0.25
-			self.port.open()
+			if not self.port.isOpen():
+				self.port.open()
 			self._lock = Lock()
 		except Exception:
 			raise Exception('Cannot connect to mbed on %s' % port)

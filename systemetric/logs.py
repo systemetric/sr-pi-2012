@@ -102,7 +102,7 @@ class IndentingLogger(StreamWrapper):
 
 
 _timestamp = time.strftime("%Y-%m-%d %H.%M.%S", time.gmtime())
-logsdir = os.path.join('/mnt/user/', 'custom-logs', _timestamp)
+logsdir = os.path.join('/home/pi/git/student-robotics', 'custom-logs', _timestamp)
 
 try:
 	os.makedirs(logsdir)
