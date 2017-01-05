@@ -107,7 +107,7 @@ class ArenaMap(dict):
 
 		          .. attribute:: accuracy
 
-		             :type: :class:`Point2`
+		             :type: float
 		             An indication of the accuracy of the calculation - the
 		             sum of the squares of the distances between actual and
 		             apparent marker locations
